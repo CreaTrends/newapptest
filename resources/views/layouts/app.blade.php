@@ -71,6 +71,8 @@
             </div>
         </nav>
 <i class="fa fa-address-book" aria-hidden="true"></i>
+<i class="fa fa-address-book" aria-hidden="true"></i>
+<i class="fa fa-address-book" aria-hidden="true"></i>
         @yield('content')
     </div>
 
