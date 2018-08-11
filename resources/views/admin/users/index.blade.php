@@ -2,97 +2,155 @@
 @section('title', 'Administracion de Usuarios')
 @section('page-subtitle','Use this elements, if you want to show some hints or additional information')
 @section('content')
-<div class="container">
-	<div class="row" id="users">
-
-		<div class="col col-md-12 col-lg-12 col-xl-12">
-			<div class="card card-page">
-				<div class="card-body">
-					<div class="d-flex justify-content-between align-items-stretch mb-3">
-						<div class="toolbar-card mr-3" role="toolbar">
-							<button type="submit" class="btn custom-btn is-purple is-small" v-on:click.prevent="importFile()">Importar</button>
-							<span class="border-right mr-2 ml-2"></span>
-							<button type="submit" class="btn custom-btn is-purple is-small" v-on:click.prevent="createUser()">Agregar Usuarios</button>
-							
-						</div>
-						<div class="toolbar-card" role="toolbar">
-							<form class="form-inline" action="{{route('usuarios.index')}}" method="GET" id="form-filter">
-								
-								<label for="select-filter" class="mr-1">Ordenar por : </label>
-								<select id="select-filter" class="form-control toolbar-input mr-3" name="filter">
-									<option name="reset" value="0">Filtrar Usuarios</option>
-									<option disabled="disabled">------</option>
-									@foreach ($roles as $role)
-									<option name="filter_role" value="{{$role->name}}">{{$role->name}}</option>
-									@endforeach
-									<option disabled="disabled">------</option>
-									<option value="0" name="filter_status">Inactivo</option>
-									<option value="1" name="filter_status">Activo</option>
-								</select>
-								<button type="submit" class="btn custom-btn is-default is-small">filtrar</button>
-							</form>
-							
-						</div>
-						
-					</div>
-					<div class="table-responsive">
-						<table class="table table-striped dashboard-table">
-							<thead>
-								<tr>
-									<th><input type="checkbox"  id="checkall"></th>
-									<th>First Name</th>
-									<th>Last Name</th>
-									<th>Estado</th>
-									<th>Acciones</th>
-								</tr>
-							</thead>
-							<tbody>
-								
-								<tr v-for="usuario in usuarios">
-									<td><input type="checkbox" class="your_checkbox_class" name="ids[]" v-bind:id="usuario.id"></td>
-									<td>@{{ usuario.name }}</td>
-									<td>@{{ usuario.email }}</td>
-									
-									<td >
-										<span class="badge badge-success badge-in-table" v-if="usuario.profile.status > '0'">Activo</span>
-										<span v-else class="badge badge-danger badge-in-table">Inactivo</span>
-									</td>
-									
-									
-									<td>
-										<div class="btn-group">
-											<button type="button" class="btn btn-danger custom-btn is-dropdown-options">Editar</button>
-											<button type="button" class="btn btn-danger custom-btn is-dropdown-options dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<span class="sr-only">Toggle Dropdown</span>
-											</button>
-											<div class="dropdown-menu dropdown-menu-right">
-												
-												<a class="dropdown-item" href="#">Editar</a>
-												<a class="dropdown-item" href="#">Ver Usuario</a>
-												<a class="dropdown-item" href="#">Enviar Notificación</a>
-												<div class="dropdown-divider"></div>
-												<a href="#" class="dropdown-item text-danger" v-bind:id="usuario.id" v-on:click.prevent="deleteUser(usuario)">Eliminar</a>
-											</div>
-										</div>
-									</td>
-								</tr>
-								
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
+<div class="d-flex justify-content-between align-items-stretch mb-4 py-4">
+	<div class="">
 		
-		@include('admin.users.create')
+		<button type="button" class="btn custom-btn is-lightgreen mr-2" data-toggle="modal" data-target="#create-user">
+            Agregar Alumno 
+            </button>
+	</div>
+	<div class="toolbar-card" role="toolbar">
+		<form class="form-inline" action="{{route('usuarios.index')}}" method="GET" id="form-filter">
+			
+			<label for="select-filter" class="mr-1">Ordenar por : </label>
+			<select id="select-filter" class="form-control toolbar-input mr-3" name="filter">
+				<option name="reset" value="0">Filtrar Usuarios</option>
+				<option disabled="disabled">------</option>
+				@foreach ($roles as $role)
+				<option name="filter_role" value="{{$role->name}}">{{$role->name}}</option>
+				@endforeach
+				<option disabled="disabled">------</option>
+				<option value="0" name="filter_status">Inactivo</option>
+				<option value="1" name="filter_status">Activo</option>
+			</select>
+			<button type="submit" class="btn custom-btn is-default is-small">filtrar</button>
+		</form>
 		
 	</div>
-	
+</div>
+<table class="table table table-bordered">
+	<thead class="thead-light">
+		<tr class="d-flex">
+			<th colspan="2" class="col-sm-12">Usuarios</th>
+
+		</tr>
+		<tr class="d-flex">
+			<th class="col-sm-3">Nombre</th>
+			<th  class="col-sm-3">Email</th>
+			<th class="col-sm-3">Estado</th>
+			<th class="col-sm-3">Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach($users as $user)
+		 <tr class="d-flex">
+            <td  class="col-sm-3  d-flex justify-content-start">
+                <div>
+                    <h6 class="my-0">
+                    	<strong>
+                    		<a href="{{route('alumnos.edit',$user->id)}}">
+                    			{{$user->profile->first_name}}
+                    			{{$user->profile->last_name}}
+                    		</a>
+                    	</strong>
+                    </h6>
+                </div>
+            </td>
+            
+            <td class="col-sm-3 justify-content-center">
+                {{$user->profile->email}}
+            </td>
+            <td class="col-sm-3 justify-content-center">
+               @if($user->profile->status == '1')
+               <span class="badge badge-success badge-in-table">Activo</span>
+               @else
+               <span v-else class="badge badge-danger badge-in-table">Inactivo</span>
+               @endif
+               
+            </td>
+            <td class="col-sm-3 justify-content-center">
+				<div class="btn-group">
+					<button type="button" class="btn btn-danger custom-btn is-dropdown-options">Editar</button>
+					<button type="button" class="btn btn-danger custom-btn is-dropdown-options dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					<div class="dropdown-menu dropdown-menu-right">
+						
+						<a class="dropdown-item" href="#">Editar</a>
+						<a class="dropdown-item" href="#">Ver Usuario</a>
+						<a class="dropdown-item" href="#">Enviar Notificación</a>
+						<div class="dropdown-divider"></div>
+						<form action="{{route('usuarios.destroy',$user->id)}}" method="POST">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <button class="dropdown-item text-danger">Eliminar</button>
+                        </form>
+					</div>
+				</div>
+            </td>
+        </tr>
+		@endforeach
+		</tbody>
+	</table>
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="create-user">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div><form action="{{route('usuarios.store')}}"  enctype="multipart/form-data" class="form" method="POST">
+                {{ method_field('POST') }}
+                {{csrf_field()}}
+                <div class="modal-body">
+                	
+	                    <div class="form-group">
+	                        <label for="firstname" class="custom-label">Nombre</label>
+	                        <input type="text" name="firstname" class="form-control" >
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="slug" class="custom-label">Apellido</label>
+	                        <input type="text" name="lastname" class="form-control" >
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="slug" class="custom-label">E-mail</label>
+	                        <input type="email" name="email" class="form-control">
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="slug">Perfil de usuario</label>
+	                        <select  name="roles" class="form-control">
+	                            <option name="role" value="0">-- Elige el tipo de usuario</option>
+	                            @foreach($roles as $role)
+	                            <option  value="{{$role->id}}">{{$role->name}}</option>
+	                            @endforeach
+	                            
+	                        </select>
+	                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Guardar">
+                </div></form>	
+            </div>
+        </div>
+    </div>
+
 	
 	
 	
 	@endsection
 	@section('scripts')
+	
+<script>
+    @if (session('info'))
+            toastr.info("{{ session('info') }}");
+   @endif
+</script>
+
 <script>
 	$(function() {
 		$('#select-filter').on('change',function (e) {

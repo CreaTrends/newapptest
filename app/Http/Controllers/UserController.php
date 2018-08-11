@@ -36,18 +36,16 @@ class UserController extends Controller
         $user_id = auth()->user()->id;
         $roles = Role::all();
         if (request()->has('filter_status')) {
+            $status_filter =$request->filter_status;
             $users = User::
-            whereHas('profile', function($q) {
-                $q->where('status','=', request('filter_status'));
+            whereHas('profile', function($q) use($status_filter) {
+                $q->where('status','=',$status_filter);
             })
             ->with('roles')
             ->with('profile')
             ->get();
         }elseif(request()->has('filter_role')){
-            $users = User::
-            whereHas('roles', function($q) {
-                $q->where('name','=', 'superadministrator');
-            })
+            $users = User::whereRoleIs($request->filter_role)
             ->with('roles')
             ->with('profile')
             ->get();
@@ -96,7 +94,7 @@ class UserController extends Controller
         $request->api_token = bin2hex(openssl_random_pseudo_bytes(30));
         $request->password = bcrypt($password);
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->firstname,
             'email' => $request->email,
             'api_token' => bin2hex(openssl_random_pseudo_bytes(30)),
             'password' => bcrypt($password)
@@ -105,8 +103,8 @@ class UserController extends Controller
 
 
         $customer = new Profile();
-        $customer->first_name = $request->name;
-        $customer->last_name = $request->name;
+        $customer->first_name = $request->firstname;
+        $customer->last_name = $request->lastname;
         $customer->email = $request->email;
         $user->profile()->save($customer);
 
@@ -182,6 +180,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+        $user = User::find($id)->delete();
+        return redirect()->back()->with('info', 'Eliminado correctamente');
     }
     /**
      * Display a listing of the resource.
