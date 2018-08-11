@@ -1,6 +1,6 @@
 
 // Body
-$body-bg: #f5f8fa;
+$body-bg: #fff;
 
 // Borders
 $laravel-border-color: darken($body-bg, 10%);
@@ -10,7 +10,7 @@ $panel-default-border: $laravel-border-color;
 $panel-inner-border: $laravel-border-color;
 
 // Brands
-$brand-primary: #3097D1;
+$brand-primary: #3273dc;
 $brand-info: #8eb4cb;
 $brand-success: #2ab27b;
 $brand-warning: #cbb956;
@@ -18,16 +18,19 @@ $brand-danger: #bf5329;
 
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
-$font-family-sans-serif: "Raleway", sans-serif;
-$font-size-base: 14px;
-$line-height-base: 1.6;
+$font-family-sans-serif: "Nunito Sans", sans-serif;
+$headings-font-family:"Nunito Sans", sans-serif !default;
+$font-size-base: .95rem;
+$line-height-base: 1.2;
 $text-color: #636b6f;
 
 // Navbar
 $navbar-default-bg: #fff;
 
 // Buttons
-$btn-default-color: $text-color;
+$btn-default-color: #fff;
+$btn-font-weight: 600;
+$btn-padding : 0.5rem 18px;
 
 // Inputs
 $input-border: lighten($text-color, 40%);
@@ -35,4 +38,65 @@ $input-border-focus: lighten($brand-primary, 25%);
 $input-color-placeholder: lighten($text-color, 30%);
 
 // Panels
-$panel-default-heading-bg: #fff;
+$panel-default-heading-bg: #fff !important;
+
+// change color array 
+$white:#fff !default;
+$primary:#377dff !default;
+$secondary:#00AEEF !default;
+//$secondary:#fca32a !default;
+$success:#6bd098 !default;
+$info:#51bcda!default;
+$warning:#fbc658!default;
+$danger:#f5593d!default;
+$greygreen:#5eb4b9!default;
+$secondary-yellow:#F8BB56!default;
+$pink : #FF6A89!default;
+$purple:#5659A6!default;
+$orange:#FCA32A!default;
+$lightblue :#8BD5F6!default;
+
+$theme-colors: () !default;
+$theme-colors: map-merge((
+    "primary"   :$primary,
+    "secondary" :$secondary,
+    "danger"    :$danger,
+    "info"      :$info,
+    "warning"   :$warning,
+    "orange"    :$orange,
+    "greygreen" :$greygreen,
+    "success"   :$success,
+    "cool"      :#2a3f81,
+    "pink"      :$pink,
+    "purple"    :$purple,
+    "secondary-yellow"  :$secondary-yellow,
+    "lightblue" :$lightblue
+), $theme-colors);
+
+$main-colors: (
+    'default':#377dff,
+    'lightblue':#00AEEF,
+    'green': #7EC440,
+    'lightgreen':#1FD988,
+    'turquoise':turquoise,
+    'darkgreen': #178f93,
+    'orange': #fca32a,
+    'purple': #5A55A3,
+    'darkred':#EC5033,
+    'pink': #f43893,
+    'red':#ff593d,
+    'yellow':#FFD950,
+    'lightgrey':#eaebed,
+    'grey':#e4e4e4
+);
+
+
+
+
+
+
+$btn-warning-color:#fff !important;
+$btn-secondary-color:#fff !important;
+
+$table-odd-bg : #fafbfe;
+$table-accent-bg: $table-odd-bg;

@@ -8,15 +8,31 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.Slug = require('slug');
+Slug.defaults.mode = 'rfc3986';
+window.toastr = require('toastr');
 
+window.$ = window.fastselect = require('fastselect');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+// Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
+// const app = new Vue({
+//     el: '#app'
+// });
+
+Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('my-component', require('./components/modal.vue'));
+
+/*import VoerroTagsInput from '@voerro/vue-tagsinput';
+
+Vue.component('tags-input', VoerroTagsInput);*/
+
+/*Vue.component('notas', require('./components/Notas.vue'));*/
+
+
+

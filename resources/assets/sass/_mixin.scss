@@ -1,0 +1,239 @@
+// =============================================================================
+// String Replace
+// =============================================================================
+
+@function str-replace($string, $search, $replace: "") {
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}
+
+// =============================================================================
+// Font Face
+// =============================================================================
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+    $src: null;
+
+    $extmods: (
+        eot: "?",
+        svg: "#" + str-replace($name, " ", "_")
+    );
+
+    $formats: (
+        otf: "opentype",
+        ttf: "truetype"
+    );
+
+    @each $ext in $exts {
+        $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+        $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+        $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+    }
+
+    @font-face {
+        font-family: quote($name);
+        font-style: $style;
+        font-weight: $weight;
+        src: $src;
+    }
+}
+// font family mixin
+@mixin font-source-sans($font-family:false,$size: false, $colour: false, $weight: false,  $lh: false) {
+    $font-extra : BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    @if $font-family { font-family: $font-family,$font-extra; }
+    @if $size { font-size: $size; }
+    @if $colour { color: $colour; }
+    @if $weight { font-weight: $weight; }
+    @if $lh { line-height: $lh; }
+}
+
+
+
+
+
+@mixin button-rounded($bgcolor: false, $text_color: false) {
+    @if $bgcolor { background-color: $bgcolor; }
+    @if $text_color { color: $text_color; }
+    font-size: 2.5rem;
+    border-radius: 100%;
+    padding: 2.5rem;
+
+}
+
+
+$s-min: 20;
+$s-max: 70;
+$l-min: 30;
+$l-max: 90;
+
+
+$colores: (#377dff,#00AEEF, #1FD988, #f43893, #7EC440, #00a9fa, #ff593d,#fca32a,#5659A6);
+
+$key: random( length($colores) );
+
+$nth: nth( $colores, $key );
+$y: 60 !default;
+$number-of-colors: length($y);
+
+
+@mixin random-color($selector) {
+  #{$selector}: nth( $colores, random( length($colores) ) ) !important ;
+}
+
+@for $i from 1 through length($colores)  {
+  .bg-color-#{$i} {
+    background-color: nth($colores, $i);
+  }
+}
+.custom-btn {
+    
+    font-size: 1rem !important;
+    padding: .5rem 1.25rem !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+    font-family: $font-family-sans-serif !important;
+    outline: none !important;
+    box-shadow: none !important;
+    @each $key, $value in $main-colors {
+        &.is-#{$key}{
+            background-color: $value !important;
+            border-color: $value !important;
+            color: lighten($value,95%) !important;
+                &:hover,.hover {
+                    background-color: darken($value,5%) !important;
+                    border-color: darken($value,5%) !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+                &:focus,.focus{
+                    background-color: darken($value,5%) !important;
+                    border-color: darken($value,5%) !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+        }
+        &.is-outline-#{$key}{
+            background-color: transparent !important;
+            border-color: $value !important;
+            color: $value !important;
+            &:hover {
+                background-color: $value !important;
+                border-color: $value !important;
+                color: lighten($value,95%) !important;
+                outline: none !important;
+                    box-shadow: none !important;
+            }
+        }
+        &.is-rounded-#{$key}{
+            background-color: $value !important;
+            border-color: $value !important;
+            color: lighten($value,95%) !important;
+            border-radius: 5rem !important;
+            &:hover {
+                background-color: darken($value,5%) !important;
+                    border-color: darken($value,5%) !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+            }
+        }
+    }
+    &.is-small {
+        font-size: .85rem !important;
+        padding: .3rem 1rem !important;
+    }
+    &.is-large {
+
+    }
+
+}
+.link-item {
+    display:inline-block;
+    transition:all .2s ease-in-out;
+}
+.link-item {
+    display: inline-block;
+    transition: all .2s ease-in-out;
+    @each $key,
+    $value in $main-colors {
+        .is-#{$key} {
+            background-color: $value !important;
+            border-color: $value !important;
+            color: lighten($value, 95%) !important;
+            transition: all .2s ease-in-out;
+        }
+    }
+    &:hover {
+        text-decoration: none;
+        @each $key,
+        $value in $main-colors {
+            .is-#{$key} {
+                transition: all .2s ease-in-out;
+                background-color: darken($value, 8%) !important;
+                border-color: darken($value, 8%) !important;
+            }
+        }
+    }
+}
+@each $key, $value in $main-colors {
+.is-#{$key} {
+         background-color: $value !important;
+        border-color: $value !important;
+        color: lighten($value,95%) !important;
+        transition:all .2s ease-in-out;
+
+
+
+    }
+}
+@each $key, $value in $main-colors {
+.custom-alert-#{$key} {
+        background-color: lighten($value,35%) !important;
+        border-color: lighten($value,30%) !important;
+        color: darken($value,60%) !important;
+
+    }
+}
+.is-dropdown-options {
+
+    background-color: #f9f9f9 !important;
+    border-color: #e1e1e1 !important;
+    color: #242424 !important;
+    font-weight: 600 !important;
+    font-size: .85rem !important;
+    padding: 5rem 5rem !important;
+    font-size: .85rem !important;
+    padding: 5px 5px  !important;
+    min-width: 4rem !important;
+    transition: all .1s ease-in-out;
+    &:hover {
+        background-color: darken(#f9f9f9,2%) !important;
+        border-color:  #e1e1e1 !important;
+    }
+    &:focus,.focus{
+      background-color: darken(#f9f9f9,2%) !important;
+      color: #242424 !important;
+      outline: none !important;
+      box-shadow: none;
+      transition: all .1s ease-in-out;
+      border-color: #e1e1e1 !important;
+    }
+    &.dropdown-toggle-split{ min-width: 2rem !important;}
+    
+}
+@for $i from 1 through $y {
+
+  table tr:nth-of-type(#{length($i)}n + #{$i}) .is-icon-avatar:nth-child(odd){
+    @include random-color('background-color');
+  }
+}
+
+@mixin btn-styles($btn-color, $btn-states-color) {
+background-color: $btn-color;
+    border-color: $btn-color;
+
+    }

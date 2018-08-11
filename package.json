@@ -10,13 +10,26 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@johmun/vue-tags-input": "^1.5.4",
+        "@voerro/vue-tagsinput": "^1.8.0",
         "axios": "^0.17",
-        "bootstrap-sass": "^3.3.7",
+        "bootstrap": "^4.1.1",
         "cross-env": "^5.1",
         "font-awesome": "^4.7.0",
         "jquery": "^3.2",
+        "laravel-echo": "^1.4.0",
         "laravel-mix": "^1.0",
         "lodash": "^4.17.4",
-        "vue": "^2.5.7"
+        "popper.js": "^1.14.3",
+        "pusher-js": "^4.2.2",
+        "slug": "^0.9.1",
+        "toastr": "^2.1.4",
+        "vue": "^2.5.7",
+        "vue-progressbar": "^0.7.5",
+        "vue-tag-input": "0.0.1"
+    },
+    "dependencies": {
+        "fastselect": "^0.7.3",
+        "vue-tag-autocomplete": "0.0.8"
     }
 }
