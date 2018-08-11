@@ -33,6 +33,6 @@ class WelcomeParent extends Mailable
     {
         return $this->markdown('emails.users.parent.WelcomeEmail',['user' => $this->user])
         ->subject('Por favor confirma tu correo')
-        ->from('no-reply@jardinanatolia.cl');
+        ->from('no-reply@jardinanatolia.cl','Equipo Anatolia');
     }
 }
