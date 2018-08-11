@@ -238,7 +238,7 @@ this.formData.append('file', this.attachment);
 this.formData.append('curso_id', this.curso_id);
 this.formData.append('send_email', this.selected);
 
-axios.post('../tools/import',this.formData, {
+axios.post('../../tools/import',this.formData, {
 
 headers: {
 'Content-Type': 'multipart/form-data'
