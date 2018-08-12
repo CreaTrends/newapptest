@@ -66,10 +66,10 @@ Route::resource('/settings', 'SettingsController');*/
 Route::get('/getdata', 'CursoController@getdata')->name('cursos.getdata');
 Route::get('/getcursos', 'AlumnoController@getcursos');
 
-Route::post('/tools/import', 'toolController@importExcel')->name('tools.import');
-Route::get('/tools/export/{id}', 'toolController@exportExcel')->name('tools.export');
-Route::get('/tools/download/{file}', 'toolController@DownloadAttach')->name('tools.download');
-
+Route::post('/tools/import', 'ToolController@importExcel')->name('tools.import');
+Route::get('/tools/export/{id}', 'ToolController@exportExcel')->name('tools.export');
+Route::get('/tools/download/{file}', 'ToolController@DownloadAttach')->name('tools.download');
+Route::get('tools/test', 'ToolController@test')->name('tools.test');
 Route::post('invite/send/{id}', 'AlumnoController@inviteParent')->name('invite.send');
 Route::get('invite/process', 'AlumnoController@inviteProcess');
 // messages 

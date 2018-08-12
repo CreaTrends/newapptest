@@ -1,4 +1,5 @@
 <form  method="POST" v-on:submit.prevent="importExcel">
+    {{ method_field('POST') }}
     {{ csrf_field() }}
     <input type="hidden" name="curso_id" v-model="curso_id">
     <div class="modal fade" tabindex="-1" role="dialog" id="import-file">

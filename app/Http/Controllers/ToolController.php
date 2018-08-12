@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Session;
 use File;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Response;
 use Carbon\Carbon;
 use App\Note;
@@ -25,6 +25,11 @@ class ToolController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+    public function test(){
+
+        echo "test de tool controller";
+
     }
     public function index(){
 
