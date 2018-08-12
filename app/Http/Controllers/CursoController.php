@@ -19,6 +19,8 @@ use App\Notifications\NewNotebook;
 use Mail;
 use App\Mail\WelcomeParent;
 
+use App\Mail\DailyReportEmail;
+
 
 
 
@@ -336,12 +338,21 @@ class CursoController extends Controller
                 $actividad->notebooks()->attach($notebook->id);
             }
             if(!empty($data)){
-            $form= new Attached();
-            $form->file=$data;        
-            $form->save();
-            $form->notebooks()->attach($notebook->id);
-        }
+                $form= new Attached();
+                $form->file=$data;        
+                $form->save();
+                $form->notebooks()->attach($notebook->id);
+            }
+            $objDemo = new \stdClass();
+            $objDemo->data= Notebook::find($notebook->id);
 
+            $alumnoId = $alumno_notebook['alumno_id'];
+            $sendTo = User::select('email','name')->whereHas('alumno_parent', function($q) use($alumnoId){
+                $q->where('alumno_id','=',$alumnoId);
+            })->get();
+            Mail::to($sendTo)
+            ->send(new DailyReportEmail($objDemo));  
+        
             
 
             /*$activity = new Activity();
@@ -349,6 +360,8 @@ class CursoController extends Controller
         $notebook->activities()->save($activity);*/
             
         }
+        echo "<pre>";
+        return json_encode($sendTo,JSON_PRETTY_PRINT);
         return redirect()->route('cursos.show', ['id' => $cursoID])->with('info', 'Comunicación creada con éxito');
         /*return json_encode($request->activities,JSON_PRETTY_PRINT);*/
 

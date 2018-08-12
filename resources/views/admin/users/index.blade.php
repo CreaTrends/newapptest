@@ -6,7 +6,7 @@
 	<div class="">
 		
 		<button type="button" class="btn custom-btn is-lightgreen mr-2" data-toggle="modal" data-target="#create-user">
-            Agregar Alumno 
+            Agregar Usuario 
             </button>
 	</div>
 	<div class="toolbar-card" role="toolbar">
@@ -76,7 +76,7 @@
 					</button>
 					<div class="dropdown-menu dropdown-menu-right">
 						
-						<a class="dropdown-item" href="#">Editar</a>
+						<a class="dropdown-item" href="{{route('alumnos.edit',$user->id)}}">Editar</a>
 						<a class="dropdown-item" href="#">Ver Usuario</a>
 						<a class="dropdown-item" href="#">Enviar Notificación</a>
 						<div class="dropdown-divider"></div>
@@ -260,4 +260,14 @@
 		}
 	});
 	</script>
+	<script>
+		@if ($errors->any())
+		@foreach ($errors->all() as $error)
+		toastr.error("{{ $error }}");
+		@endforeach
+		@endif
+@if (session('info'))
+toastr.success("{{ session('info') }}");
+@endif
+</script>
 	@endsection

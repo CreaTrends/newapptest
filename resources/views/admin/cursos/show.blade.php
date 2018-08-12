@@ -237,8 +237,8 @@ this.formData = new FormData();
 this.formData.append('file', this.attachment);
 this.formData.append('curso_id', this.curso_id);
 this.formData.append('send_email', this.selected);
-
-axios.post('../tools/import',this.formData, {
+var url = "{{ url('admin/tools/import') }}";
+axios.post(url,this.formData, {
 
 headers: {
 'Content-Type': 'multipart/form-data'

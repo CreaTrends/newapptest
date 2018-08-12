@@ -17,7 +17,7 @@
                     <strong>{{$data['cursos']}}</strong>
                     </h1>
                     
-                    <button type="button" class="btn custom-btn is-lightgreen">Agregar Curso</button>
+                    <a href=" {{route('cursos.index')}} " class="btn custom-btn is-lightgreen">Agregar Curso</a>
                 </div>
             </div>
             @endif
@@ -88,15 +88,15 @@
                 <ul class="list-group list-group-flush">
                         @foreach($data['birthdays'] as $childs)
                         <li class="list-group-item">
-                            {{$childs->firstname}} en 
-                            <?php
-                            $birthday = Carbon\Carbon::parse($childs->birthday);
-                            $dd = Carbon\Carbon::now()->diffInDays($birthday->year(date('Y')), false);
-
-                            ?>
-                            
-                            {{$dd}}
-                            dias
+                            <strong>{{$childs->firstname}} en 
+                                <?php
+                                $birthday = Carbon\Carbon::parse($childs->birthday);
+                                $dd = Carbon\Carbon::now()->diffInDays($birthday->year(date('Y')), false);
+                                
+                                ?>
+                                
+                                {{$dd}}
+                                dias</strong>
                         </li>
                         @endforeach
                     </ul>

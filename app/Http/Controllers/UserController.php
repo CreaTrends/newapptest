@@ -90,6 +90,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, array(
+            'firstname'      => 'required',
+            'lastname'      => 'required',
+            'email' => 'required|email|unique:users,email',
+        ));
         $password = $this->make_password();
         $request->api_token = bin2hex(openssl_random_pseudo_bytes(30));
         $request->password = bcrypt($password);
@@ -121,7 +126,7 @@ class UserController extends Controller
         }*/
         //$sss = bcrypt('password');
         //$user->profile()->attach($request->get('tags'));
-        return $request->all();
+        return redirect()->back()->with('info', 'Usuario Agregado con exito ');
     }
     private function make_password(){
         # set the manual password
