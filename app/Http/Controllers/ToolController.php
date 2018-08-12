@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Session;
 use File;
-use Maatwebsite\Excel\Facades\Excel;
+use Excel;
 use Response;
 use Carbon\Carbon;
 use App\Note;
@@ -127,7 +127,7 @@ class ToolController extends Controller
                                     $profile->gender = 'Male';
                                     $profile->image = 'default.jpg';
                                     $user->profile()->save($profile);
-                                    if($request->send_email){
+                                    if($value->p_email){
                                         $user->email = $value->p_email;
                                         $user->password = $password;
                                         $user->name=$value->p_nombre;
@@ -160,7 +160,7 @@ class ToolController extends Controller
                                     $profile->gender = 'Female';
                                     $profile->image = 'default.jpg';
                                     $user->profile()->save($profile);
-                                    if($request->send_email){
+                                    if($value->m_email){
                                         $user->email = $value->m_email;
                                         $user->password = $password;
                                         $user->name=$value->m_nombre;
@@ -267,17 +267,24 @@ class ToolController extends Controller
         /*$alumnos=$cursos->alumnos_list;*/
 
         
-        Excel::create('payments', function($excel) use ($alumnoArray) {
+        Excel::create('Alunos de '.$curso->name, function($excel) use ($alumnos,$curso) {
 
             // Set the spreadsheet title, creator, and description
-            $excel->setTitle('Payments');
+            $excel->setTitle('Alumno '.$curso->name);
             $excel->setCreator('Laravel')->setCompany('WJ Gilmore, LLC');
             $excel->setDescription('payments file');
 
             // Build the spreadsheet, passing in the payments array
-            $excel->sheet('sheet1', function($sheet) use ($alumnoArray) {
-                $sheet->fromArray($alumnoArray, null, 'A1', false, false);
-                /*$sheet->setAutoFilter('A1:B10');*/
+            $excel->sheet('sheet1', function($sheet) use ($alumnos) {
+                $sheet->row(1, [
+    'Número', 'Nombre', 'Apellido', 'Fecha de Creación', 'Fecha de Actualización'
+]);
+                foreach($alumnos as $index => $user) {
+    $sheet->row($index+2, [
+        $user->id, $user->firstname, $user->lastname, $user->created_at, $user->updated_at
+    ]); 
+}
+                
             });
 
         })->download('xlsx');
