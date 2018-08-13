@@ -2,7 +2,10 @@
 <div class="jumbotron mb-0 is-purple">
     @endrole
 @role('superadministrator')
-<div class="jumbotron mb-0 is-orange">
+<div class="jumbotron mb-0 is-purple">
+    @endrole
+@role('administrator')
+<div class="jumbotron mb-0 is-purple">
     @endrole
     @role('parent')
 <div class="jumbotron mb-0 is-lightgreen">

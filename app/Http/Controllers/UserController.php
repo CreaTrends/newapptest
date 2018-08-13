@@ -115,6 +115,7 @@ class UserController extends Controller
         $customer->first_name = $request->firstname;
         $customer->last_name = $request->lastname;
         $customer->email = $request->email;
+        $customer->image = 'default.jpg';
         $user->profile()->save($customer);
 
         $user->password = $password;
