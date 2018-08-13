@@ -118,34 +118,7 @@
 
             </div>
         </div>
-        @if(!$albums->isEmpty())
-            
-            <div class="card my-2 card-feed-student">
-            <div class="card-body">
-                <div class="media">
-                    <i class="icofont icofont-emo-laughing activity-icon is-purple mr-1"></i>
-                    <div class="media-body">
-                        <h6 class="mt-0 d-flex justify-content-between">
-                        <strong>Galerias Grupales</strong>
-                        <small>{{$albums[0]->created_at}}</small>
-                        </h6>
-                        <p>
-                            {{$albums[0]->album_description}}
-                        </p>
-                        @if(!empty($item->comment))
-                        <p>{{$item->comment}}</p>
-                        @endif
-                        
-                    </div>
-                   
-                </div>
-                 @foreach($albums as $image)
-                   <img class="card-img-bottom p-1 mt-2 " src="{!! url($image->photo_path.$image->photo_name) !!}" >
-                                    @endforeach
-            </div>
-        </div>
-
-        @endif
+        
         @if(!$notebooks->isEmpty())
         @foreach($notebooks as $date=>$items)
         

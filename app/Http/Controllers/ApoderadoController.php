@@ -180,6 +180,7 @@ class ApoderadoController extends Controller
         ->whereHas('alumno',function($q) use($alumno_id){
             $q->where('alumno_id',$alumno_id);
         })
+        ->OrderBy('created_at','DESC')
         ->get()
         ->groupBy(function($item)
         {

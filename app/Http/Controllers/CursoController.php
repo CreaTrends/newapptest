@@ -363,8 +363,8 @@ class CursoController extends Controller
         $notebook->activities()->save($activity);*/
             
         }
-        echo "<pre>";
-        return json_encode($objDemo,JSON_PRETTY_PRINT);
+        /*echo "<pre>";
+        return json_encode($objDemo,JSON_PRETTY_PRINT);*/
         return redirect()->route('cursos.show', ['id' => $cursoID])->with('info', 'Comunicación creada con éxito');
         /*return json_encode($request->activities,JSON_PRETTY_PRINT);*/
 

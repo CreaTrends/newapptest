@@ -12,15 +12,6 @@
 				<li class="nav-item">
 					<a class="nav-link active" href="{{route('cursos.index')}}">Cursos</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link " href="{{route('admin.messages')}}">Mensajes</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link " href="{{route('cursos.index')}}">Circulares</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link " href="{{route('apoderado.childs')}}">Hijos</a>
-				</li>
 			</ul>
 		</div>
 	</div>

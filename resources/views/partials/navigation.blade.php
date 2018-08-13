@@ -16,6 +16,7 @@
                 <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register</a></li>
                 @else
                 @ability('administrator,owner', 'create-users')
+                <li class="nav-item"><a href="{{ url('/admin')}}" class="nav-link">Inicio</a></li>
                 <li class="nav-item"><a href="{{ route('cursos.index')}}" class="nav-link">Cursos</a></li>
                 <li class="nav-item"><a href="{{ route('usuarios.index') }}" class="nav-link">Usuarios</a></li>
                 <li class="nav-item"><a href="{{ route('alumnos.index') }}" class="nav-link">Alumnos</a></li>
@@ -34,6 +35,9 @@
                     </a>
                     @if(Auth::user()->hasRole('teacher|administrator|superadministrator'))
                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ url('/admin')}}">
+                            Inicio
+                        </a>
                         <a class="dropdown-item" href="{{route('usuarios.edit',Auth::user()->id)}}">
                             
                             Perfil
@@ -64,6 +68,9 @@
                     @else
                     <?php $route = 'parent';?>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ url('/admin')}}">
+                            Inicio
+                        </a>
                         <a class="dropdown-item" href="{{route('apoderado.profile',Auth::user()->id)}}">
                             
                             Perfil
