@@ -87,10 +87,10 @@
                 <a href="{{route('alumnos.edit',$alumno->id)}}" class="btn custom-btn is-green is-small">Editar</a>
             </div>
             <div class="mr-0">
-                <form action="{{route('alumnos.destroy',$alumno->id)}}" method="POST">
+                <form action="{{route('alumnos.destroy',$alumno->id)}}" method="POST" id="delete-student" data-message="Deseas Eliminar a este Alumno ? " onsubmit="return confirm('Realmente Deseas Eliminar a este Alumno?');">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}
-                    <button class="btn custom-btn is-red is-small"> <i class="icofont icofont-trash"></i></button>
+                    <button id="delete-btn" class="btn custom-btn is-red is-small"> <i class="icofont icofont-trash"></i></button>
                     </form>
                 </div>
             </td>
@@ -319,4 +319,12 @@ $(function() {
 
     });
 </script>
+<script>
+$("#delete-student").submit(function (e) {
+  var $message = $(this).data('message');
+  if(!confirm($message)){
+    
+  }
+});
+    </script>
 @endsection

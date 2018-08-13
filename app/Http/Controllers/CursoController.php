@@ -346,9 +346,7 @@ class CursoController extends Controller
                 $form->notebooks()->attach($notebook->id);
             }
             $objDemo = [];
-            $objDemo = Notebook::where('id',$notebook->id)->with('activities')
-            ->with('attachs')
-            ->with('alumno')->get();
+            $objDemo = Alumno::with('parent')->where('id',$alumno_notebook['alumno_id'])->get();
 
             $alumnoId = $alumno_notebook['alumno_id'];
             $sendTo = User::select('email','name')->whereHas('alumno_parent', function($q) use($alumnoId){

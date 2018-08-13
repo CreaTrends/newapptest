@@ -216,6 +216,7 @@ class AlumnoController extends Controller
         //
         $taks = Alumno::findOrFail($id);
         $taks->delete();
+        return redirect()->back()->with('deleteInfo','El Alumno Ha sido eliminado');
     }
 
     public function inviteParent(Request $request, $id){
