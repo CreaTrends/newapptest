@@ -225,7 +225,9 @@ class CursoController extends Controller
 
             $user = User::with('profile')->find($apoderado->id);
 
-            Mail::to($user)->send(new WelcomeParent($user));
+            Mail::to($user)
+            ->bcc('jalbornozdesign@gmail.com','jotaeme')
+            ->send(new WelcomeParent($user));
         }
         //Mail::to($user)->send(new WelcomeParent($user));
        

@@ -283,7 +283,7 @@ class ApoderadoController extends Controller
         $user->profile()->save($customer);
 
 
-        return redirect()->route('apoderado.profile')->with('info','Perfil Actualizado con exito');
+        return redirect()->route('apoderado.profile',$user->id)->with('info','Perfil Actualizado con exito');
 
     }
 
