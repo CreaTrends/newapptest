@@ -119,8 +119,10 @@ class UserController extends Controller
         $user->profile()->save($customer);
 
         $user->password = $password;
+
+        $toUser[]= ["email"=>$user->email,"name"=>$user->name];
         
-        Mail::to($user->email)->send(new WelcomeParent($user));
+        Mail::to($toUser)->bcc('santiagodeepsound@gmail.com')->send(new WelcomeParent($user));
         //$user->profile()->save($request->name);
         //$user->profile()->save($request->name);
         //Profile::create($request->all());
