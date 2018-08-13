@@ -72,7 +72,7 @@ class AlbumController extends Controller
 
             $form = new Photo();
             $form->photo_name=$sub_name;
-            $form->album_id=$album->id;
+            $form->album_id=$album->album_id;
             $form->photo_path=$path;
             $form->save();
         }

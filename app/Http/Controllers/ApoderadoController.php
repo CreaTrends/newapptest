@@ -211,13 +211,20 @@ class ApoderadoController extends Controller
 
         $apoderado = User::with('alumno_parent','profile')->where('id',auth()->user()->id)->first();
         $is_user = auth()->user()->id;
-        $curso = Alumno::with('parent','curso')->whereHas('parent',function($q) use($is_user){
+        $cursos = Alumno::with('parent','curso')->whereHas('parent',function($q) use($is_user){
             $q->where('user_id',$is_user);
         })->first();
-        $curso_id = $curso->curso;
-        foreach($curso_id as $curso ){
-            $id[] =$curso->id;
+
+        //$curso_id = $curso->curso;
+        if(!empty($cursos)){
+        foreach($cursos->curso as $curso ){
+                    $id[] =$curso->id;
+                }
+
+        }else {
+            $id[] = 0;
         }
+        
         $albums = Album::with('photo')->whereHas('curso',function($q) use($id){
             $q->whereIn('curso_id',$id);
         })->get();
@@ -241,7 +248,7 @@ class ApoderadoController extends Controller
     public function album($id){
 
         $albums = Album::with('photo')->findOrFail($id);
-        
+
         return view('apoderados.albums.show',compact('albums'));
 
     }
