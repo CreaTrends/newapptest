@@ -343,16 +343,17 @@ class CursoController extends Controller
                 $form->save();
                 $form->notebooks()->attach($notebook->id);
             }
-            $objDemo = new \stdClass();
-            $objDemo->data= Notebook::find($notebook->id);
+            $objDemo = [];
+            $objDemo = Notebook::where('id',$notebook->id)->with('activities')
+            ->with('attachs')
+            ->with('alumno')->get();
 
             $alumnoId = $alumno_notebook['alumno_id'];
             $sendTo = User::select('email','name')->whereHas('alumno_parent', function($q) use($alumnoId){
                 $q->where('alumno_id','=',$alumnoId);
             })->get();
-            Mail::to($sendTo)
-            ->send(new DailyReportEmail($objDemo));  
-        
+             
+            Mail::to($sendTo)->send(new DailyReportEmail($objDemo)); 
             
 
             /*$activity = new Activity();
@@ -361,7 +362,7 @@ class CursoController extends Controller
             
         }
         echo "<pre>";
-        return json_encode($sendTo,JSON_PRETTY_PRINT);
+        return json_encode($objDemo,JSON_PRETTY_PRINT);
         return redirect()->route('cursos.show', ['id' => $cursoID])->with('info', 'Comunicación creada con éxito');
         /*return json_encode($request->activities,JSON_PRETTY_PRINT);*/
 

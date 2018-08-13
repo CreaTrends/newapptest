@@ -27,7 +27,7 @@ class MessagesController extends Controller
         // All threads, ignore deleted/archived participants
         $threads = Thread::getAllLatest()->get();
         // All threads that user is participating in
-        $threads = Thread::forUser(Auth::id())->latest('updated_at')->get();
+        $threads = Thread::forUser(Auth::id())->latest('updated_at')->paginate(5);
         // All threads that user is participating in, with new messages
         //$threads = Thread::forUserWithNewMessages(Auth::id())->latest('updated_at')->get();
 
@@ -102,7 +102,15 @@ class MessagesController extends Controller
                 'thread' => $thread,
             ]);
         }
-        return redirect()->route('messages');
+        if(auth()->user()->hasRole('parent')){
+            return redirect()->back()->with('info','Mensaje enviado con éxito');
+        }
+        elseif(auth()->user()->hasRole('teacher|administrator|superadministrator')){
+            return redirect()->back()->with('info','Mensaje enviado con éxito');
+        }else {
+            return redirect()->route('login');
+        }
+        
     }
     public function update($id)
     {
@@ -146,6 +154,6 @@ class MessagesController extends Controller
                 'thread_subject' => $message->thread->subject,
             ]);
         }
-        return redirect()->route('message.show', $id);
+        return redirect()->back();
     }
 }

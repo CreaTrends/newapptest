@@ -16,21 +16,21 @@
     <div class="col-md-12 my-3">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.feed')}}">Inicio</a>
+                <a class="nav-link " href="{{route('apoderado.feed')}}">Inicio</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.notes')}}">Circulares</a>
+                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.messages')}}">Mensajes</a>
+                <a class="nav-link " href="{{route('apoderado.messages')}}">Mensajes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  active" href="{{route('apoderado.profile',$userprofile->id)}}">Perfil</a>
+                <a class="nav-link active" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
             </li>
         </ul>
     </div>
 </div>
-{{$userprofile->profile->first_name}}
+
 <div class="row justify-content-center mb-5">
     <div class="col-md-7">
         <form action="{{route('apoderado.profile.update',$userprofile->id)}}"  enctype="multipart/form-data" class="form" method="POST" >

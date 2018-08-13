@@ -7,12 +7,16 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Profile;
 use App\Role;
+use App\Alumno;
 
 
 use Notification;
 use App\Notifications\NewNotebook;
 use Mail;
 use App\Mail\WelcomeParent;
+
+use Image;
+use Illuminate\Support\Str;
 
 
 class UserController extends Controller
@@ -104,7 +108,7 @@ class UserController extends Controller
             'api_token' => bin2hex(openssl_random_pseudo_bytes(30)),
             'password' => bcrypt($password)
         ]);
-        $user->attachRole($request->role);
+        $user->attachRole($request->roles);
 
 
         $customer = new Profile();
@@ -162,6 +166,10 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+        $userprofile = User::with('profile','alumno_parent')->findOrFail($id);
+        /*echo "<pre>";
+        return json_encode($userprofile,JSON_PRETTY_PRINT);*/
+        return view('admin.users.edit',compact('userprofile'));
     }
 
     /**
@@ -174,6 +182,43 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, array(
+            'firstname' => 'required|max:255',
+            'address' => 'required|max:255',
+            'phone' => 'required|max:255',
+            'birthday' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+        ));
+        $user = User::findOrFail($id);
+        $user->name = $request->firstname;
+        $user->email = $request->email;
+
+        $user->save();
+
+        $alumno = new Alumno();
+        $user->hijo()->sync($request->childs);
+        //Alumno::parent()->sync($request->get('childs'));
+        
+
+        $customer = Profile::where('user_id',$user->id)->first();
+        $customer->first_name = $request->firstname;
+        $customer->last_name = $request->lastname;
+        $customer->email = $request->email;
+        $customer->address = $request->address;
+        $customer->telephone = $request->phone;
+        $customer->birthday = $request->birthday;
+        $user->profile()->save($customer);
+
+        if($request->file('fileupload')){
+            $avatar = $request->file('fileupload');
+            $filename = md5(time()) . '.' . $avatar->getClientOriginalExtension();
+
+            Image::make($avatar)->fit(300, 300)->save( public_path('/static/image/profile/' . $filename ) );
+            $customer->image = $filename;  
+            $customer->save(); 
+        }
+
+        return redirect()->back()->with('info','Perfil Actualizado con exito');
     }
 
     /**

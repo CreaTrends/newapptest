@@ -42,7 +42,7 @@ class AdminController extends Controller
         $data['notebooks'] = Notebook::count();
         $data['birthdays'] = Alumno::whereRaw('MONTH(birthday) = ?', [Carbon::now()->month])->get();
         /*echo "<pre>";
-        return json_encode($data['cursos'],JSON_PRETTY_PRINT);*/
+        return json_encode($data,JSON_PRETTY_PRINT);*/
         return view('admin.index',compact('user','data'));
     }
     public function apoderado()

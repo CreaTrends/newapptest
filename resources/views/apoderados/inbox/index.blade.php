@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-5 text-center">
                 <img src="" class="profile-image rounded-circle mb-3" width="120">
-                <h4><strong>Hola </strong></h4>
+                <h4><strong>Hola {{Auth::user()->profile->first_name}}</strong></h4>
             </div>
         </div>
     </div>
@@ -19,17 +19,20 @@
                 <a class="nav-link " href="{{route('apoderado.feed')}}">Inicio</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link active" href="{{route('apoderado.messages')}}">Mensajes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Perfil</a>
+                <a class="nav-link" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
             </li>
         </ul>
     </div>
 </div>
 <div class="row justify-content-center">
     <div class="col-md-7">
-        
+       
         <ul class="list-unstyled">
         @foreach($threads as $thread)
         <li class="media p-2 pt-3 border-bottom mb-0" id="thread_list_{{ $thread->id }}">
@@ -39,9 +42,15 @@
                 <a style="color: #5770e4" class="text-red" href="{{ route('apoderados.inbox.show', $thread->id) }}">
                     <strong>{{ $thread->subject }}</strong>
                 </a>
-                <small>
-                <strong>({{ $thread->userUnreadMessagesCount(Auth::id()) }} Nuevo)</strong>
-                </small>
+                <?php
+                $isNew = $thread->userUnreadMessagesCount(Auth::id());
+
+                ?>
+                @if($isNew > 0)
+                <span class="badge badge-danger">
+                    (Nuevo)
+                </span>
+                @endif
                 </h6>
                 <small><strong>De:</strong> {{ $thread->creator()->name }}</small>
                 <p style="line-height: .85rem;">

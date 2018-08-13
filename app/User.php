@@ -82,6 +82,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Alumno::class,'alumno_parent');
     }
 
+    public function hijo(){
+        return $this->belongsToMany(Alumno::class,'alumno_parent');
+    }
+
     
     
 }

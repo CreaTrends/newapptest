@@ -86,16 +86,16 @@
     <div class="col-md-12 my-3">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link active" href="{{route('apoderado.childs')}}">Inicio</a>
+                <a class="nav-link active" href="{{route('apoderado.feed')}}">Inicio</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.childs')}}">Hijos</a>
+                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('apoderado.messages')}}">Mensajes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Perfil</a>
+                <a class="nav-link" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
             </li>
         </ul>
     </div>
@@ -103,20 +103,53 @@
 <div class="row justify-content-center">
     <div class="col-md-7">
         <a href="{{route('apoderado.feed')}}" class="btn custom-btn btn-link">Volver </a>
-        @foreach($notebooks as $date=>$items)
-        
         <div class="d-flex justify-content-between align-items-stretch  bg-light">
             <div class="p-2">
-                <strong>{{$date}}</strong>
+                <strong>Hoy</strong>
             </div>
             <div class="p-2">
-                <select class="form-control form-control-sm">
+                <select class="form-control form-control-sm" id="date_range" name="date" 
+                data-action="{{route('apoderado.child',$alumno_profile->id)}}">
                     <option>Seleccionar otra Fecha</option>
-                    <option>2018-04-05</option>
+                    @foreach($notebook_select as $date=>$format)
+                    <option value="{{$date}}">{{$date}}</option>
+                    @endforeach
                 </select>
 
             </div>
         </div>
+        @if(!$albums->isEmpty())
+            
+            <div class="card my-2 card-feed-student">
+            <div class="card-body">
+                <div class="media">
+                    <i class="icofont icofont-emo-laughing activity-icon is-purple mr-1"></i>
+                    <div class="media-body">
+                        <h6 class="mt-0 d-flex justify-content-between">
+                        <strong>Galerias Grupales</strong>
+                        <small>{{$albums[0]->created_at}}</small>
+                        </h6>
+                        <p>
+                            {{$albums[0]->album_description}}
+                        </p>
+                        @if(!empty($item->comment))
+                        <p>{{$item->comment}}</p>
+                        @endif
+                        
+                    </div>
+                   
+                </div>
+                 @foreach($albums as $image)
+                   <img class="card-img-bottom p-1 mt-2 " src="{!! url($image->photo_path.$image->photo_name) !!}" >
+                                    @endforeach
+            </div>
+        </div>
+
+        @endif
+        @if(!$notebooks->isEmpty())
+        @foreach($notebooks as $date=>$items)
+        
+        
         
         @foreach($items as $item)
         <?php
@@ -267,10 +300,35 @@
                                 @endif
                                 @endforeach
                                 @endforeach
-                                
+                                @else
+                                <p>Sin Novedades aun</p>
+                                @endif
                                 
                             </div>
                             
                         </div>
                     </div>
+@endsection
+@section('scripts')
+<script>
+   
+
+    $(function() {
+        $('#date_range').on('change',function (e) {
+            var val = $(this).attr('name');
+            var filter = 'date';
+            var request = $(e.target).find("option:selected").val();
+            var URL = filter+'='+request;
+            var action = $(this).data( 'action' );
+            if(filter == 'reset'){
+                window.location = action;
+            }else {
+                window.location = action + '?'+URL;
+            }
+            
+        });
+    });
+</script>
+
+
 @endsection

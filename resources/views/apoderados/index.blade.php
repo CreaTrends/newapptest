@@ -19,15 +19,16 @@
                 <a class="nav-link active" href="{{route('apoderado.feed')}}">Inicio</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.notes')}}">Circulares</a>
+                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('apoderado.messages')}}">Mensajes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.profile',$apoderado->id)}}">Perfil</a>
+                <a class="nav-link" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
             </li>
         </ul>
+
     </div>
 </div>
 <div class="row justify-content-center">
@@ -61,5 +62,30 @@
         </ul>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script>
+
+@if(Auth::user()->unreadMessagesCount() > 0)
+toastr.success('Tiene '+{{Auth::user()->unreadMessagesCount()}}+' sin leer ', 'Nuevos Mensajes',
+{
+"closeButton": false,
+"debug": false,
+"newestOnTop": true,
+"progressBar": true,
+"positionClass": "toast-bottom-right",
+"preventDuplicates": false,
+"onclick": null,
+"showDuration": "300",
+"hideDuration": "1000",
+"timeOut": "5000",
+"extendedTimeOut": "1000",
+"showEasing": "swing",
+"hideEasing": "linear",
+"showMethod": "fadeIn",
+"hideMethod": "fadeOut"
+});
+@endif
+</script>
 @endsection
 

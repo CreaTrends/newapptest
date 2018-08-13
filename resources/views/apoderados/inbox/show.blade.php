@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-5 text-center">
                 <img src="" class="profile-image rounded-circle mb-3" width="120">
-                <h4><strong>Hola </strong></h4>
+                <h4><strong>Hola {{Auth::user()->profile->first_name}}</strong></h4>
             </div>
         </div>
     </div>
@@ -14,7 +14,10 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-7">
+
         <a href="{{route('apoderado.messages')}}" class="my-2 btn custom-btn btn-link">Volver </a>
+
+        
         <ul class="list-unstyled">
             @foreach($thread->messages as $message)
                 <li class="media p-2 pt-3 border-bottom mb-0" id="thread_list_{{ $message->id }}">
@@ -36,20 +39,19 @@
             @endforeach
         </ul>
         <div>
-            <form action="{{ route('messages.update', $thread->id) }}" method="post">
-    {{ method_field('put') }}
-    {{ csrf_field() }}
-        
-    <!-- Message Form Input -->
-    <div class="form-group">
-        <textarea name="message" class="form-control" rows="3">{{ old('message') }}</textarea>
-    </div>
-
-    <!-- Submit Form Input -->
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary custom-btn is-lightblue">Enviar Mensaje</button>
-    </div>
-</form>
+            <form action="{{ route('apoderados.inbox.update', $thread->id) }}" method="post">
+                {{ method_field('put') }}
+                {{ csrf_field() }}
+                
+                <!-- Message Form Input -->
+                <div class="form-group">
+                    <textarea name="message" class="form-control" rows="3">{{ old('message') }}</textarea>
+                </div>
+                <!-- Submit Form Input -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary custom-btn is-lightblue">Enviar Mensaje</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

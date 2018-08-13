@@ -43,7 +43,7 @@
                     <h1 class="card-title pricing-card-title">
                     <strong>{{$data['parents']}}</strong>
                     </h1>
-                    <button type="button" class="btn custom-btn is-lightgreen">Agregar Apoderado</button>
+                    <a href=" {{url("admin/usuarios/?filter_role=parent")}} " class="btn custom-btn is-lightgreen">Ver Apoderados</a>
                 </div>
                 
             </div>
@@ -108,3 +108,28 @@
 </div>
 
 @endsection
+@section('scripts')
+<script>
+
+@if(Auth::user()->unreadMessagesCount() > 0)
+toastr.success('Tiene '+{{Auth::user()->unreadMessagesCount()}}+' sin leer ', 'Nuevos Mensajes',
+{
+"closeButton": false,
+"debug": false,
+"newestOnTop": true,
+"progressBar": true,
+"positionClass": "toast-bottom-right",
+"preventDuplicates": false,
+"onclick": null,
+"showDuration": "300",
+"hideDuration": "1000",
+"timeOut": "5000",
+"extendedTimeOut": "1000",
+"showEasing": "swing",
+"hideEasing": "linear",
+"showMethod": "fadeIn",
+"hideMethod": "fadeOut"
+});
+@endif
+</script>
+        @endsection

@@ -77,7 +77,7 @@ Route::get('messages', ['as' => 'admin.messages', 'uses' => 'MessagesController@
 Route::get('message/create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
 Route::post('messages', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
 Route::get('message/{id}', ['as' => 'message.show', 'uses' => 'MessagesController@show']);
-Route::put('./message/{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
+Route::put('/message/{id}', ['as' => 'admin.inbox.update', 'uses' => 'MessagesController@update']);
 
 // albums 
 Route::resource('albums','AlbumController');
@@ -106,12 +106,17 @@ Route::middleware(['password_expired'])->group(function () {
     Route::get('childs/{id}', 'ApoderadoController@showChild')->name('apoderador.childs.show');
     Route::get('messages', ['as' => 'apoderado.messages', 'uses' => 'ApoderadoController@inbox']);
     Route::get('message/{id}', ['as' => 'apoderados.inbox.show', 'uses' => 'ApoderadoController@inboxshow']);
-    Route::get('profile',['as' => 'apoderado.profile', 'uses' => 'ApoderadoController@profile']);
+    Route::put('/message/{id}', ['as' => 'apoderados.inbox.update', 'uses' => 'MessagesController@update']);
+    Route::get('profile/{id}',['as' => 'apoderado.profile', 'uses' => 'ApoderadoController@profile']);
     Route::put('profile/{id}',['as' => 'apoderado.profile.update', 'uses' => 'ApoderadoController@updateProfile']);
     Route::get('notes', ['as' => 'apoderado.notes', 'uses' => 'ApoderadoController@notes'],[
 'except' => ['destroy', 'create']
 ]);
     Route::get('notes/{id}',['as' => 'apoderado.notes.show', 'uses' => 'ApoderadoController@noteshow']);
+    Route::get('/tools/download/{file}', 'ToolController@DownloadAttach')->name('tools.download');
+
+    Route::get('albums',['as' => 'apoderado.albums', 'uses' => 'ApoderadoController@albums']);
+    Route::get('album/{id}/{token}',['as' => 'apoderado.album', 'uses' => 'ApoderadoController@album']);
 });
 
     

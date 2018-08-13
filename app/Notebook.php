@@ -44,10 +44,14 @@ class Notebook extends Model
     }
     public function alumno()
     {
-        return $this->belongsToMany(Alumno::class);
+        return $this->belongsToMany(Alumno::class)->with('parent');
     }
     public function attachs()
     {
         return $this->belongsToMany(Attached::class);
+    }
+    public function albums()
+    {
+        return $this->belongsToMany(Album::class);
     }
 }

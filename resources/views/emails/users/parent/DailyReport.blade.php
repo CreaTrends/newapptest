@@ -1,23 +1,19 @@
 @component('mail::message')
-# Hola 
-# Bienvenido a jardin anatolia
-{{$data->data}}
+
+# Hola Apoderad@
 
 
-Tus Datos de acceso <br>
-<b>Usuario</b> :  <br>
-<b>password </b>: <br>
+@foreach($data as $items)
+@foreach($items->alumno as $alumno)
+Conoce Las activides del dia de <br>
+{{$alumno->firstname}}
+@endforeach
 
+@endforeach
+# Enterate de las actividades de tu hij@ aquí
 
-
-# Que Puedo hacer con mi cuenta ?
-- Comunicaciones Diarias
-- Actividades Diarias
-- Comunicate con cada educadora
-- Ver los avances de tu hij@
-
-@component('mail::button', ['url' => route('login')])
-Ingresar a tu cuenta
+@component('mail::button', ['url' => route('apoderado.feed')])
+Ver Actividades
 @endcomponent
 
 Thanks,<br>

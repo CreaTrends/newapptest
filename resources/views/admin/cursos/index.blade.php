@@ -27,7 +27,6 @@
 </section>
 <div class="d-flex justify-content-between align-items-stretch mb-4 py-4">
 	<div class="">
-		<button type="submit" class="btn custom-btn is-orange" data-toggle="modal" data-target="#addAlumno">Agregar Alumno</button>
 		<button type="submit" class="btn custom-btn is-lightgreen" data-toggle="modal" data-target="#create">Agregar Curso</button>
 	</div>
 </div>

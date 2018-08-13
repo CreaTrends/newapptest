@@ -10,7 +10,7 @@
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ml-auto">
                 @if (Auth::guest())
                 <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
                 <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register</a></li>
@@ -19,18 +19,38 @@
                 <li class="nav-item"><a href="{{ route('cursos.index')}}" class="nav-link">Cursos</a></li>
                 <li class="nav-item"><a href="{{ route('usuarios.index') }}" class="nav-link">Usuarios</a></li>
                 <li class="nav-item"><a href="{{ route('alumnos.index') }}" class="nav-link">Alumnos</a></li>
-                <li class="nav-item"><a href="{{ route('usuarios.index') }}" class="nav-link">Apoderados</a></li>
-                <li class="nav-item"><a href="{{ route('usuarios.index') }}" class="nav-link">Staff</a></li>
-                <li class="nav-item"><a href="{{ route('usuarios.index') }}" class="nav-link">Circulares</a></li>
-                <li class="nav-item"><a href="{{ route('settings.index') }}" class="nav-link">Settings</a></li>
+                <li class="nav-item"><a href="{{ route('albums.index') }}" class="nav-link">Galerias</a></li>
+                
                 @endrole
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        {{ Auth::user()->name }}
+                @endif
+            </ul>
+            @if (!Auth::guest())
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown dropdown-menu-right">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="rounded-circle"  src="{!! url('/static/image/profile/'.Auth::user()->profile->image) !!}" width="32">
+
+                        <span class="user">{{ Auth::user()->name }}</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                        <a href="{{ route('logout') }}" class="dropdown-item"
+                    @if(Auth::user()->hasRole('teacher|administrator|superadministrator'))
+                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{route('usuarios.edit',Auth::user()->id)}}">
+                            
+                            Perfil
+                        </a>
+                        <a class="dropdown-item" href="{{route('usuarios.show',Auth::user()->id)}}">
+                            
+                            Cuenta
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.messages') }}">
+                            <span class="badge badge-pill badge-danger" style="float:right">
+                            {{Auth::user()->unreadMessagesCount()}}
+                            </span>
+                            Mensajes <span class="sr-only">(current)</span>
+                        </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                            <a href="{{ route('logout') }}" class="dropdown-item"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             Logout
                         </a>
@@ -38,10 +58,43 @@
                             style="display: none;">
                             {{ csrf_field() }}
                         </form>
+                        
                     </div>
+                    
+                    @else
+                    <?php $route = 'parent';?>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{route('apoderado.profile',Auth::user()->id)}}">
+                            
+                            Perfil
+                        </a>
+                        <a class="dropdown-item" href="{{route('apoderado.profile',Auth::user()->id)}}">
+                            
+                            Cuenta
+                        </a>
+                        <a class="dropdown-item" href="{{ route('apoderado.messages') }}">
+                            <span class="badge badge-pill badge-danger" style="float:right">
+                            {{Auth::user()->unreadMessagesCount()}}
+                            </span>
+                            Mensajes <span class="sr-only">(current)</span>
+                        </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                            <a href="{{ route('logout') }}" class="dropdown-item"
+                            onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                            style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                        
+                    </div>
+                    @endif
+                    
                 </li>
-                @endif
             </ul>
+            @endif
         </div>
     </div>
 </nav>

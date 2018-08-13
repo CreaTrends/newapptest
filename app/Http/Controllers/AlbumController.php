@@ -57,7 +57,7 @@ class AlbumController extends Controller
         
 
         $album = Album::create($request->all());
-        //$album->photos()->attach(json_encode($request->photos));
+        $album->curso()->attach($request->curso);
         //$album->photos()->save(json_encode($request->photos));
         foreach ($request->file('photos') as $photo) {
             $name = $photo->getClientOriginalName();

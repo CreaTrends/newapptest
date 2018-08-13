@@ -7,22 +7,16 @@
         <div class="col-md-12 my-3">
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('index')}}">General</a>
+                    <a class="nav-link " href="{{route('index')}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('cursos.index')}}">Cursos</a>
+                    <a class="nav-link" href="{{route('cursos.index')}}">Cursos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('notes',$curso->id)}}">Libreta</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{{route('admin.messages')}}">Mensajes</a>
+                    <a class="nav-link " href="{{route('notebook.create',$curso->id)}}">Libreta</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="{{route('notes',$curso->id)}}">Circulares</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{{route('apoderado.childs')}}">Mi Perfil</a>
                 </li>
             </ul>
         </div>

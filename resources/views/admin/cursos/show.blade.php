@@ -7,7 +7,7 @@
         <div class="col-md-12 my-3">
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('index')}}">General</a>
+                    <a class="nav-link " href="{{route('index')}}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="{{route('cursos.index')}}">Cursos</a>
@@ -16,13 +16,7 @@
                     <a class="nav-link " href="{{route('notebook.create',$cursos->id)}}">Libreta</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('admin.messages')}}">Mensajes</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link " href="{{route('notes',$cursos->id)}}">Circulares</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{{route('apoderado.childs')}}">Mi Perfil</a>
                 </li>
             </ul>
         </div>
@@ -47,7 +41,7 @@
     </thead>
     <tbody>
         <tr class="d-flex">
-            <td class="col-sm-6 justify-content-center">
+            <td class="col-sm-12 justify-content-start">
                 
                 <h6><strong>Profesor :</strong>
                 @foreach($cursos->teacher as $teacher)
@@ -60,9 +54,6 @@
                 </h6>
                 <h6><strong>Menu Semanal :</strong> del 16/07/2018 al  22/07/2018</h6>
                 
-            </td>
-            <td class="col-sm-6 justify-content-center align-items-stretch">
-                <a href="" class="btn btn-primary custom-btn is-lightgreen">Enviar comunicacion</a>
             </td>
         </tr>
         @foreach($cursos->alumnos as $alumno)
@@ -88,21 +79,20 @@
                 </div>
             </td>
             
-            <td class="col-sm-3 justify-content-center">
-                @foreach($alumno->parent as $apoderado)
-                <a href="{{route('usuarios.edit',$apoderado->profile->user_id)}}" class="link-item">
-                    {{ $apoderado->profile->first_name }}
-                    {{ $apoderado->profile->last_name }}
-                </a>
-                @endforeach
+            <td class="col-sm-3 justify-content-center d-none d-lg-block">
+                
             </td>
-            <td class="col-sm-3 justify-content-center">
-                @foreach($alumno->parent as $apoderado)
-                <a href="{{route('usuarios.edit',$apoderado->profile->user_id)}}" class="link-item">
-                    {{ $apoderado->profile->first_name }}
-                    {{ $apoderado->profile->last_name }}
-                </a>
-                @endforeach
+            <td class="col-sm-3 justify-content-end d-flex">
+                <div class="mr-2">
+                <a href="{{route('alumnos.edit',$alumno->id)}}" class="btn custom-btn is-green is-small">Editar</a>
+            </div>
+            <div class="mr-0">
+                <form action="{{route('alumnos.destroy',$alumno->id)}}" method="POST">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button class="btn custom-btn is-red is-small"> <i class="icofont icofont-trash"></i></button>
+                    </form>
+                </div>
             </td>
         </tr>
         @endforeach

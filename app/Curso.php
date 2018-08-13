@@ -9,7 +9,10 @@ class Curso extends Model
     //
     protected $fillable = ['name','slug'];
 
-
+public function childs()
+    {
+        return $this->belongsToMany(Alumno::class,'alumno_curso');
+    }
     public function alumnos()
     {
         return $this->belongsToMany(Alumno::class,'alumno_curso')->with('parent');
@@ -50,5 +53,9 @@ class Curso extends Model
     public function user()
     {
         return $this->belongsTo(User::class,'alumno_parent','curso_id');
+    }
+    public function album()
+    {
+        return $this->belongsToMany(Album::class,'album_curso');
     }
 }

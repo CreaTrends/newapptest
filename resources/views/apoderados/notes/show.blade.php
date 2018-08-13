@@ -33,7 +33,7 @@
 <div class="row justify-content-center">
     <div class="col-md-7">
         <a href="{{route('apoderado.notes')}}" class="my-2 btn custom-btn btn-link">Volver </a>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled mb-5">
             @foreach($notes as $note)
                 <li class="media p-2 pt-3 border-bottom mb-0" id="note_detail_{{ $note->id }}">
                     <img class="mr-3" 
@@ -45,11 +45,8 @@
                             <small> de :{{$note->user->name}} | {{ $note->created_at->diffForHumans() }}</small>
                         </div>
                         </h6>
-                        <p style="line-height: .85rem;">
-                            <small style="font-weight: 600;">
-                            {!! $note->body !!}
-                        
-                            </small>
+                        <p>
+                           {!! $note->body !!}
                         </p>
                         @if($note->attached)
                         <h5 class="py-3">Archivo Adjunto <i class="icofont icofont-attachment"></i></h5>

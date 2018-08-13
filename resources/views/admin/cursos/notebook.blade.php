@@ -6,24 +6,20 @@
     <div class="row">
         <div class="col-md-12 my-3">
             <ul class="nav nav-pills">
+                <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('index')}}">General</a>
+                    <a class="nav-link " href="{{route('index')}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('cursos.index')}}">Cursos</a>
+                    <a class="nav-link" href="{{route('cursos.show',$cursos->id)}}">Cursos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="{{route('notebook.create',$cursos->id)}}">Libreta</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('admin.messages')}}">Mensajes</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link " href="{{route('notes',$cursos->id)}}">Circulares</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{{route('apoderado.childs')}}">Mi Perfil</a>
-                </li>
+            </ul>
             </ul>
         </div>
     </div>
@@ -98,7 +94,7 @@
                         <small><strong>Estado de animo</strong></small>
                     </div>
                 </th>
-                <th class="col-md-8">
+                <th class="col-md-10">
                     <div class="form-group">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="alumnos[{{$attribute_row}}][alumno_estado]" id="inlineRadio1" value="happy">
@@ -120,7 +116,6 @@
                         </div>
                     </div>
                 </td>
-                <th class="col-md-2"><a href="#" id="add" data-link="{{$attribute_row}}">Add More Input Field</a></td>
             </tr>
             <tr class="d-flex">
                 <th class="col-md-2 text-center">

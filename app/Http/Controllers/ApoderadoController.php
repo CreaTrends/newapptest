@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Profile;
 use App\Alumno;
+use App\Album;
 use App\Note;
 use App\Curso;
 use App\Notebook;
@@ -45,7 +46,7 @@ class ApoderadoController extends Controller
         
         $user_id = auth()->user()->id;
         $apoderado = User::with('childs','profile')->where('id',$user_id)->first();
-        $alumno_id = 10;
+        $alumno_id = 298;
         $dt = Carbon::today();
 
         /*$nsotebooks = Notebook::whereDate('notebook_date', $dt->subDay(2))
@@ -57,7 +58,7 @@ class ApoderadoController extends Controller
         ->orderBy('notebook_date', 'DESC')
         ->paginate(10);*/
 
-        $notebooks = Notebook::whereDate('notebook_date', $dt->subDay(1))
+        $notebooks = Notebook::whereDate('notebook_date', $dt->subDay(0))
         ->with('activities')
         ->with('attachs')
         ->with('alumno')
@@ -142,14 +143,25 @@ class ApoderadoController extends Controller
     {
         //
         if($request->filled('date')){
-            $dt = Carbon::parse($request->date);
+            $dt = Carbon::parse($request->date)->toDateString();
 
         }else {
-          $dt = Carbon::today();  
+          $dt = Carbon::today()->toDateString();  
         }
         $user_id = auth()->user()->id;
         $apoderado = User::with('childs','profile')->where('id',$user_id)->first();
         $alumno_id = $id;
+
+        $curso = Curso::whereHas('childs',function($q) use($alumno_id){
+            $q->where('alumno_id',$alumno_id);
+        })->first()->id;
+        $curso_id = $curso;
+
+        $albums = DB::table('albums')
+        ->join('album_curso', 'album_curso.album_id', '=', 'albums.album_id')
+        ->join('photos', 'photos.album_id', '=', 'albums.album_id')
+        ->where('album_curso.curso_id',$curso_id)
+        ->get();
         
 
         /*$nsotebooks = Notebook::whereDate('notebook_date', $dt->subDay(2))
@@ -161,31 +173,78 @@ class ApoderadoController extends Controller
         ->orderBy('notebook_date', 'DESC')
         ->paginate(10);*/
 
-        $notebooks = Notebook::whereDate('notebook_date', $dt)
+        $notebooks = Notebook::whereDate('created_at', '=', $dt )
         ->with('activities')
         ->with('attachs')
         ->with('alumno')
         ->whereHas('alumno',function($q) use($alumno_id){
             $q->where('alumno_id',$alumno_id);
         })
-        ->paginate(1)
+        ->get()
         ->groupBy(function($item)
         {
           return Carbon::parse($item->notebook_date)->format('d-M-y');
         });
 
-        $notebook_date = Notebook::paginate(1);
+
+
+        $notebook_select = Notebook::select('notebook_date')
+        ->whereHas('alumno',function($q) use($alumno_id){
+            $q->where('alumno_id',$alumno_id);
+        })->get()
+        ->groupBy(function($item)
+        {
+          return Carbon::parse($item->notebook_date)->format('y-m-d');
+        });
 
         $alumno_profile = Alumno::with('curso')->findOrFail($alumno_id);
         
         //dd($alumno_profile);
-        
-       /* echo "<pre>";
-        //return json_encode($feed,JSON_PRETTY_PRINT);
+        /*echo "<pre>";
+        return json_encode($notebook_select,JSON_PRETTY_PRINT);*/
+       /*echo "<pre>";
+        return json_encode($albums,JSON_PRETTY_PRINT);
         return json_encode($notebook_date,JSON_PRETTY_PRINT);*/
-        return view('apoderados.show',compact('notebooks','alumno_profile','notebook_date'));
+        return view('apoderados.show',compact('albums','notebooks','alumno_profile','notebook_select','notebook_date'));
     }
+    public function albums(){
 
+        $apoderado = User::with('alumno_parent','profile')->where('id',auth()->user()->id)->first();
+        $is_user = auth()->user()->id;
+        $curso = Alumno::with('parent','curso')->whereHas('parent',function($q) use($is_user){
+            $q->where('user_id',$is_user);
+        })->first();
+        $curso_id = $curso->curso;
+        foreach($curso_id as $curso ){
+            $id[] =$curso->id;
+        }
+        $albums = Album::with('photo')->whereHas('curso',function($q) use($id){
+            $q->whereIn('curso_id',$id);
+        })->get();
+        /*$alumno_id = $id;
+
+        $curso = Curso::whereHas('childs',function($q) use($alumno_id){
+            $q->where('alumno_id',$alumno_id);
+        })->first()->id;
+        $curso_id = $curso;
+
+        $albums = DB::table('albums')
+        ->join('album_curso', 'album_curso.album_id', '=', 'albums.album_id')
+        ->join('photos', 'photos.album_id', '=', 'albums.album_id')
+        ->where('album_curso.curso_id',$curso_id)
+        ->get();*/
+        /*echo "<pre>";
+        return json_encode($albums,JSON_PRETTY_PRINT);*/
+        return view('apoderados.albums.index',compact('albums'));
+
+    }
+    public function album($id){
+
+        $albums = Album::with('photo')->findOrFail($id);
+        
+        return view('apoderados.albums.show',compact('albums'));
+
+    }
     public function profile(){
         $id = auth()->user()->id;
 
@@ -298,7 +357,7 @@ class ApoderadoController extends Controller
     }
     public function noteshow($id){
 
-        $notes = Note::with('user')->where('id',163)->get();
+        $notes = Note::with('user')->where('id',$id)->get();
         $parent = User::where('id',auth()->user()->id)->first();
         /*dd($notes);*/
 

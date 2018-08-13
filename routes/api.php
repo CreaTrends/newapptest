@@ -62,6 +62,21 @@ Route::middleware('auth:api')->group(function () {
         }
         return json_encode($ret);
     })->name('api.parentslist');
+
+  Route::get('childlist', function(Illuminate\Http\Request $request){
+        $keyword = $request->input('keyword');
+        Log::info($keyword);
+        $skills = DB::table('alumnos')->where('firstname','like','%'.$keyword.'%')
+                  ->select('alumnos.id','alumnos.firstname','alumnos.lastname')
+                  ->get();
+
+        $rr = (array)$skills; 
+        
+        foreach($skills as $skill){
+          $ret[] = array('value' => $skill->id, 'text' => $skill->firstname.' '.$skill->lastname);
+        }
+        return json_encode($ret);
+    })->name('api.childlist');
 });
 
 

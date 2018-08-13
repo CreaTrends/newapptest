@@ -48,7 +48,7 @@
                 <div>
                     <h6 class="my-0">
                     	<strong>
-                    		<a href="{{route('alumnos.edit',$user->id)}}">
+                    		<a href="{{route('usuarios.edit',$user->id)}}">
                     			{{$user->profile->first_name}}
                     			{{$user->profile->last_name}}
                     		</a>
@@ -76,7 +76,7 @@
 					</button>
 					<div class="dropdown-menu dropdown-menu-right">
 						
-						<a class="dropdown-item" href="{{route('alumnos.edit',$user->id)}}">Editar</a>
+						<a class="dropdown-item" href="{{route('usuarios.edit',$user->id)}}">Editar</a>
 						<a class="dropdown-item" href="#">Ver Usuario</a>
 						<a class="dropdown-item" href="#">Enviar Notificación</a>
 						<div class="dropdown-divider"></div>
