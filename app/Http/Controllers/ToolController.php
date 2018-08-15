@@ -106,7 +106,13 @@ class ToolController extends Controller
 
                                // insertamos apoderado 1
                                 if(count($pName) > 1){
-                                    $password = $this->make_password();
+                                    $checkUser = User::where('email','=',$value->p_email)->first();
+
+                                    if($checkUser->count() > 0){
+                                        $checkUser->students()->attach($alumno->id);
+                                       
+                                    }else {
+                                      $password = $this->make_password();
                                     $role = 4;
                                     $user = User::create([
                                         'name' => $value->p_nombre,
@@ -132,13 +138,21 @@ class ToolController extends Controller
                                         $user->password = $password;
                                         $user->name=$value->p_nombre;
                                         Mail::to($user->email)->send(new WelcomeParent($user));
+                                    }  
                                     }
+                                    
 
                                     
                                 }
                                 // insertamos apoderado2
                                 if(count($mName) > 1){
-                                    $password = $this->make_password();
+                                    $checkUser = User::where('email','=',$value->m_email)->first();
+
+                                    if($checkUser->count() > 0 ){
+                                        $checkUser->students()->attach($alumno->id);
+                                        continue;
+                                    }else {
+                                       $password = $this->make_password();
                                     $role = 4;
                                     $user = User::create([
                                         'name' => $value->m_nombre,
@@ -165,15 +179,10 @@ class ToolController extends Controller
                                         $user->password = $password;
                                         $user->name=$value->m_nombre;
                                         Mail::to($user->email)->send(new WelcomeParent($user));
+                                    }  
                                     }
-
-                                    
+                                                                       
                                 }
-
-                                
-                                
-
-                                
                             }
                             /*$alumno = new Alumno();
                             $alumno->firstname = $value->a_nombre.' '.$value->a_snombre; //add a default value here

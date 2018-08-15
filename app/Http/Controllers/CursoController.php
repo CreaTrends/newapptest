@@ -310,6 +310,10 @@ class CursoController extends Controller
                 "ddd"=>$dr
 
             );*/
+            if(!isset($alumno_notebook['alumno_estado']) || !array_filter($alumno_notebook['food']) || !array_filter($alumno_notebook['nap']) || !array_filter($alumno_notebook['mood'])){
+               continue;
+           }
+            
             $notebookInsert = array(
                 "alumno_id"=>$alumno_notebook['alumno_id'],
                 "foods"=>serialize($alumno_notebook['food']),

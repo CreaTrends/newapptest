@@ -84,6 +84,10 @@
                             <small id="cursoHelp" class="form-text text-muted">Al Asignar un curso , sera visible solo para los apoderados del curso</small>
                         </div>
                     </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1" name="comments" value="1">Permitir Comentarios</label>
+                      </div>
                     <div class="input-group mb-3">
                         <div class="custom-file">
                             <input type="file" multiple name="photos[]" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
