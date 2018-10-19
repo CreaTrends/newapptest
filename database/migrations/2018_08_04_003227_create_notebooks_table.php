@@ -93,12 +93,14 @@ class CreateNotebooksTable extends Migration
      */
     public function down()
     {
+
         Schema::dropIfExists('alumno_notebook');
         Schema::dropIfExists('activity_notebook');
         Schema::dropIfExists('attached_notebook');
+        Schema::dropIfExists('notebooks');
         Schema::dropIfExists('attaches'); 
         Schema::dropIfExists('activities');   
-        Schema::dropIfExists('notebooks');
+        
         
     }
 }

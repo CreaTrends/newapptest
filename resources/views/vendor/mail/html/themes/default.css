@@ -249,9 +249,8 @@ img {
 }
 
 .panel-content {
-    background-color: #fff;
-    padding: 0px 10px;
-    border-bottom: 1px solid #f5f5f5;
+    background-color: #EDEFF2;
+    padding: 16px;
 }
 
 .panel-item {
@@ -262,17 +261,6 @@ img {
     margin-bottom: 0;
     padding-bottom: 0;
 }
-.panel-item p {
-    display: flex;
-    justify-content: flex-start;
-    vertical-align: middle;
-    flex-direction: row;
-    line-height: 5.5em;
-}
-.panel-item p > img {
-    max-width: 46px;
-    margin-right: 20px;
-    }
 
 /* Promotions */
 
@@ -297,3 +285,4 @@ img {
     font-size: 15px;
     text-align: center;
 }
+

@@ -2,16 +2,14 @@
 @section('profile-header')
 <style >
     .profile-header {
-   background-image: url(https://s3.amazonaws.com/creativetim_bucket/products/17/cover_4_blur.jpg?1431435543); 
+   background-image: url({{asset('assets/core/title-img.jpg')}}); 
 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
     background-size: cover;
     padding-top:80px !important;
     padding-bottom:20px;
     vertical-align: bottom;
     position:relative;
+        background-position: center 0px;
     
     border-radius: 0px !important;
 }
@@ -22,11 +20,11 @@
     position: absolute;
     width:100%;
     height: 100%;
-  background: #f43893;
-  opacity: .4;  
+  background: #f5fbfb;
+  opacity: .6;  
 }
 .profile-header h4 , .profile-header a , .profile-header i {
-    color:#fff !important;
+    color:#32355d !important;
 }
 .profile-header-content {
   display: table;
@@ -47,7 +45,7 @@
 }
 .profile-image{
     border: 5px #fff solid;
-    box-shadow: 1em 1em 2em rgba(0,0,0,.2);
+    box-shadow: 0em 0em 0.8em rgba(0,0,0,.1);
 }
 @media (min-width: 768px) {
 .profile-pic {
@@ -86,7 +84,7 @@
     <div class="col-md-12 my-3">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link active" href="{{route('apoderado.feed')}}">Inicio</a>
+                <a class="nav-link " href="{{route('apoderado.feed')}}">Inicio</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
@@ -103,21 +101,36 @@
 <div class="row justify-content-center">
     <div class="col-md-7">
         <a href="{{route('apoderado.feed')}}" class="btn custom-btn btn-link">Volver </a>
-        <div class="d-flex justify-content-between align-items-stretch  bg-light">
-            <div class="p-2">
-                <strong>Hoy</strong>
-            </div>
-            <div class="p-2">
-                <select class="form-control form-control-sm" id="date_range" name="date" 
-                data-action="{{route('apoderado.child',$alumno_profile->id)}}">
-                    <option>Seleccionar otra Fecha</option>
-                    @foreach($notebook_select as $date=>$format)
-                    <option value="{{$date}}">{{$date}}</option>
-                    @endforeach
-                </select>
 
-            </div>
-        </div>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-between">
+            @if(!empty($previousnotebook))
+            <?php
+            $prev_date_link = \Carbon\Carbon::parse($previousnotebook)->format('l j');
+            $prev_date = \Carbon\Carbon::parse($previousnotebook)->format('Y-m-d');
+            ?>
+            <li class="page-item">
+                <a class="page-link" href="{{route('apoderado.child',['id'=>$alumno_profile->id,'date'=>$prev_date])}}">
+                    <span aria-hidden="true">&laquo;</span>
+                    {{ $prev_date_link }}
+                </a>
+            </li>
+            @endif
+            @if(!empty($nextnotebook))
+            <?php
+            $next_date_link = \Carbon\Carbon::parse($nextnotebook)->format('l j');
+            $next_date = \Carbon\Carbon::parse($nextnotebook)->format('Y-m-d');
+            ?>
+            <li class="page-item">
+                <a class="page-link" href="{{route('apoderado.child',['id'=>$alumno_profile->id,'date'=>$next_date])}}">
+                    {{ $next_date_link }}
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            @endif
+          </ul>
+        </nav>
+        
         
         @if(!$notebooks->isEmpty())
         @foreach($notebooks as $date=>$items)
@@ -128,7 +141,7 @@
         <?php
         $date_format = \Carbon\Carbon::parse($item->notebook_date)->diffForHumans();
         ?>
-        {{$item->id}}
+        
         <!-- estado de animo feed -->
         @if(!empty($item->moods))
         <div class="card my-2 card-feed-student">
@@ -177,6 +190,7 @@
                 </div>
                 @endif
                 <!-- mudas del dia feed -->
+                
                 @if(!empty($item->depositions))
                 <div class="card my-2 card-feed-student">
                     <div class="card-body">

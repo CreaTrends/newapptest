@@ -285,7 +285,12 @@ label.custom-label{
             .submitBtn { display: none; }
             .fstMultipleMode { display: block; }
             .fstMultipleMode .fstControls { width: 100%; }
-main{}
+main.is-login{
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0px !important;
+    background-color: #F6FBFD;
+}
 
 
 /* Profile */
@@ -425,6 +430,15 @@ main{}
     color: #5363d6;
     letter-spacing: .3px;
 }
+/**/
+.user-nav .nav-link {
+            font-family: "GT Eesti Display", Helvetica, sans-serif !important;
+    font-size: 1.05rem !important;
+    color: #2a3f81 !important;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    }
+
 .card-body {
 
    .flex-column {
@@ -447,4 +461,33 @@ main{}
     color: #212529;
     background-color: #f8f9fa!important;
     border: 1px solid rgba(0,0,0,.125);
+}
+
+
+// navbar notifications 
+.nav-item {
+    &> .is-notify {
+        position: relative;
+        & .is-active{
+
+        }
+        & > i {
+            color: #dee2e6;
+            font-size: 1.5rem;
+            &.is-active {
+            color: #6c757d;
+        }
+        }
+        & > .is-badge-notify {
+            margin-top: -10px;
+            position: absolute;
+            top: 35%;
+            left: 62%;
+            margin-top: -16px;
+            margin-left: 0;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+    }
 }

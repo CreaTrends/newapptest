@@ -19,11 +19,15 @@
                 <a class="nav-link active" href="{{route('apoderado.feed')}}">Inicio</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
+                <a class="nav-link" href="{{route('apoderado.notes')}}">Circulares</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('apoderado.messages')}}">Mensajes</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
+            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
             </li>
@@ -35,13 +39,10 @@
     <div class="col-md-7">
         <div class="d-flex justify-content-between align-items-stretch  bg-light">
             <div class="p-2">
-                <strong>d</strong>
+                
             </div>
             <div class="p-2">
-                <select class="form-control form-control-sm">
-                    <option>Seleccionar otra Fecha</option>
-                    <option>2018-04-05</option>
-                </select>
+                
             </div>
         </div>
         <ul class="list-group mt-3">

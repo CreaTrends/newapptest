@@ -6,6 +6,7 @@ use App\Curso;
 use App\User;
 use App\Note;
 use App\Alumno;
+use App\Profile;
 use App\Notebook;
 use App\Activity;
 use App\Attached;
@@ -325,11 +326,15 @@ class CursoController extends Controller
             }else {
               $estado = '';  
             }
+
+            $check_poops = array_filter(array_map('array_filter', $alumno_notebook['mood'])) ? $alumno_notebook['mood']:null;
+            $check_foods = array_filter(array_map('array_filter', $alumno_notebook['food'])) ? $alumno_notebook['food']:null;
+            $check_naps = array_filter(array_map('array_filter', $alumno_notebook['nap'])) ? $alumno_notebook['nap']:null;
             
-            $notebook->foods        =   $alumno_notebook['food'];
+            $notebook->foods        =   $check_foods;
             $notebook->moods        =   $estado;
-            $notebook->naps         =   $alumno_notebook['nap'];
-            $notebook->depositions   =   $alumno_notebook['mood'];
+            $notebook->naps         =   $check_naps;
+            $notebook->depositions   =  $check_poops;
             $notebook->comment      =   $alumno_notebook['observation'];
             $notebook->notebook_date=   Carbon::now();
             $notebook->save();
@@ -349,24 +354,43 @@ class CursoController extends Controller
                 $form->save();
                 $form->notebooks()->attach($notebook->id);
             }
-            $objDemo = [];
-            $objDemo = Alumno::with('parent')->where('id',$alumno_notebook['alumno_id'])->get();
 
             $alumnoId = $alumno_notebook['alumno_id'];
-            $sendTo = User::select('email','name')->whereHas('alumno_parent', function($q) use($alumnoId){
-                $q->where('alumno_id','=',$alumnoId);
-            })->get();
-             
-            Mail::to($sendTo)->send(new DailyReportEmail($objDemo)); 
+            $tt = Alumno::with('parent')->where('id','=',$alumno_notebook['alumno_id'])->first();
+
+
+            
+            foreach($tt->parent as $apoderados){
+                $email = User::where('id',$apoderados->id)->first();
+                $sender = Profile::where('user_id',auth()->user()->id)->first();
+
+                $objDemo = new \stdClass();
+                $objDemo->sender_name = $sender->first_name;
+                $objDemo->date = Carbon::today()->toFormattedDateString();
+                $objDemo->parent = $email->name;
+                $objDemo->alumno_name = $tt->firstname;
+
+                Mail::to($email)->send(new DailyReportEmail($objDemo));
+                //$emails = ['myoneemail@esomething.com', 'myother@esomething.com','myother2@esomething.com'];
+                
+            }
+            
             
 
+            
+            //Mail::to($apoderados)->send(new DailyReportEmail($apoderados));
+            
             /*$activity = new Activity();
-        $activity->notebook_id = $notebook->id;
-        $notebook->activities()->save($activity);*/
+            $activity->notebook_id = $notebook->id;
+            $notebook->activities()->save($activity);*/
             
         }
+        /*foreach($usuario as $padre){
+                Mail::to($padre)->send(new DailyReportEmail($padre));
+            }*/
+        
         /*echo "<pre>";
-        return json_encode($objDemo,JSON_PRETTY_PRINT);*/
+        return json_encode($tt,JSON_PRETTY_PRINT);*/
         return redirect()->route('cursos.show', ['id' => $cursoID])->with('info', 'Comunicación creada con éxito');
         /*return json_encode($request->activities,JSON_PRETTY_PRINT);*/
 

@@ -1,61 +1,96 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow-sm p-3 mb-5 bg-white rounded">
-                <div class="card-header">
-                    <h4 class="card-title">LogIn Usuarios</h4>
-                    <h6 class="card-subtitle">Ingresa tus datos para iniciar sesion</h6>
-                </div>
-                <div class="card-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+<style>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="custom-label">E-Mail Address</label>
-                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+.form-signin {
+  width: 100%;
+    padding: 3rem;
+    margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border: 1px solid #ced4da;
+  border-width: 1px !important;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border: 1px solid #ced4da;
+  border-width: 1px !important;
+}
+.form-signin {
+    font-family: 'GT Eesti Display', Helvetica,sans-serif !important;
+    background-color: white;
+    background-color: white;
+    background-size: inherit;
+    /* background-attachment: scroll; */
+    background-position: center 113%;
+    background-repeat: no-repeat;
+}
+.form-signin > .auth-title {
+    color: #22606C !important;
+    font-weight: 900;
+    letter-spacing: 0rem;
+    text-shadow: none;
+    font-size: 1.7rem;
+    box-shadow: none;
+}
+</style>
+<form class="form-signin text-center align-items-center shadow-sm p-5 col-lg-5 mx-auto" method="POST" action="{{ route('login') }}">
+    {{ csrf_field() }}
+    <img class="mb-4" src="{{asset('images/name-badge.svg')}}" alt="" width="150" >
+    <h1 class="h3 mb-3 auth-title">Hey , Bienvenido nuevamente</h1>
+    <!-- alert -->
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="custom-label">Password</label>
-                            <input id="password" type="password" class="form-control" name="password" autocomplete="false" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                        </div>
-
-                        <div class="form-group">
-                            <div class="checkbox">
-                                    <label class="custom-label">
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block custom-btn is-purple">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link btn-block" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    @if ($errors->has('email'))
+    <div class="alert alert-danger" role="alert">
+        {{ $errors->first('email') }}
     </div>
-</div>
+    @endif
+    @if ($errors->has('password'))
+    <div class="alert alert-danger" role="alert">
+        {{ $errors->first('password') }}
+    </div>
+    @endif
+<!-- end alert -->
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="Email ">
+    <label for="password" class="sr-only">Password</label>
+    <input id="password" type="password" class="form-control" name="password" autocomplete="false" required placeholder="Password">
+
+    <div class="form-group d-flex justify-content-between">
+        <div class="checkbox">
+            <label class="custom-label">
+                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ trans('lang.remember') }}
+            </label>
+        </div>
+        <a class="" href="{{ route('password.request') }}">
+            Recordar Contraseña
+        </a>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block custom-btn is-darkpink">
+    Ingresar
+    </button>
+    <p class="mt-5 mb-3 text-muted">© Járdin Anatolia / 2017-2018</p>
+</form>
+
+
+
 @endsection

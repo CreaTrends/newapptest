@@ -33,7 +33,6 @@ class DailyReportEmail extends Mailable
     {
         return $this->markdown('emails.users.parent.DailyReport',['data' => $this->datareport])
         ->subject('Reporte Diario')
-        ->bcc('jalbornozdesign@gmail.com','jotaeme')
         ->from('no-reply@jardinanatolia.cl','Equipo Anatolia');
     }
 }

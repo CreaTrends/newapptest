@@ -188,6 +188,27 @@ class ApoderadoController extends Controller
         });
 
 
+        $date = Carbon::parse($dt)->toDateString();
+        $next_notebook = Carbon::parse($dt)->addDays(1)->toDateString();
+        $prev_notebook = Carbon::parse($dt)->subDays(1)->toDateString();
+
+        $previousnotebook =  Notebook::where('created_at','<',$dt)
+        ->orderBy('created_at','DESC')->pluck('created_at')->first();
+
+        $nextnotebook =  Notebook::where('created_at','>',$next_notebook)
+        ->pluck('created_at')->first();
+
+        $date_link_prev = Carbon::parse($previousnotebook)->format('Y-m-d');
+        $navlink_feed = [];
+        $navlink_feed['prev_text'] = Carbon::parse($previousnotebook)->format('l j');
+        $navlink_feed['prev_url'] = route('apoderador.childs.show',['id'=>$alumno_id,'date'=>$date_link_prev]);
+
+        $date_link_next = Carbon::parse($nextnotebook)->format('Y-m-d');
+        $nextnotebook_link = [];
+        $navlink_feed['next_text'] = Carbon::parse($nextnotebook)->format('l j');
+        $navlink_feed['next_url'] = route('apoderador.childs.show',['id'=>$alumno_id,'date'=>$date_link_next]);
+
+
 
         $notebook_select = Notebook::select('notebook_date')
         ->whereHas('alumno',function($q) use($alumno_id){
@@ -204,9 +225,9 @@ class ApoderadoController extends Controller
         /*echo "<pre>";
         return json_encode($notebook_select,JSON_PRETTY_PRINT);*/
        /*echo "<pre>";
-        return json_encode($albums,JSON_PRETTY_PRINT);
-        return json_encode($notebook_date,JSON_PRETTY_PRINT);*/
-        return view('apoderados.show',compact('albums','notebooks','alumno_profile','notebook_select','notebook_date'));
+        return json_encode($notebooks,JSON_PRETTY_PRINT);
+        return json_encode($previousnotebook,JSON_PRETTY_PRINT);*/
+        return view('apoderados.show',compact('nextnotebook','previousnotebook','albums','notebooks','alumno_profile','notebook_select','notebook_date'));
     }
     public function albums(){
 

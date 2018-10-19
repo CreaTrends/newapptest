@@ -12,7 +12,7 @@ return [
     | you want to customize your views to better match your application.
     |
     */
-
+    'accepted'             => 'The :attribute must be accepted.',
     'previous' => '&laquo; Previous',
     'next' => 'Next &raquo;',
     'moods'=>[

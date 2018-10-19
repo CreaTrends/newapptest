@@ -40,7 +40,7 @@ class AdminController extends Controller
         $data['not_active'] = User::where('first_login','0')->whereRoleIs('parent')->count();
         $data['teacher'] = User::whereRoleIs('teacher')->count();
         $data['notebooks'] = Notebook::count();
-        $data['birthdays'] = Alumno::whereRaw('MONTH(birthday) = ?', [Carbon::now()->month])->get();
+        $data['birthdays'] = Alumno::whereRaw('MONTH(birthday) = ?', [Carbon::now()->month])->orderBy('birthday', 'DESC')->get();
         /*echo "<pre>";
         return json_encode($data,JSON_PRETTY_PRINT);*/
         return view('admin.index',compact('user','data'));

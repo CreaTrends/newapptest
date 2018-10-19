@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\auth;
 
 use App\User;
+use App\Profile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,12 @@ class FirstloginController extends Controller
                 'password' => bcrypt($request->password),
                 'first_login' => '1',
             ])->save();
+
+            $customer = Profile::where('user_id',Auth::id())->first();
+            $customer->status = '1';  
+            $customer->save(); 
+
+
  
             if(auth()->user()->hasRole('parent')){
                 return redirect('/apoderado')->with(['status' => 'Password changed successfully']);

@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-
+require('./common.js');
 window.Vue = require('vue');
 window.Slug = require('slug');
 Slug.defaults.mode = 'rfc3986';

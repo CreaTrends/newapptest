@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
-
+use App\Notifications\NewMessageThread;
 
 class MessagesController extends Controller
 {
@@ -102,6 +102,9 @@ class MessagesController extends Controller
                 'thread' => $thread,
             ]);
         }
+
+        auth()->user()->notify(new NewMessageThread($thread));
+
         if(auth()->user()->hasRole('parent')){
             return redirect()->back()->with('info','Mensaje enviado con éxito');
         }
@@ -154,6 +157,8 @@ class MessagesController extends Controller
                 'thread_subject' => $message->thread->subject,
             ]);
         }
+
+        auth()->user()->notify(new NewMessageThread($thread));
         return redirect()->back();
     }
 }

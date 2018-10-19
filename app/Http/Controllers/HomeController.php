@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\User;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +23,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if(auth()->user()->hasRole('parent')){
+                return redirect('/apoderado');
+            }
+            if(auth()->user()->hasRole('teacher|administrator|superadministrator')){
+                return redirect('/admin');
+            }
+            abort(401, 'This action is unauthorized.');
     }
 }

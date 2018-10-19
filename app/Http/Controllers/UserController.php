@@ -19,6 +19,7 @@ use Image;
 use Illuminate\Support\Str;
 
 
+
 class UserController extends Controller
 {
     public function __construct()
@@ -187,9 +188,7 @@ class UserController extends Controller
         //
         $this->validate($request, array(
             'firstname' => 'required|max:255',
-            'address' => 'required|max:255',
-            'phone' => 'required|max:255',
-            'birthday' => 'required',
+            'lastname' => 'required|max:255',
             'email' => 'required|email|unique:users,email,'.$id,
         ));
         $user = User::findOrFail($id);

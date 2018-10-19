@@ -1,14 +1,19 @@
 @component('mail::message')
 
-# Hola Apoderad@
+# Hola {{$data->parent}}
 
-{{$data}}
+Hemos generado una nueva comunicacion diaria.
 
+@component('mail::panel') 
+#{{$data->alumno_name}} - {{$data->date}}
 
-@component('mail::button', ['url' => route('apoderado.feed')])
-Ver Actividades
+Puedes encontrar todo los detalles en nuestra aplicacion , haciendo clic en el boton inferior.
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+@component('mail::button', ['url' => route('apoderado.feed')])
+Ver Comunicacion diaria
+@endcomponent
+
+Atte,<br>
+Jardin Anatolia
 @endcomponent
