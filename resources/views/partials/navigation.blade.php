@@ -27,46 +27,9 @@
                 @endif
             </ul>
             @if (!Auth::guest())
-            <?php
-            $count = Auth::user()->newThreadsCount();
-            $notifyActive = $count == 0 ? 'sr-only' : '';
-            $notifyClass = $count == 0 ? '' : 'is-active';
-            ?>
+            
             <ul class="navbar-nav ml-auto ">
-                <li class="nav-item mr-1 dropdown">
-                    <a href="#" class="nav-link is-notify is-active" id="dropnotifyMail" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icofont icofont-envelope {{$notifyClass}} "></i>
-                        <span class="badge badge-danger is-badge-notify {{$notifyActive}}">
-                            {{Auth::user()->unreadMessagesCount()}}
-                            
-                        </span>
-                    </a>
-                    <div class="dropdown-menu ">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
-                </li>
-                <!-- notifications -->
-                <li class="nav-item mr-3 dropdown">
-                    <a href="{{ url('/admin')}}" class="nav-link is-notify is-active"  id="dropnotifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icofont icofont-notification is-active"></i>
-                        <span class="badge badge-danger is-badge-notify">
-                            {{Auth::user()->notifications->count()}}
-                            
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropnotifications">
-                        @foreach(Auth::user()->unreadNotifications as $notification)
-                        <a class="dropdown-item" href="{{route('message.show',$notification->data['thread']['id'])}}">
-                            {{$notification->data['user']['name']}} Te envio un mensaje
-                        </a>
-                        @endforeach
-                    </div>
-                </li>
+                
                 <li class="nav-item dropdown dropdown-menu-right">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img class="rounded-circle mr-2"  src="{!! url('/static/image/profile/'.Auth::user()->profile->image) !!}" width="32">
@@ -88,7 +51,7 @@
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.messages') }}">
                             <span class="badge badge-pill badge-danger" style="float:right">
-                            {{Auth::user()->unreadMessagesCount()}}
+                            
                             </span>
                             Mensajes <span class="sr-only">(current)</span>
                         </span>
@@ -106,21 +69,7 @@
                     </div>
                     
                     @else
-                    <li class="nav-item mr-3 dropdown">
-                    <a href="{{ url('/admin')}}" class="nav-link is-notify is-active"  id="dropnotifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icofont icofont-notification is-active"></i>
-                        <span class="badge badge-danger is-badge-notify">
-                            {{count(App\User::find(4)->unreadnotifications())}}
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropnotifications">
-                        @foreach(App\User::find(1)->unreadNotifications as $notification)
-                        <a class="dropdown-item" href="{{route('message.show',$notification->data['thread']['id'])}}">
-                            {{$notification->data['user']['name']}} Te envio un mensaje
-                        </a>
-                        @endforeach
-                    </div>
-                </li>
+                    
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('apoderado.feed')}}">
                             Inicio
@@ -129,13 +78,9 @@
                             
                             Perfil
                         </a>
-                        <a class="dropdown-item" href="{{route('apoderado.profile',Auth::user()->id)}}">
-                            
-                            Cuenta
-                        </a>
                         <a class="dropdown-item" href="{{ route('apoderado.messages') }}">
                             <span class="badge badge-pill badge-danger" style="float:right">
-                            {{Auth::user()->unreadMessagesCount()}}
+                            
                             </span>
                             Mensajes <span class="sr-only">(current)</span>
                         </span>
