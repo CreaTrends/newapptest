@@ -9,11 +9,21 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 use Carbon\Carbon;
 
+
+use App\User;
+
 class NewMessageThread extends Notification
 {
     use Queueable;
 
     protected $thread;
+
+    /**
+     * User id property.
+     *
+     * @var integer
+     */
+    protected $user_id;
 
     /**
      * Create a new notification instance.
@@ -34,20 +44,24 @@ class NewMessageThread extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail','database'];
     }
     /**
-     * Get the array representation of the notification.
+     * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toDatabase($notifiable)
+    public function toMail($notifiable)
     {
-        return [
-            'thread'=>$this->thread,
-            'user'=>$notifiable
-        ];
+        $user = User::find(1);
+        $subject = $user->profile->first_name.' '.$user->profile->last_name .' te envio un nuevo mensaje';
+        return (new MailMessage)
+        ->from('no-reply@jardinanatolia.cl','Equipo Anatolia')
+        ->subject($subject)
+                ->line('Hola '.$user->profile->first_name.', hemos generado una nueva circular informativa de nuestro jardín, te invitamos a leer e informarte de toda las nievedades de nuestro jardín ')
+                ->action('Leer Circular', route('apoderado.notes.show',$this->thread->id))
+                ->success();
     }
 
     /**
@@ -59,7 +73,9 @@ class NewMessageThread extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'message' => $this->thread->subject,
+            'action' => $this->thread->id,
+            'user_id' => $this->thread->user,
         ];
     }
 }

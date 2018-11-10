@@ -46,6 +46,9 @@ class ApoderadoController extends Controller
         
         $user_id = auth()->user()->id;
         $apoderado = User::with('childs','profile')->where('id',$user_id)->first();
+
+        
+
         $alumno_id = 298;
         $dt = Carbon::today();
 
@@ -139,11 +142,11 @@ class ApoderadoController extends Controller
      * @param  \App\Apoderado  $apoderado
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$id)
+    public function show(Request $request,$id,$date=NULL)
     {
         //
-        if($request->filled('date')){
-            $dt = Carbon::parse($request->date)->toDateString();
+        if(count($date)>0){
+            $dt = Carbon::parse($date)->toDateString();
 
         }else {
           $dt = Carbon::today()->toDateString();  
@@ -162,53 +165,51 @@ class ApoderadoController extends Controller
         ->join('photos', 'photos.album_id', '=', 'albums.album_id')
         ->where('album_curso.curso_id',$curso_id)
         ->get();
-        
 
-        /*$nsotebooks = Notebook::whereDate('notebook_date', $dt->subDay(2))
+
+        $notebooks= Notebook::with('attachs')
         ->with('activities')
-        ->with('attachs')
-        ->whereHas('alumno',function($q) use($alumno_id){
-            $q->where('alumno_id',$alumno_id);
-        })
-        ->orderBy('notebook_date', 'DESC')
-        ->paginate(10);*/
+        ->selectRaw('alumno_parent.alumno_id as alumno_id, users.id as padre_id,notebooks.id as feed_id, notebooks.*')
+        ->join('alumno_notebook','alumno_notebook.notebook_id','=','notebooks.id')
+        ->join('alumno_parent','alumno_parent.alumno_id','=','alumno_notebook.alumno_id')
+        ->join('users','users.id','=','alumno_parent.user_id')
+        ->where('alumno_parent.alumno_id',$id)
+        ->where('alumno_parent.user_id',$user_id)
+        ->whereDate('notebooks.created_at', '=', $dt)
+        ->orderBy('notebooks.created_at', 'DESC')
+        ->first();
 
-        $notebooks = Notebook::whereDate('created_at', '=', $dt )
-        ->with('activities')
-        ->with('attachs')
-        ->with('alumno')
-        ->whereHas('alumno',function($q) use($alumno_id){
-            $q->where('alumno_id',$alumno_id);
-        })
-        ->OrderBy('created_at','DESC')
-        ->get()
-        ->groupBy(function($item)
-        {
-          return Carbon::parse($item->notebook_date)->format('d-M-y');
-        });
-
-
-        $date = Carbon::parse($dt)->toDateString();
+        //$date = Carbon::parse($dt)->toDateString();
         $next_notebook = Carbon::parse($dt)->addDays(1)->toDateString();
         $prev_notebook = Carbon::parse($dt)->subDays(1)->toDateString();
 
-        $previousnotebook =  Notebook::where('created_at','<',$dt)
-        ->orderBy('created_at','DESC')->pluck('created_at')->first();
+        
+        $previousnotebook = Notebook::whereHas('alumno_notebook',function($q) use($id){
+            $q->where('alumno_id',$id);
+        })
+        ->whereDate('created_at','<',$dt)
+        ->orderBy('created_at','DESC')
+        ->pluck('created_at')->first();
 
-        $nextnotebook =  Notebook::where('created_at','>',$next_notebook)
+
+        $nextnotebook =  Notebook::whereHas('alumno_notebook',function($q) use($id){
+            $q->where('alumno_id',$id);
+        })
+        ->whereDate('created_at','>',$dt)
+        ->orderBy('created_at','ASC')
         ->pluck('created_at')->first();
 
         $date_link_prev = Carbon::parse($previousnotebook)->format('Y-m-d');
         $navlink_feed = [];
         $navlink_feed['prev_text'] = Carbon::parse($previousnotebook)->format('l j');
-        $navlink_feed['prev_url'] = route('apoderador.childs.show',['id'=>$alumno_id,'date'=>$date_link_prev]);
+        $navlink_feed['prev_url'] = route('child.feed',['id'=>$alumno_id,'date'=>$date_link_prev]);
 
         $date_link_next = Carbon::parse($nextnotebook)->format('Y-m-d');
         $nextnotebook_link = [];
         $navlink_feed['next_text'] = Carbon::parse($nextnotebook)->format('l j');
-        $navlink_feed['next_url'] = route('apoderador.childs.show',['id'=>$alumno_id,'date'=>$date_link_next]);
+        $navlink_feed['next_url'] = route('child.feed',['id'=>$alumno_id,'date'=>$date_link_next]);
 
-
+        
 
         $notebook_select = Notebook::select('notebook_date')
         ->whereHas('alumno',function($q) use($alumno_id){
@@ -223,7 +224,7 @@ class ApoderadoController extends Controller
         
         //dd($alumno_profile);
         /*echo "<pre>";
-        return json_encode($notebook_select,JSON_PRETTY_PRINT);*/
+        return json_encode([$previousnotebook,$nextnotebook],JSON_PRETTY_PRINT);*/
        /*echo "<pre>";
         return json_encode($notebooks,JSON_PRETTY_PRINT);
         return json_encode($previousnotebook,JSON_PRETTY_PRINT);*/
@@ -369,7 +370,7 @@ class ApoderadoController extends Controller
         $parent = User::findOrFail($parentID);
         $parentID = $parent->id;
 
-        $notes = DB::table('notes')
+        /*$notes = DB::table('notes')
         ->join('alumno_curso', 'alumno_curso.curso_id', '=', 'notes.curso_id')
         ->join('alumno_parent', 'alumno_parent.alumno_id', '=', 'alumno_curso.alumno_id')
         ->join('profiles', 'notes.user_id', '=', 'profiles.user_id')
@@ -377,18 +378,55 @@ class ApoderadoController extends Controller
         ->where('alumno_parent.user_id',$parentID)
         ->orderBy('notes.sticky', 'DESC')
         ->orderBy('notes.created_at', 'DESC')
-        ->paginate(5);
+        ->paginate(5);*/
+        $notes = Note::SelectRaw('notes.*,note_user.readed')
+        ->join('note_user','note_user.note_id','=','notes.id')
+        ->where('note_user.user_id',auth()->user()->id)
+        ->orderBy('notes.sticky', 'DESC')
+        ->orderBy('notes.created_at', 'DESC')
+        ->paginate(50);
+
        return view('apoderados.notes.index',compact('notes','parent'));
         //$notes = Note::with('user')->get();
         echo "<pre>";
         return json_encode($notes,JSON_PRETTY_PRINT);
 
     }
-    public function noteshow($id){
+    public function noteshow(Request $request, $id){
 
-        $notes = Note::with('user')->where('id',$id)->get();
+        $notes = Note::with('user')->where('id',$id)->where('user_id',auth()->user()->id)->get();
+        $notes = Note::SelectRaw('notes.*')
+        ->join('note_user','note_user.note_id','=','notes.id')
+        ->where('note_user.user_id',auth()->user()->id)
+        ->where('notes.id',$id)
+        ->get();
+
+        if($notes->isEmpty()){
+            return response()->json([
+            'message' => 'Invalid Request',
+            'status' => 403
+        ], 403);
+        }
+        /*return response()->json([
+            'message' => 'Wrong email or password',
+            'status' => 422
+        ], 422);*/
         $parent = User::where('id',auth()->user()->id)->first();
+
+        //auth()->user()->unreadNotifications->markAsRead();
+
+        $notification = auth()->user()->notifications()->where('id',$request->get('nid'))->first();
         /*dd($notes);*/
+        if($notification){
+            $notification->markAsRead();
+        }
+
+        $update = Note::find($id)->note_user()->wherePivot('user_id', '=', auth()->user()->id)->whereNull('readed_at')
+        ->update([
+            'readed_at' => Carbon::now(),
+            'readed' => '1'
+        ]);
+        
 
         return view('apoderados.notes.show',compact('notes','parent'));
 

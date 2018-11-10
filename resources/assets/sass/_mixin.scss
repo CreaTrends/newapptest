@@ -190,6 +190,26 @@ $number-of-colors: length($y);
 
     }
 }
+@mixin bg-gradient($angle, $color, $amount) {
+    background: $color; /* Old browsers */
+    background: -moz-linear-gradient($angle,  $color 0%, lighten($color,$amount) 100%) !important; /* FF3.6+ */
+    background: -webkit-gradient($angle, left top, left bottom, color-stop(0%,$color), color-stop(100%,lighten($color,$amount))) !important;/* Chrome,Safari4+ */
+    background: -webkit-linear-gradient($angle,  $color 0%,lighten($color,$amount) 100%) !important; /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient($angle,  $color 0%,lighten($color,$amount) 100%) !important;  /* Opera 11.10+ */
+    background: -ms-linear-gradient($angle,  $color 0%,lighten($color,$amount) 100%) !important; /* IE10+ */
+    background: linear-gradient($angle,  $color 0%,lighten($color,$amount) 100%) !important; /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color', endColorstr='$color',GradientType=0 ) !important; /* IE6-8 */
+
+    /* IE6-9 */
+
+}
+@each $key, $value in $main-colors {
+    .gradient-#{$key} {
+
+        @include bg-gradient(45deg,$value,20%);
+
+    }
+}
 @each $key, $value in $main-colors {
 .custom-alert-#{$key} {
         background-color: lighten($value,35%) !important;
@@ -237,3 +257,11 @@ background-color: $btn-color;
     border-color: $btn-color;
 
     }
+
+//Ellipsis
+%ellipsor{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width:100%;
+    white-space: nowrap;
+}

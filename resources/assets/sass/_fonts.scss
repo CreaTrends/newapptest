@@ -37,3 +37,22 @@ $font-family-roboto : 'Roboto', Helvetica,sans-serif ;
 $family-serif: $body-font-family;
 // use font default
 $family-primary: $family-serif;
+
+$fw-900 : 900;
+$fw-600 : 600;
+$fw-300 : 300;
+$fw-500 : 500;
+$fw-700 : 700;
+
+.fw-900 {
+    font-weight: $fw-900 !important;
+}
+.fw-600 {
+    font-weight: $fw-600 !important;
+}
+.fw-300 {
+    font-weight: $fw-300 !important;
+}
+.fw-500 {
+    font-weight: $fw-500 !important;
+}

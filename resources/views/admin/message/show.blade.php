@@ -33,6 +33,15 @@
                 <div class="form-group">
                     <textarea name="message" class="form-control" rows="3">{{ old('message') }}</textarea>
                 </div>
+                 <!-- @if($users->count() > 0)
+                         <div class="checkbox">
+                             @foreach($users as $user)
+                                 <label title="{{ $user->name }}">
+                    <input type="checkbox" name="recipients[]" value="{{ $user->id }}">{{ $user->name }}
+                                 </label>
+                             @endforeach
+                         </div>
+                     @endif -->
                 <!-- Submit Form Input -->
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary custom-btn is-lightblue">Enviar Mensaje</button>
@@ -41,4 +50,17 @@
         </div>
     </div>
 </div>
-@stop
+@endsection
+
+@section('scripts')
+<script>
+  $('.list-unstyled').slimscroll({
+        height: '180px',
+        color: 'rgba(0,0,0,0.5)',
+        size: '4px',
+        alwaysVisible: false,
+        borderRadius: '0',
+        railBorderRadius: '0'
+    });
+</script> 
+@endsection

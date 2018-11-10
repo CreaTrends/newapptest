@@ -50,7 +50,7 @@
                         </p>
                         @if($note->attached)
                         <h5 class="py-3">Archivo Adjunto <i class="icofont icofont-attachment"></i></h5>
-                        <a href="{{route('tools.download',$note->id)}}">Descargar</a>
+                        <a href="{{route('apoderado.tools.download',$note->id)}}">Descargar</a>
                         @endif
                     </div>
                 </li>

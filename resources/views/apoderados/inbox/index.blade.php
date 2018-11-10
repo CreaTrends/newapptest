@@ -30,41 +30,60 @@
         </ul>
     </div>
 </div>
-<div class="row justify-content-center">
-    <div class="col-md-7">
-       
-        <ul class="list-unstyled">
-        @foreach($threads as $thread)
-        <li class="media p-2 pt-3 border-bottom mb-0" id="thread_list_{{ $thread->id }}">
-            <img class="mr-3" src="https://ui-avatars.com/api/?background=49bfbf&color=fff&name={{$thread->creator()->name}}+{{$thread->creator()->lastname}}" alt="Generic placeholder image" width="48">
-            <div class="media-body">
-                <h6 class="mt-0 mb-1">
-                <a style="color: #5770e4" class="text-red" href="{{ route('apoderados.inbox.show', $thread->id) }}">
-                    <strong>{{ $thread->subject }}</strong>
-                </a>
-                <?php
-                $isNew = $thread->userUnreadMessagesCount(Auth::id());
 
-                ?>
-                @if($isNew > 0)
-                <span class="badge badge-danger">
-                    (Nuevo)
-                </span>
-                @endif
-                </h6>
-                <small><strong>De:</strong> {{ $thread->creator()->name }}</small>
-                <p style="line-height: .85rem;">
-                    <small style="font-weight: 600;">
-                    {{ $thread->latestMessage->body }}
-                    </small>
-                </p>
+<div class="row justify-content-center">
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <h5 class="d-flex justify-content-between border-bottom border-gray pb-2 my-3 fw-900">
+            <strong>Tus Circulares</strong>
+            <small>Total : {{$threads->count()}}</small>
+        </h5>
+        @foreach($threads as $thread)
+        <!-- note id {{$thread->id}}-->
+        
+        <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-1 border-bottom widget-feed"
+            data-id="{{$thread->id}} " data-order="{{$loop->iteration}}">
+            <div class="mr-2 widget-feed-left">
+                <div class="p-2 text-center widget-info h-100 d-flex justify-content-center flex-column ">
+                    <h3 class="mb-0" style="position: relative;" alt="Circular leida " title="Circular leida">
+                    @if(empty($thread->creator()->profile->image))
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="https://ui-avatars.com/api/?background=5A55A3&color=fff&name={{$thread->creator()->profile->first_name}}+{{$thread->creator()->profile->last_name}}" width="48">
+                    @else
+                    
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/'.$thread->creator()->profile->image) !!}" width="48">
+                    @endif
+                    <span class="badge badge-danger  {{$thread->userUnreadMessagesCount(Auth::id()) > 0 ? 'd-none':'is-readed'}}" alt="Circular leida ">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    </h3>
+                </div>
             </div>
-        </li>
+            <div class="p-3 widget-feed-right w-100 mr-auto">
+                <a style="color: #5770e4; text-decoration: none; color: inherit !important ;" class="text-red" href="{{ route('apoderados.inbox.show', $thread->id) }}">
+                    <h6 class="mt-0 d-flex justify-content-between  fw-600">
+                    <strong>
+                    {{$thread->subject}}
+                    </strong>
+                    <small>{{$thread->updated_at->diffforhumans()}}</small>
+                    </h6>
+                    <p class="mx-2 d-none">
+                        <small>
+                        enviado por : {{$thread->creator()->profile->first_name}} {{$thread->creator()->profile->last_name}}
+                        </small>
+                    </p>
+                    <p class="fw-300 my-2" style="color: #000; font-size: 13px !important;">
+                        {{ str_limit($thread->latestMessage->body, $limit = 80, $end = '...') }}
+                    </p>
+
+                    <p class="mb-0">
+                        <small>
+                        Participantes : {{ $thread->participantsString(Auth::id()) }}
+                    </small></p>
+                </a>
+            </div>
+        </div>
         @endforeach
-        </ul>
     </div>
 </div>
 
-
-
 @endsection
+

@@ -19,6 +19,8 @@ use App\Notifications\NewNotebook;
 use Mail;
 use App\Mail\WelcomeParent;
 
+use Illuminate\Support\Facades\Crypt;
+
 class ToolController extends Controller
 {
     //
@@ -53,6 +55,13 @@ class ToolController extends Controller
                     $reader->ignoreEmpty();
                     
                 })->get();
+
+                if(request()->ajax()) {
+                    return response()->json([
+                        'status' => 'OK',
+                        'html' => $data
+                    ]);
+                }
 
                 if(!empty($data) && $data->count()){
  
@@ -108,7 +117,7 @@ class ToolController extends Controller
                                 if(count($pName) > 1){
                                     $checkUser = User::where('email','=',$value->p_email)->first();
 
-                                    if($checkUser->count() > 0){
+                                    if(count($checkUser) > 0){
                                         $checkUser->students()->attach($alumno->id);
                                        
                                     }else {
@@ -148,7 +157,7 @@ class ToolController extends Controller
                                 if(count($mName) > 1){
                                     $checkUser = User::where('email','=',$value->m_email)->first();
 
-                                    if($checkUser->count() > 0 ){
+                                    if(count($checkUser) > 0 ){
                                         $checkUser->students()->attach($alumno->id);
                                         continue;
                                     }else {
@@ -306,11 +315,38 @@ class ToolController extends Controller
     public function DownloadAttach(Request $request,$id){
 
         //validate the xls file
-        $file = Note::findOrFail($id);
-        $file_attach = $file->attached;
+        if(!auth()->user()->id){
+            return response()->json([
+            'message' => 'Invalid Request',
+            'status' => 403
+        ], 403);
+        }
+
+        $kk = Note::find($id);
+
+        $the_json = $kk->attached;
+
+        $first_names = array_column($kk->attached, 'encrypt');
+
+        $t_names = array_column($kk->attached, 'name');
+
+        //return $first_names;
+        if (in_array($request->file, $first_names)) {
+           
+            $ll = array_search($request->file, $first_names);
+            $y =$t_names[$ll];
+        }
+
+       
+
+        $myFile = public_path('/static/files/'.$request->file);
+/*return response()->file($myFile);*/
+        
+        return response()->download($myFile,$y);
+        
 
         
-        return response()->download(public_path('storage/' . $file_attach));
+
  
 
     }

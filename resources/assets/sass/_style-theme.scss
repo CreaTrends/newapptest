@@ -290,6 +290,7 @@ main.is-login{
     max-width: 100%;
     margin-top: 0px !important;
     background-color: #F6FBFD;
+    font-family: $font-family-gt-eesti-display;
 }
 
 
@@ -430,6 +431,80 @@ main.is-login{
     color: #5363d6;
     letter-spacing: .3px;
 }
+.widget-feed {
+    font-family: $font-family-gt-eesti-display !important;
+    & > .widget-feed-left {
+        min-width: 70px !important;
+        & > .widget-info {
+            font-weight: 900 !important;
+            color: #fff;
+            min-height: 70px;
+            & > h3 {
+                font-weight: 700;
+            }
+            & > h6 {
+                font-weight: 500;
+            }
+        }
+    }
+    & > .widget-feed-right {
+
+        & p {
+             font-size: 1rem;
+            @include media-breakpoint-down(md) {
+                font-size: .75rem;
+            }
+    line-height: initial;
+    color: #6f6f6f;
+    font-weight: 300;
+            & > a {
+                font-size: 1.1rem;
+                line-height: initial;
+                font-weight: 500;
+                color: #50637b !important;
+            }
+        }
+
+    }
+    .is-readed  {
+        position: absolute;
+    top: -4px;
+    right: -5px;
+    font-size: .5rem;
+    border-radius: 100%;
+    /* padding: 5px 7px; */
+    border: 2px solid #fff;
+    width: 20px;
+    height: 20px;
+    line-height: 13px;
+    background-color: #8BC34A !important;
+    }
+    
+}
+.empty_state {
+        /* position: relative; */
+    background-color: #dfedf3;
+    border-radius: 100%;
+    /* padding: 3rem; */
+    font-size: 3rem;
+    border: none !important;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    color: #fdfdfd;
+}
+.time_line-date {
+    &:before {
+        content: '';
+    position: absolute;
+    width: 3px;
+    height: 24px;
+    background-color: #cccccc;
+    top: 100%;
+    left: 49%;
+    z-index: 0;
+    }
+}
 /**/
 .user-nav .nav-link {
             font-family: "GT Eesti Display", Helvetica, sans-serif !important;
@@ -464,6 +539,222 @@ main.is-login{
 }
 
 
+.messages {
+    padding: 0px;
+    & > .message-box {
+        
+        & > .chat-body {
+            display: block !important;
+        margin: 0;
+        overflow: hidden;
+            & > .chat-content {
+                    text-align: right;
+    position: relative;
+    display: block;
+    float: right;
+    /* padding: 14px 15px; */
+    margin: 0;
+    clear: both;
+    color: #293544;
+    background-color: #e5f7ff;
+    border-radius: 1rem;
+                &.to-left {
+                    text-align: left !important ;
+                    float: left !important ;
+                }
+                & > p.chat-text {
+                    font-size: 14px;
+                    line-height: 16px;
+                    font-family: "Nunito Sans", sans-serif;
+                        font-weight: 600;
+                            margin: 0;
+    padding: 0;
+                }
+            }
+        }
+        & > .chat-avatar {
+
+        }
+    }
+}
+#user_list,
+#curso_list {
+    & label {
+        cursor: pointer;
+    }
+    p.empty-text {
+        font-size: 14px;
+    margin-left: auto;
+    margin-right: auto;
+    /* width: 232px; */
+    word-wrap: break-word;
+    line-height: initial;
+    }
+
+    & .avatar {
+        position: relative;
+        font-family: "Font Awesome 5 Free";
+
+        &.active {
+            width: 48px;
+            height: 48px;
+            -webkit-transition: background-color .3s ease-in-out;
+            -moz-transition: background-color .3s ease-in-out;
+            -ms-transition: background-color .3s ease-in-out;
+            -o-transition: background-color .3s ease-in-out;
+            transition: background-color .3s ease-in-out;
+            background-color: rgba(126, 196, 64, 0);
+
+            &::before {
+                -webkit-transition: background-color .3s ease-in-out;
+                -moz-transition: background-color .3s ease-in-out;
+                -ms-transition: background-color .3s ease-in-out;
+                -o-transition: background-color .3s ease-in-out;
+                transition: background-color .3s ease-in-out;
+                content: "";
+                content: "\f00c";
+                /* font-family: "Font Awesome 5 Pro"; */
+                font-weight: 900;
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                width: 48px;
+                text-align: center;
+                line-height: 48px;
+                color: #fff;
+                background-color: rgba(126, 196, 64, .8);
+                left: 0;
+                z-index: 99999;
+                border-radius: 50% !important;
+            }
+        }
+    }
+}
+
+// dropmenu
+.is-options-menu {
+        background-color: #fdfdfd;
+    color: #8BC34A !important;
+    /* padding: 15px; */
+    /* position: relative; */
+    width: 32px;
+    height: 32px;
+    display: block;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 100rem;
+    border: 2px solid #8BC34A;
+    /* padding: 4px 0px; */
+    }
+.is-readed {
+    position: absolute;
+    top: -4px;
+    right: -5px;
+    font-size: .5rem;
+    border-radius: 100%;
+    /* padding: 5px 7px; */
+    border: 2px solid #fff;
+    width: 20px;
+    height: 20px;
+    line-height: 13px;
+    background-color: #8BC34A !important;
+}
+// custom modal forms edit and view
+.is-modal-form {
+    & .modal-body {
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19px;
+    color: rgba(0, 0, 0, 0.87);
+    /* font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; */
+    font-weight: 600;
+    font-size: .875rem;
+}
+
+}
+.modal-header{
+        background-color: #f8fafb;
+    color: #50505a;
+    &>.modal-title{
+        font-size: 18px;
+    font-weight: 800;
+    margin: 0px;
+    padding: 0px;
+    line-height: 1.5;
+    }
+}
+
+$border-property : 1px solid #e0e0ef;
+$darkslategray : #2e383e;
+.attachments-sections {
+    ul {
+        list-style: none;
+        padding: 30px 15px 20px;
+
+        li {
+            padding: 10px;
+            margin-right: 20px;
+            border: $border-property;
+            @include border-radius(5px);
+            @extend .d-inline-flex;
+            @extend .flex-row;
+            @extend .align-items-stretch;
+
+            .thumb {
+                display: inline-block;
+                margin-right: 10px;
+                @extend .d-flex;
+                @extend .justify-content-center;
+                @extend .align-items-center;
+
+                i {
+                    font-size: 30px;
+                    margin: 0;
+                    font-size: 20px;
+                    margin: 0;
+                    color: $white;
+                    background-color: map-get($main-colors, 'red');
+                    width: 40px;
+                    @extend .text-center;
+                    @extend .align-items-center;
+                    line-height: 40px;
+                    @include border-radius(100rem);
+                    padding: 0px;
+                    height: 40px;
+                }
+            }
+
+            .details {
+                p.file-name {
+                    display: block;
+                    margin-bottom: 0;
+                    color: $darkslategray;
+                }
+
+                .buttons {
+                    @extend .d-flex;
+                    @extend .align-items-center;
+
+                    .file-size {
+                        margin-right: 10px;
+                        margin-bottom: 0;
+                        font-size: 13px;
+                    }
+
+                    a {
+                        font-size: 13px;
+                        margin-right: 10px;
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 // navbar notifications 
 .nav-item {
     &> .is-notify {
@@ -489,5 +780,39 @@ main.is-login{
             font-weight: 600;
         }
 
+    }
+}
+
+// navbar notifications
+.notificationDropdown {
+    width: 310px;
+    padding: 1.2rem;
+    height: auto;
+    right: 15px;
+
+    & .is-dropdown-container {
+        & > a {
+            display: block;
+            line-height: initial;
+            font-size: .98rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: .8rem;
+            color: #50637b !important;
+
+            &.is-active {
+                background-color: #e4eaf6;
+            }
+
+            & .notification-item {
+                & img {
+                    height: auto;
+                    max-width: unset;
+                    height: 60px;
+                    object-fit: cover;
+                    width: unset !important;
+                }
+            }
+        }
     }
 }

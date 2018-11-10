@@ -136,3 +136,4 @@ toastr.success('Tiene '+{{Auth::user()->unreadMessagesCount()}}+' sin leer ', 'N
 @endif
 </script>
         @endsection
+

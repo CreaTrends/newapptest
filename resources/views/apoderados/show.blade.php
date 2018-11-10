@@ -5,7 +5,7 @@
    background-image: url({{asset('assets/core/title-img.jpg')}}); 
 
     background-size: cover;
-    padding-top:80px !important;
+    padding-top:20px !important;
     padding-bottom:20px;
     vertical-align: bottom;
     position:relative;
@@ -59,242 +59,249 @@
 }
 </style>
 
-<div class="jumbotron profile-header mb-0">
+<div class="jumbotron profile-header mb-4">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5 text-center">
-                <img src="{!! url('/static/image/profile/'.$alumno_profile->image) !!}" class="profile-image rounded-circle mb-3" width="120">
-                <h4><strong>{{$alumno_profile->firstname}} {{$alumno_profile->lastname}}</strong></h4>
-                
-                
-                @foreach($alumno_profile->curso as $alumno)
-                
-                <span class="badge badge-pill badge-primary is-lightgreen">{{$alumno->name}}</span>
+                <img src="{!! url('/static/image/profile/'.$alumno_profile->image) !!}" class="profile-image rounded-circle mb-3" width="80">
+                <h4><strong>{{$alumno_profile->firstname}} {{$alumno_profile->lastname}}</strong></h4>                
+                @foreach($alumno_profile->curso as $alumno)            
+                <span class="badge badge-pill badge-primary is-lightgreen px-3 is-green fw-300">{{$alumno->name}}</span>
                 @endforeach
-                
-                
-                
             </div>
         </div>
     </div>
 </div>
 @endsection
 @section('content')
-<div class="row">
-    <div class="col-md-12 my-3">
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link " href="{{route('apoderado.feed')}}">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.messages')}}">Mensajes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
-            </li>
-        </ul>
-    </div>
-</div>
-<div class="row justify-content-center">
-    <div class="col-md-7">
-        <a href="{{route('apoderado.feed')}}" class="btn custom-btn btn-link">Volver </a>
 
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-8 border-bottom border-gray mb-4">
+        
         <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-between">
-            @if(!empty($previousnotebook))
-            <?php
-            $prev_date_link = \Carbon\Carbon::parse($previousnotebook)->format('l j');
-            $prev_date = \Carbon\Carbon::parse($previousnotebook)->format('Y-m-d');
-            ?>
-            <li class="page-item">
-                <a class="page-link" href="{{route('apoderado.child',['id'=>$alumno_profile->id,'date'=>$prev_date])}}">
-                    <span aria-hidden="true">&laquo;</span>
-                    {{ $prev_date_link }}
-                </a>
-            </li>
-            @endif
-            @if(!empty($nextnotebook))
-            <?php
-            $next_date_link = \Carbon\Carbon::parse($nextnotebook)->format('l j');
-            $next_date = \Carbon\Carbon::parse($nextnotebook)->format('Y-m-d');
-            ?>
-            <li class="page-item">
-                <a class="page-link" href="{{route('apoderado.child',['id'=>$alumno_profile->id,'date'=>$next_date])}}">
-                    {{ $next_date_link }}
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            @endif
-          </ul>
+            <ul class="pagination justify-content-between">
+                @if(!empty($previousnotebook))
+                <?php
+                $prev_date_link = \Carbon\Carbon::parse($previousnotebook)->toFormattedDateString();
+                $prev_date = \Carbon\Carbon::parse($previousnotebook)->format('Y-m-d');
+                ?>
+                <li class="page-item">
+                    <a class="page-link" href="{{route('child.feed',['id'=>$alumno_profile->id,'date'=>$prev_date])}}" aria-label="Previous">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                @else
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1" aria-label="Previous">
+                    <i class="fas fa-angle-double-left"></i>
+                  </a>
+                </li>
+                @endif
+                <!-- current date -->
+                <li class="page-item">
+                  <a class="page-link is-green" href="{{route('child.feed',['id'=>$alumno_profile->id,'date'=>''])}}" tabindex="-1">
+                   Hoy  {{\Carbon\Carbon::now()->format('l j  , Y ')}}</a>
+                </li>
+                <!-- end current date -->
+                @if(!empty($nextnotebook))
+                <?php
+                \Carbon\Carbon::setLocale('es');
+                $next_date_link = \Carbon\Carbon::parse($nextnotebook)->toFormattedDateString();
+                $next_date = \Carbon\Carbon::parse($nextnotebook)->format('Y-m-d');
+                ?>
+                <li class="page-item">
+                    <a class="page-link" href="{{route('child.feed',['id'=>$alumno_profile->id,'date'=>$next_date])}}">
+                    <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+                @else
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">
+                    <i class="fas fa-angle-double-right"></i>
+                  </a>
+                </li>
+                @endif
+            </ul>
         </nav>
+
+        <!-- Start feed section -->
         
+        <!-- end feed section -->
         
-        @if(!$notebooks->isEmpty())
-        @foreach($notebooks as $date=>$items)
+    </div>
+    @if(count($notebooks)>0)
+        <div class="col-md-7 col-lg-8" id="daily-feed">
+            <!-- title -->
+            <div class="d-flex justify-content-start mb-4">
+                <span class="badge badge-primary my-0 py-2 px-3 is-lightblue  fw-300 time_line-date" >
+                            {{\Carbon\Carbon::parse($notebooks->created_at)->toFormattedDateString()}}
+                    </span>
+            </div>
         
-        
-        
-        @foreach($items as $item)
-        <?php
-        $date_format = \Carbon\Carbon::parse($item->notebook_date)->diffForHumans();
-        ?>
-        
-        <!-- estado de animo feed -->
-        @if(!empty($item->moods))
-        <div class="card my-2 card-feed-student">
-            <div class="card-body">
-                <div class="media">
-                    <i class="icofont icofont-emo-laughing activity-icon is-purple mr-1"></i>
-                    <div class="media-body">
-                        <h6 class="mt-0 d-flex justify-content-between">
-                        <strong>Dia General</strong>
-                        <small>{{$date_format}}</small>
-                        </h6>
-                        <p>
-                            <?php $r=str_replace('"', '', $item->moods); ?>
-                            Estado de Animo : {{ __('apoderado.moods.'.$r) }}
-                        </p>
-                        @if(!empty($item->comment))
-                        <p>{{$item->comment}}</p>
-                        @endif
-                        
+            @if(!empty($notebooks->moods))
+            <!-- moods feed -->
+            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
+                <div class="mr-2 widget-feed-left">
+                    <div class="p-2 is-purple text-center widget-info h-100 d-flex justify-content-center flex-column">
+                        <h3 class="mb-0"><i class="icofont icofont-emo-laughing"></i></h3>
                     </div>
+                </div>
+                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
+                    <h6 class="mt-0 d-flex justify-content-between ">
+                    <strong>Dia General</strong>
+                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
+                    </h6>
+                    <span class="badge badge-primary my-0 py-1 px-3 is-darkpink fw-300">
+                        <?php $r=str_replace('"', '', $notebooks->moods); ?>
+                        Estado de Animo : {{ __('apoderado.moods.'.$r) }}
+                    </span>
+                    @if(!empty($notebooks->comment))
+                    <p class="mb-0">
+                        {{$notebooks->comment}}
+                    </p>
+                    @endif
                 </div>
             </div>
-        </div>
-        @endif
-        <!-- comida del dia feed -->
-        @if(!empty($item->foods))
-        <div class="card my-2 card-feed-student">
-            <div class="card-body">
-                <div class="media">
-                    <i class="icofont icofont-fast-food activity-icon darkgreen mr-1"></i>
-                    <div class="media-body">
-                        <h6 class="mt-0 d-flex justify-content-between">
-                        <strong>Comida</strong>
-                        <small>{{$date_format}}</small>
-                        </h6>
-                        <p>
-                            @foreach($item->foods as $j)
-                            {{ __('apoderado.food.'.$j->type) }}
-                            {{ __('apoderado.food_amount.'.$j->amount) }}
-                            |
-                            @endforeach
-                            <p>
-                            </div>
-                        </div>
+            <!-- end moods feed -->
+            @endif
+            @if(!empty($notebooks->foods))
+            <!-- foods feed -->
+            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
+                <div class="mr-2 widget-feed-left">
+                    <div class="p-2 is-green text-center widget-info h-100 d-flex justify-content-center flex-column">
+                        <h3 class="mb-0"><i class="icofont icofont-fast-food"></i></h3>
                     </div>
                 </div>
-                @endif
-                <!-- mudas del dia feed -->
-                
-                @if(!empty($item->depositions))
-                <div class="card my-2 card-feed-student">
-                    <div class="card-body">
-                        <div class="media">
-                            <i class="icofont icofont-baby-cloth activity-icon is-moods mr-1"></i>
-                            <div class="media-body">
-                                <h6 class="mt-0 d-flex justify-content-between">
-                                <strong>Cambios / Mudas</strong>
-                                <small>{{$date_format}}</small>
-                                </h6>
-                                <p>
-                                    @foreach($item->depositions as $j)
-                                    {{$j->time}} : {{ __('apoderado.poops.'.$j->type) }} |
-                                    @endforeach
-                                    <p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
+                    <h6 class="mt-0 d-flex justify-content-between ">
+                    <strong>Comidas</strong>
+                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
+                    </h6>
+                    @foreach($notebooks->foods as $j)
+                        <p class="mb-0">
+                            {{ __('apoderado.food.'.$j->type) }}
+                            {{ __('apoderado.food_amount.'.$j->amount) }}
+                        </p>
+                    @endforeach
+                </div>
+            </div>
+            <!-- end foods feed -->
+            @endif
+
+            @if(!empty($notebooks->depositions))
+            <!-- depositions feed -->
+            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
+                <div class="mr-2 widget-feed-left">
+                    <div class="p-2 is-orange text-center widget-info h-100 d-flex justify-content-center flex-column">
+                        <h3 class="mb-0"><i class="icofont icofont-baby-cloth"></i></h3>
+                    </div>
+                </div>
+                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
+                    <h6 class="mt-0 d-flex justify-content-between ">
+                    <strong>Cambios / Mudas</strong>
+                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
+                    </h6>
+                    @foreach($notebooks->depositions as $j)
+                        <p class="mb-0">
+                            {{$j->time}} : {{ __('apoderado.poops.'.$j->type) }}
+                        </p>
+                    @endforeach
+                </div>
+            </div>
+            <!-- end depositions feed -->
+            @endif
+
+            @if(!empty($notebooks->naps))
+            <!-- naps feed -->
+            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
+                <div class="mr-2 widget-feed-left">
+                    <div class="p-2 is-red text-center widget-info h-100 d-flex justify-content-center flex-column">
+                        <h3 class="mb-0"><i class="icofont icofont-bed"></i></h3>
+                    </div>
+                </div>
+                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
+                    <h6 class="mt-0 d-flex justify-content-between ">
+                    <strong>Siestas / Descansos</strong>
+                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
+                    </h6>
+                    @foreach($notebooks->naps as $j)
+                        <p class="mb-0">
+                            De :  {{$j->start}} a {{$j->end}}
+                        </p>
+                    @endforeach
+                </div>
+            </div>
+            <!-- end naps feed -->
+            @endif
+
+            @if(count($notebooks->activities) > 0)
+            <!-- activities feed -->
+            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
+                <div class="mr-2 widget-feed-left">
+                    <div class="p-2 is-pink text-center widget-info h-25 d-flex justify-content-center flex-column">
+                        <h3 class="mb-0"><i class="icofont icofont-abc"></i></h3>
+                    </div>
+                </div>
+                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
+                    <h6 class="mt-0 d-flex justify-content-between ">
+                    <strong>Actividades Grupales</strong>
+                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
+                    </h6>
+                    @foreach($notebooks->activities as $j)
+                        @if(!empty($j))
+                        <p class="mb-0">
+                            {{$j->description}}
+                        </p>
                         @endif
-                        <!-- siestas  del dia feed -->
-                        @if(!empty($item->naps))
-                        <div class="card my-2 card-feed-student">
-                            <div class="card-body">
-                                <div class="media">
-                                    <i class="icofont icofont-bed activity-icon is-red mr-1"></i>
-                                    <div class="media-body">
-                                        <h6 class="mt-0 d-flex justify-content-between">
-                                        <strong>Siestas / Descansos</strong>
-                                        <small>{{$date_format}}</small>
-                                        </h6>
-                                        <p>
-                                            
-                                            @foreach($item->naps as $j)
-                                            De :  {{$j->start}} a {{$j->end}}
-                                            @endforeach
-                                            <p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                                <!-- actividades grupales feed -->
-                                @if(!empty($item->activities))
-                                <div class="card my-2 card-feed-student">
-                                    <div class="card-body">
-                                        <div class="media">
-                                            <i class="icofont icofont-abc activity-icon is-learning mr-1"></i>
-                                            <div class="media-body">
-                                                <h6 class="mt-0 d-flex justify-content-between">
-                                                <strong>Actividades Grupales</strong>
-                                                <small>{{$date_format}}</small>
-                                                </h6>
-                                                
-                                                @foreach($item->activities as $activitie_of)
-                                                @if(!empty($activitie_of))
-                                                <p>{{$activitie_of->description}}</p>
-                                                @endif
-                                                @endforeach
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                                <!-- Galerias imagenes grupales feed -->
-                                @if(!empty($item->attachs))
-                                @foreach($item->attachs as $images)
-                                
-                                <div class="card my-2 card-feed-student border-bottom">
-                                    <div class="card-body pb-0">
-                                        <div class="media">
-                                            <i class="icofont icofont-camera mr-1 activity-icon is-default"></i>
-                                            <div class="media-body">
-                                                <h6 class="mt-0 d-flex justify-content-between">
-                                                <strong>Galeria</strong>
-                                                <small>{{$date_format}}</small>
-                                                </h6>
-                                                <p class="font-weight-bold">
-                                                    @foreach($item->alumno as $alumno)
-                                                    
-                                                    {{ __('apoderado.tagged',['name' => $alumno->firstname]) }}
-                                                    @endforeach
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @foreach($images->file as $image)
-                                    <img class="card-img-bottom p-1 mt-2 " src="{{url('static/image/notebook/'.$image)}}" >
-                                    @endforeach
-                                </div>
-                                
-                                @endforeach
-                                @endif
-                                @endforeach
-                                @endforeach
-                                @else
-                                <p>Sin Novedades aun</p>
-                                @endif
-                                
-                            </div>
-                            
+                    @endforeach
+                </div>
+            </div>
+            <!-- end activities feed -->
+            @endif
+
+            @if(!empty($notebooks->attachs))
+            <!-- attachs feed -->
+            @foreach($notebooks->attachs as $images)
+                <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3  widget-feed rounded">
+                    <div class="mr-2 widget-feed-left">
+                        <div class="p-2 is-default text-center widget-info h-100 d-flex justify-content-center flex-column">
+                            <h3 class="mb-0"><i class="icofont icofont-camera"></i></h3>
                         </div>
                     </div>
+                    <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
+                        <h6 class="mt-0 d-flex justify-content-between ">
+                        <strong>Galerias</strong>
+                        <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
+                        </h6>
+                        <p class="mb-0">
+                            @foreach($notebooks->alumno as $alumno)
+                                {{ __('apoderado.tagged',['name' => $alumno->firstname]) }}
+                            @endforeach
+                        </p>
+                        @foreach($images->file as $image)
+                            <img class="card-img-bottom p-1 mt-2 " src="{{url('static/image/notebook/'.$image)}}" >
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+            <!-- end attachs feed -->
+            
+       
+</div>
+ @endif
+   @else
+        <div class="col-lg-8 text-center mh-100 ">
+            <div class="d-flex justify-content-center align-items-stretch text-center mb-4">
+                <div class="icon-empty gradient-orange empty_state">
+                    <i class="fas fa-inbox"></i>
+                </div>
+            </div>
+            
+            <h4><strong>No tienes reportes</strong></h4>
+            <p>al parecer no tienes reportes del dia de hoy , puedes revisar dias anteriores de tu hij@ </p>
+        </div>
+@endif  
+</div>
 @endsection
 @section('scripts')
 <script>

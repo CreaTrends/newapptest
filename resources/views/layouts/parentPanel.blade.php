@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" class="h-100">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,19 +12,22 @@
         <link href="{{ asset('css/app.css') }}?v=<?php echo md5(time());?>" rel="stylesheet">
         <link href="{{ asset('css/tokenize2.min.css') }}?v=<?php echo md5(time());?>" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
         @yield('rawcss')
     </head>
-    <body class="pt-4">
+    <body class="h-100">
         <!--     <div id="app">
             
             
             
         </div> -->
-        <header>
-            
-            @include('partials.navigation');
-        </header>
-        <main id="app" >
+        @auth
+          @if(Auth::user()->hasRole('parent'))
+            @include('partials.navigation-parent')
+            @include('partials.mobile-navigation-parent')
+          @endif()
+        @endauth
+        <main id="app" class="is-login h-100">
             @yield('profile-header')
             <div class="container mt-0">
                 <div class="row">

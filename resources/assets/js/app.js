@@ -6,13 +6,17 @@
  */
 
 require('./bootstrap');
-require('./common.js');
+
 window.Vue = require('vue');
 window.Slug = require('slug');
 Slug.defaults.mode = 'rfc3986';
 window.toastr = require('toastr');
 
+window.$ = window.SlimScroll = require('jquery-slimscroll');
+
 window.$ = window.fastselect = require('fastselect');
+
+require('./common.js');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -10,10 +10,32 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Notifications\NewNoteNotification;
+use App\Note;
 
 Route::get('/', function () {
     return redirect('home');
 })->middleware('auth');
+
+Route::get('testeando', function () {
+
+    $users = App\User::All();
+
+    $note = App\Note::find(1);
+
+    foreach($users as $user){
+        //$user->notify(new NewNoteNotification($note, $note->user->id));
+        $user->notifications()->delete();
+    }
+    
+    //Notification::send($user, new NewNoteNotification($note));
+
+
+    //$thread->user->notify(new RepliedToThread($thread));
+    
+});
+
+
 
 Auth::routes();
 
@@ -49,7 +71,10 @@ Route::get('cursos/notebook/{id}', 'NotebookController@index')->name('notebook.s
 Route::resource('notes', 'NoteController');
 Route::resource('notebook', 'NotebookController');
 */
-
+Route::resource('notes', 'NoteController');
+Route::post('notes/deleteall','NoteController@deleteall')->name('notes.deleteall');
+Route::post('notes/saving','NoteController@save')->name('notes.save');
+Route::get('notes/display/{id}','NoteController@displaynote')->name('notes.display');
 //Route::resource('cursos/notebook', 'NotebookController');
 //Route::get('cursos/{id}/notebook/', 'NotebookController@show')->name('cursos.notebook');
 
@@ -68,7 +93,7 @@ Route::get('/getcursos', 'AlumnoController@getcursos');
 
 Route::post('/tools/import', 'ToolController@importExcel')->name('tools.import');
 Route::get('/tools/export/{id}', 'ToolController@exportExcel')->name('tools.export');
-Route::get('/tools/download/{file}', 'ToolController@DownloadAttach')->name('tools.download');
+Route::get('/tools/download/{id}/{file}','ToolController@DownloadAttach')->name('admin.tools.download')->middleware('auth');
 Route::get('tools/test', 'ToolController@test')->name('tools.test');
 Route::post('invite/send/{id}', 'AlumnoController@inviteParent')->name('invite.send');
 Route::get('invite/process', 'AlumnoController@inviteProcess');
@@ -77,8 +102,10 @@ Route::get('messages', ['as' => 'admin.messages', 'uses' => 'MessagesController@
 Route::get('message/create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
 Route::post('messages', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
 Route::get('message/{id}', ['as' => 'message.show', 'uses' => 'MessagesController@show']);
+Route::get('messagemodal/{id}', ['as' => 'admin.message.showmodal', 'uses' => 'MessagesController@modalshow']);
 Route::put('/message/{id}', ['as' => 'admin.inbox.update', 'uses' => 'MessagesController@update']);
-
+Route::post('/messages/filter', ['as' => 'admin.messages.filter', 'uses' => 'MessagesController@filterUser'])->middleware('auth');
+Route::post('/messages/removeparticipant/{id}', ['as' => 'admin.messages.removeparticpant', 'uses' => 'MessagesController@removeparticipant'])->middleware('auth');
 // albums 
 Route::resource('albums','AlbumController');
 
@@ -112,12 +139,19 @@ Route::middleware(['password_expired'])->group(function () {
     Route::get('notes', ['as' => 'apoderado.notes', 'uses' => 'ApoderadoController@notes'],[
 'except' => ['destroy', 'create']
 ]);
+    Route::delete('notes/deleteuser/{id}','NoteController@deleteuser')->name('notes.deleteuser');
+    Route::get('notes/display/{id}','NoteController@displaynote')->name('apoderado.notes.display');
     Route::get('notes/{id}',['as' => 'apoderado.notes.show', 'uses' => 'ApoderadoController@noteshow']);
-    Route::get('/tools/download/{file}', 'ToolController@DownloadAttach')->name('tools.download');
+    Route::get('/tools/download/{id}/{file}', 'ToolController@DownloadAttach')->name('apoderados.tools.download');
 
     Route::get('albums',['as' => 'apoderado.albums', 'uses' => 'ApoderadoController@albums']);
     Route::get('album/{id}/{token}',['as' => 'apoderado.album', 'uses' => 'ApoderadoController@album']);
+
+    Route::get('child/{id}/feed',['as' => 'child.feed', 'uses' => 'ApoderadoController@show']);
+    Route::get('child/{id}/feed/{ss}',['as' => 'child.feed', 'uses' => 'ApoderadoController@show']);
 });
+
+
 
     
 });

@@ -145,7 +145,7 @@
                             </div>
                             <span class="text-muted">{{$note->created_at->diffForHumans()}}</span>
                         </div>
-                        <p class="p-2">{!! $note->body !!}</p>
+                        <p class="p-2">{{{!! $note->body !!}}}</p>
                     </div>
                     @endif
                     @endforeach

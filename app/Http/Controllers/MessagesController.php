@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Curso;
 use Carbon\Carbon;
+use App\Alumno;
 use Lexx\ChatMessenger\Models\Message;
 use Lexx\ChatMessenger\Models\Participant;
 use Lexx\ChatMessenger\Models\Thread;
@@ -27,11 +28,19 @@ class MessagesController extends Controller
         // All threads, ignore deleted/archived participants
         $threads = Thread::getAllLatest()->get();
         // All threads that user is participating in
-        $threads = Thread::forUser(Auth::id())->latest('updated_at')->paginate(5);
+        $threads = Thread::forUser(Auth::id())->latest('updated_at')->paginate(10);
         // All threads that user is participating in, with new messages
         //$threads = Thread::forUserWithNewMessages(Auth::id())->latest('updated_at')->get();
 
-        return view('admin.message.index', compact('threads'));
+        $user_list = Alumno::with('parent','curso')->whereHas('parent',function($q){
+            $q->Wherenotnull('user_id');
+        })->get();
+
+        $cursos = Curso::all();
+
+        //
+
+        return view('admin.message.index', compact('threads','user_list','cursos'));
         /*echo "<pre>";
         return json_encode($threads,JSON_PRETTY_PRINT);*/
     }
@@ -49,6 +58,8 @@ class MessagesController extends Controller
         $userId = Auth::id();
         $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
         $thread->markAsRead($userId);
+
+        
         return view('admin.message.show', compact('thread', 'users'));
     }
 
@@ -69,7 +80,23 @@ class MessagesController extends Controller
     }
     public function store()
     {
+
+
+
         $input = Input::all();
+
+        $message_to = User::whereHas('students',function($q) use($input){
+            $q->whereIn('alumno_id',$input['recipients']);
+        })->pluck('id')->toArray();
+
+        
+
+/*
+
+        return response()->json([
+                'status' => $input['recipients'],
+                'message' => $message_to
+            ]);*/
         $thread = Thread::create([
             'subject' => $input['subject'],
         ]);
@@ -86,10 +113,10 @@ class MessagesController extends Controller
             'last_read' => new Carbon,
         ]);
         // Recipients
-        if (Input::has('recipients')) {
+        if (count($message_to) > 0) {
             // add code logic here to check if a thread has max participants set
             // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
-            $thread->addParticipant($input['recipients']);
+            $thread->addParticipant($message_to);
         }
         // check if pusher is allowed
         if(config('chatmessenger.use_pusher')) {
@@ -103,7 +130,7 @@ class MessagesController extends Controller
             ]);
         }
 
-        auth()->user()->notify(new NewMessageThread($thread));
+        
 
         if(auth()->user()->hasRole('parent')){
             return redirect()->back()->with('info','Mensaje enviado con éxito');
@@ -117,13 +144,16 @@ class MessagesController extends Controller
     }
     public function update($id)
     {
+
+
+
         try {
             $thread = Thread::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
             return redirect()->route('messages');
         }
-        $thread->activateAllParticipants();
+        //$thread->activateAllParticipants();
         // Message
         $message = Message::create([
             'thread_id' => $thread->id,
@@ -141,7 +171,7 @@ class MessagesController extends Controller
         if (Input::has('recipients')) {
             // add code logic here to check if a thread has max participants set
             // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
-            
+            //$thread->removeParticipant(Input::get('recipients')) ;
             $thread->addParticipant(Input::get('recipients'));
         }
         $html = view('admin.message.html-message', compact('message'))->render();
@@ -158,7 +188,105 @@ class MessagesController extends Controller
             ]);
         }
 
-        auth()->user()->notify(new NewMessageThread($thread));
+        //auth()->user()->notify(new NewMessageThread($thread));
         return redirect()->back();
+    }
+
+    public function filterUser(Request $request)
+    {
+
+        $id = $request->id;
+        $users = Alumno::with('parent','curso')->whereHas('curso', function($q) use($id) {
+            $q->where('curso_id','=', $id);
+        })->whereHas('parent',function($q){
+            $q->Wherenotnull('user_id');
+        })->get();
+
+        $html = view('admin.message.listusers-ajax', compact('users'))->render();
+
+        
+        return response()->json([$html]);
+    }
+
+     public function modalshow($id)
+    {
+        try {
+            $thread = Thread::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
+            return redirect()->route('messages');
+        }
+        // show current user in list if not a current participant
+        //$users = User::whereNotIn('id', $thread->participantsUserIds())->get();
+        // don't show the current user in list
+        $userId = Auth::id();
+        $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
+$thread->markAsRead($userId);
+        
+
+        $participants = User::with('profile')->selectRaw('users.id,users.name,participants.deleted_at as borrado')
+        ->join('participants','participants.user_id','=','users.id')
+        
+        ->whereNull('participants.deleted_at')
+        ->where('participants.thread_id',$id)
+        ->groupBy('users.name')->get();
+         //$participants = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
+
+        
+
+        $html = view('admin.message.showmodal', compact('thread', 'users','participants'))->render();
+        if(request()->ajax()) {
+            return response()->json([
+            'message' => $thread->subject,
+                'html' => $html,
+        ]);
+        };
+        return response()->json([
+            $participants
+        ],200,[],JSON_PRETTY_PRINT);
+
+        /*$columns =  User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
+
+        
+*/
+        
+        
+        
+    }
+    public function removeparticipant(Request $request,$id){
+
+
+        try {
+            $thread = Thread::findOrFail($request->thread_id);
+        } catch (ModelNotFoundException $e) {
+            Session::flash('error_message', 'The thread with ID: ' . $request->thread_id . ' was not found.');
+            return response()->json(['error'=>'The thread with ID: ' . $request->thread_id . ' was not found.'],404);
+        }
+        //$thread->activateAllParticipants();
+
+        
+
+        if(Input::has('user_id')){
+            /*$thread->removeParticipant(Input::has('user_id')) ;*/
+            $thread->removeParticipant(Input::get('user_id')) ;
+            //$thread->addParticipant(Input::get('user_id'));
+            return response()->json([
+            'message' =>Input::has('user_id'),
+        ],200);
+            
+        }
+        
+
+
+
+        return response()->json(['error'=>'not authorize'],403);
+
+        /*if (Input::has('recipients')) {
+            // add code logic here to check if a thread has max participants set
+            // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
+            
+            $thread->removeParticipant(Input::get('recipients'));
+        }*/
+
     }
 }

@@ -109,8 +109,8 @@
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="alumnos[{{$attribute_row}}][alumno_estado]" id="inlineRadio2" value="normal">
-                            <label class="form-check-label" for="inlineRadio2">
+                            <input class="form-check-input" type="radio" name="alumnos[{{$attribute_row}}][alumno_estado]" id="inlineRadio3" value="normal">
+                            <label class="form-check-label" for="inlineRadio3">
                                 <i class="icofont icofont-emo-sad activity-icon icon-table-small is-feeling"></i>
                             </label>
                         </div>

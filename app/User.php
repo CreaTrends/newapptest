@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
 use Lexx\ChatMessenger\Traits\Messagable;
+
 class User extends Authenticatable 
 {
     use LaratrustUserTrait;
@@ -67,6 +68,11 @@ class User extends Authenticatable
     public function childs_of_course()
     {
         return $this->belongsToMany(Alumno::class,'alumno_curso','curso_id');
+    }
+
+    public function note_user(){
+
+        return $this->hasMany(Note::class,'note_user');
     }
 
     public function note_read_by()

@@ -54,4 +54,9 @@ class Notebook extends Model
     {
         return $this->belongsToMany(Album::class);
     }
+
+    public function alumno_notebook()
+    {
+        return $this->belongsToMany(Alumno::class,'alumno_notebook');
+    }
 }

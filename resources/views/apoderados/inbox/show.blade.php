@@ -1,44 +1,57 @@
 @extends('layouts.parentPanel')
-@section('profile-header')
-<div class="jumbotron profile-header is-darkgreen mb-0 rounded-0">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5 text-center">
-                <img src="" class="profile-image rounded-circle mb-3" width="120">
-                <h4><strong>Hola {{Auth::user()->profile->first_name}}</strong></h4>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-7">
 
         <a href="{{route('apoderado.messages')}}" class="my-2 btn custom-btn btn-link">Volver </a>
 
-        
-        <ul class="list-unstyled">
+        <h5 class="d-flex justify-content-between border-bottom border-gray pb-2 my-3 fw-900">
+            <strong>{{$thread->subject}}</strong>
+            ({{ $thread->userUnreadMessagesCount(Auth::id()) }} unread)
+        </h5>
+        <div class="messages d-none" id="message-{{$thread->id}}">
+
             @foreach($thread->messages as $message)
-                <li class="media p-2 pt-3 border-bottom mb-0" id="thread_list_{{ $message->id }}">
-                    <img class="mr-3" src="https://ui-avatars.com/api/?background=49bfbf&color=fff&name={{$message->user->name}}" alt="Generic placeholder image" width="48">
-                    <div class="media-body">
-                        <h6 class="mt-0 mb-1">
-                        <strong>{{ $message->user->name }}</strong> dijo :
-                        <div class="text-muted">
-                            <small> {{ $message->created_at->diffForHumans() }}</small>
-                        </div>
-                        </h6>
-                        <p style="line-height: .85rem;">
-                            <small style="font-weight: 600;">
-                            {{ $message->body }}
-                            </small>
-                        </p>
+
+            @if($message->user_id == Auth::id())
+            
+            <div class="d-flex justify-content-end bd-highlight message-box mb-4" id="thread_list_{{ $message->id }}">
+                <div class="chat-body w-auto order-xs-2" >
+                    <div class="chat-content p-3">
+                        <p class="chat-text text-right">{{ $message->body }}</p>
                     </div>
-                </li>
+                </div>
+                <div class="chat-avatar ml-2 order-xs-1">
+                    @if(empty($message->user->profile->image))
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="https://ui-avatars.com/api/?background=5A55A3&color=fff&name={{$message->user->profile->first_name}}+{{$message->user->profile->last_name}}" width="48">
+                    @else
+                    
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/'.$message->user->profile->image) !!}" width="48">
+                    @endif
+                </div>
+            </div>
+            @else
+            <div class="d-flex justify-content-start bd-highlight message-box mb-4" id="thread_list_{{ $message->id }}">
+                <div class="chat-avatar mr-2">
+                    
+                    @if(empty($message->user->profile->image))
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="https://ui-avatars.com/api/?background=5A55A3&color=fff&name={{$message->user->profile->first_name}}+{{$message->user->profile->last_name}}" width="48">
+                    @else
+                    
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/'.$message->user->profile->image) !!}" width="48">
+                    @endif
+                </div>
+                <div class="chat-body w-auto">
+                    <div class="chat-content to-left p-3">
+                        <p class="chat-text text-left">{{ $message->body }}</p>
+                    </div>
+                </div>
+            </div>
+            @endif
             @endforeach
-        </ul>
-        <div>
+        </div>
+        <div class="mt-4">
             <form action="{{ route('apoderados.inbox.update', $thread->id) }}" method="post">
                 {{ method_field('put') }}
                 {{ csrf_field() }}
@@ -55,4 +68,60 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+                
+<script>
+
+$(document).ready(function() {
+  $('.messages').addClass('d-block');
+  $('.messages').slimscroll({
+        height: '300px',
+        color: 'rgba(0,0,0,.8)',
+        size: '5px',
+        alwaysVisible: true,
+        borderRadius: '0',
+        railBorderRadius: '0',
+        distance: '0px',
+        start: $('#thread_list_'+ {{$thread->getLatestMessageAttribute()->id}}),
+    });
+  });
+
+$('form').submit(function(e) {
+                        e.preventDefault();
+                        var data = $(this).serialize();
+                        var url = $(this).attr('action');
+                        var method = $(this).attr('method');
+                        // clear textarea/ reset form
+                        $(this).trigger('reset');
+                        $.ajax({
+                            method: method,
+                            data: data,
+                            url: url,
+                            success: function(response) {
+                                var thread = $('#message-' + response.message.thread_id);
+                                
+                                $('body').find(thread).append(response.html);
+
+                                console.log(response);
+                                /*$('.messages').slimscroll({
+                                    start: $('#thread_list_33'),
+                                });*/
+                                var scrollTo_int = $('.messages').prop('scrollHeight') + 'px';
+                                console.log(scrollTo_int)
+                                 $('.messages').slimscroll({
+                                    scrollTo : scrollTo_int,
+                                  }).bind('slimscroll', function(e, pos) {
+                                    console.log(pos);
+                                  });
+                                
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                    });
+            </script>
+
 @endsection
