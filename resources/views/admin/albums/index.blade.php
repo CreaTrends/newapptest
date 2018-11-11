@@ -74,7 +74,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="input-course">Curso / Nivel</label>
-                            <select class="form-control"  name="curso[]">
+                            <select class="form-control"  name="curso">
                                 <option>Seleccionar Curso</option>
                                 <option value="all">Todos</option>
                                 @foreach($cursos as $curso)

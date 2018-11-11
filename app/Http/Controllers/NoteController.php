@@ -72,12 +72,6 @@ class NoteController extends Controller
     {
 
         //
-        
-
-        
-        
-
-
         $this->validate($request, [
             'recipients' => 'required',
             'subject' => 'required',
@@ -145,20 +139,21 @@ class NoteController extends Controller
         
         
         // verificamos notificaciones 
-        $sent_to = User::whereIn('id',$recipientes)->get();
+        /*$sent_to = User::whereIn('id',$recipientes)->get();
 
         foreach($sent_to as $users){
             $user = User::findorFail($users->id);
             $user->notify(new NewNoteNotification($note, $user->id));
             //$user->notifications()->delete();
-        }
+        }*/
 
         $html = view('admin.notes.noteslist', compact('note'))->render();
 
         if(request()->ajax()) {
             return response()->json([
                 'status' => 'OK',
-                'data' => $note,
+                'sticky' => $note->sticky,
+                'id' => $note->id,
                 'html' => $html
             ]);
         }
@@ -179,6 +174,7 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         //
+
         $request->user_id = auth()->user()->id;
 
         $note = Note::create([
@@ -248,7 +244,7 @@ class NoteController extends Controller
             'readed_at' => Carbon::now(),
             'readed' => '1'
         ]);*/
-        
+        return response()->json(['error' => 'Not authorized.'],403);
 
         return $notes;
         
@@ -293,7 +289,7 @@ class NoteController extends Controller
     {
         //
         $user = User::find(auth()->user()->id);
-        $note = Note::with('author','note_user','curso')->find($id);
+        $note = Note::with('author','note_user','curso','readed')->find($id);
 
         $cursos = Curso::all();
 
@@ -393,7 +389,7 @@ class NoteController extends Controller
         if(request()->ajax()) {
             return response()->json([
                 'status' => 'OK',
-                'data' => $note,
+                'id' => $id,
                 'html' => $html
             ]);
         }
@@ -420,24 +416,25 @@ class NoteController extends Controller
 
     public function deleteall(Request $request){
 
-        $rr[] = explode(',',json_encode($request->id));
-        
+        $rr = explode(',',$request->id);
+        $userIds = is_array($rr) ? $rr : (array) func_get_args();
 
         
 
-        
-        foreach($rr as $r){
-            $note = Note::findorfail($r)->delete();
-        }
-
-        //$html = view('admin.notes.noteslist', compact('note'))->render();
-
+        $note = Note::whereIn('id',$rr)->delete();
         if(request()->ajax()) {
             return response()->json([
                 'status' => 'OK',
-                'html' => $rr
+                'ids'=>$rr,
+                'html' => ''
             ]);
         }
+        
+        return response()->json(['error' => 'Not authorized.'],403);
+
+        //$html = view('admin.notes.noteslist', compact('note'))->render();
+
+        
 
         
         //return redirect()->route('notes')->with('info', 'Entrada eliminada con éxito');

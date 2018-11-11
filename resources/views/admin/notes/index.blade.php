@@ -21,7 +21,7 @@
             <button class="dropdown-item" type="button">Editar</button>
             <div class="dropdown-divider"></div>
             <form action="{{route('notes.deleteall')}}" method="POST" id="bulk_delete" enctype="multipart/form-data">
-                <input type="hidden" name="noteSelected" id="noteSelected" />
+                <input type="hidden" name="noteSelected[]" id="noteSelected" />
                 {{ csrf_field() }}
                 {{ method_field('DELETE') }}
                 <button class="dropdown-item" type="submit">Eliminar</button>
@@ -102,12 +102,20 @@
                 z-index: 999999;
                 ">
                 <div class="box h-100 d-flex justify-content-center flex-column text-center align-items-center">
-                <img src="https://loading.io/spinners/rolling/index.curve-bars-loading-indicator.gif" >
-                <h3><strong>Enviando Circular</strong></h3>
-                <p>Espera mientras enviamos la circular</p>
-            </div>
+                    
+                    <h3><strong>Enviando Circular</strong></h3>
+                    <p>Espera mientras enviamos la circular</p>
+                    <div id="output" class="container"></div>
+                    <div class="progress" style="width:400px">
+  <div id="dynamic" class="progress-bar progress-bar-success is-lightgreen" role="progressbar">
+    
+  </div>
+</div>
+                </div>
+                
             </div>
             <div class="modal-body">
+
                 <form method="post" id="insert_form" enctype="multipart/form-data">
                     {{ method_field('POST') }}
                     {{csrf_field()}}
@@ -166,7 +174,7 @@
                                     @role('superadministrator')
                                     <li class="list-group-item d-flex justify-content-start align-items-center px-1 py-2">
                                         <label class="form-check-label d-flex w-100" for="recipients_all">
-                                            <input type="checkbox" class="d-none"
+                                            <input type="checkbox" class="d-block"
                                              name="recipients_all" id="recipients_all">
                                             <div class="avatar" id="uid-all">
                                                 <img class="align-self-center mr-0 rounded-circle mw-25" src="https://www.gravatar.com/avatar/{{md5(time())}}?s=48&d=identicon&r=PG" width="48">
@@ -206,7 +214,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary custom-btn is-default" data-dismiss="modal">Close</button>
                     
-                    <input type="submit" name="insert" id="insert" value="Insert" class="btn btn-success" />
+                    <input type="submit" name="insert" id="insert" value="Insert" class="btn btn-success custom-btn is-green" />
                 </div>
             </form>
         </div>
@@ -217,7 +225,7 @@
 <script>  
  $(document).ready(function(){  
     //clear and reset form
-
+let readed_container = $("#readed_by_group");
 $(document).on('submit', '#bulk_delete', function(event){
     event.preventDefault();
     var form = $(this);
@@ -235,7 +243,15 @@ $(document).on('submit', '#bulk_delete', function(event){
                 'Content-Type': 'multipart/form-data'
             }
             }).then(function (response) {
-        console.log(response.data);
+        //console.log(response.data);
+        $.each(response.data.ids, function(index, item) {
+            $('#list_note-'+item).stop().hide(function(){
+                $(this).remove();
+                $(this).find('input[name="checkItem[]"]').prop( "checked", false );
+
+            })
+        });
+        form[0].reset();
 
     })
     .catch(error => {
@@ -247,13 +263,22 @@ $(document).on('submit', '#bulk_delete', function(event){
     
 $('#add').click(function() {
 
-    $('#insert').val("Insert");
-    $("#readed_by_group").addClass('d-none');
+    var form =$("#insert_form"); 
     var $_metodo = "POST";
+    var $_action = " {{ route('notes.save')}}";
+    var $_input_token = $('input[name=_token]');
+
+    $_input_token.val($('meta[name="csrf-token"]').attr('content'));
+
+    form.trigger('reset');
+
+    $('#insert').val("Enviar");
+    $("#readed_by_group").addClass('d-none');
+    
     $('input[name=_method]').val($_metodo);
-    var $_note_url = " {{ route('notes.save')}}";
-    $('input[name=action]').val($_note_url);
-    $('input[name=_token]').val($('meta[name="csrf-token"]').attr('content'));
+    
+    $('input[name=action]').val($_action);
+    
 });
 // view note
 $(document).on('click', '.view_note', function(){
@@ -263,6 +288,13 @@ $(document).on('click', '.view_note', function(){
     $_modal = $('.mf-view-modal');
 
     console.log($_note_id);
+    let config = {
+      onUploadProgress: progressEvent => {
+        let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+        // do whatever you like with the percentage complete
+        // maybe dispatch an action that will update a progress bar or something
+      }
+    }
     axios({
             method: 'get',
             url:$_note_action,
@@ -313,6 +345,7 @@ $(document).on('click', '.view_note', function(){
         var $_note_url =$_url_update;
         $('input[name=action]').val($_note_url);
 
+        $("#readed_by_group").addClass('d-none');
         
         var $_metodo = "PUT";
         $('input[name=_method]').val($_metodo);
@@ -337,19 +370,28 @@ $(document).on('click', '.view_note', function(){
                 $('#sticky').prop('checked', response.sticky == 1);
                 $('#sticky').prop('checked', response.sticky == 1);
                 //$('#files_attached').val(JSON.stringify(response.attached.encrypt));
-                var readed_users = [];
-                $.each(response.note_user, function(i) {
-                    readed_users.push(this.profile.first_name +' '+ this.profile.last_name+' ');
-                });
+                console.log('longitud de variable :'+response.attached);
+                if(response.attached){
+                    $ftext = response.attached.length+' archivos adjuntos';
+                    $('.total_files').text($ftext).addClass('d-block').fadeIn('slow');  
+                }
                 
-                console.log(readed_users);
-                
-                $('#readed_by').val(readed_users);
-                $("#readed_by_group ").removeClass('d-none');
-                $("#readed_by_group > .small").text(readed_users);
+                if(response.readed.length > 0) {
+                    var readed_users = [];
+                    $.each(response.readed, function(i) {
+                        readed_users.push(this.profile.first_name +' '+ this.profile.last_name+' ');
+                    });
 
-                /*$ftext = response.attached.length+' archivos seleccionados';
-                $('.total_files').text($ftext).addClass('d-block').fadeIn('slow');*/
+                    
+                    $('#readed_by').val(readed_users);
+                    $("#readed_by_group ").removeClass('d-none');
+                    $("#readed_by_group > .small").text(readed_users);
+                }
+               
+                
+                
+
+                
                 $('#insert').val("Update"); 
 
 
@@ -365,53 +407,83 @@ $(document).on('submit', '#insert_form', function(event){
     event.preventDefault();
     
     var method = $(this).find('input[name=_method]').val() || 'POST';
-    var action = $(this).find('input[name=action]').val();
+    let action = $(this).find('input[name=action]').val();
     var _token = $('meta[name="_token"]').attr('content');
+    var loader = $('.modal-before');
+    let output = document.getElementById('output');
+
+    let progress = $('.progress');
+    let bar = progress.find('.progress-bar');
+
+    
 
     let self = this;
 
     let formData = new FormData($(this)[0]);
-    var file = document.querySelector('#photo');
+    var file = document.getElementById('photo').files[0];
+
 
 
    /* formData.append("file", file.files[0]);*/
-   formData.append('file', $('input[type=file]')[0].files[0]);
+   formData.append('file', file);
+
+var config = {
+    onUploadProgress: function(e) {
+    let percentCompleted = Math.round( (e.loaded * 100) / e.total );
+       console.log("Progress:-"+percentCompleted);
+
+       output.innerHTML = percentCompleted+'%';
+
+       //$(bar).text('subiendo').width(percentCompleted+'%');
+        if (e.lengthComputable) {
+        loader.addClass("d-block");
+        $('div.progress > div.progress-bar').css({ "width":percentCompleted + "%" }).text(percentCompleted+'%');
+        }
+        
+    }
+};
+
+axios.post(action, formData, config)
+    .then(function(res) {
+        output.className = 'container';
+        output.innerHTML = res.data;
+        
+        loader.removeClass("d-block");
+        console.log(res.data);
+        console.log(method);
+        if(method == 'POST'){
+            if(res.data.sticky > 0){
+              $('.table > tbody tr:first').before(res.data.html).fadeIn(function(){
+                $("#list_note-"+res.data.id).css('background-color', '#f0f8ff');
+                console.log($("#list_note-"+res.data.id));
+              })
+            }else {
+                $('.table > tbody').append(res.data.html);
+            }
+        }else {
+            console.log('el di a cambiar es : '+res.data.id);
+            $(document).find("#list_note-"+res.data.id).replaceWith(res.data.html);
+        }
+        
+
+        loader.removeClass("d-block");
+        $("#insert_form").trigger('reset');;
+        $('#modal-add-data').modal('hide');
+
+        
+        $("#insert_form").find('.avatar').removeClass('active');
+        
+        
+    })
+    .catch(function(err) {
+        console.log(err);
+        $('.alert-danger').removeClass('d-none');
+        
+        loader.removeClass("d-block");
+    });
 
 
-$('.modal-before').addClass('d-block');
-axios({
-method: 'post',
-url: action,
-data:formData,
-header: {
-'Content-Type': 'multipart/form-data'
-}
-})
-.then(function (response) {
 
-
-$("#insert_form").find('.avatar').removeClass('active');
-$("#insert_form")[0].reset();
-$('.modal-before').removeClass('d-block');
-$('#modal-add-data').modal('hide');
-toastr.success("Agregado Con éxito");
-
-
-console.log(response.data);
-if(method== "POST"){
-$('.table > tbody ').append(response.data.html).fadeIn();
-}else {
-    var id = response.data.data.id;
-  $('.table > tbody > #list_note-'+id).replaceWith(response.data.html).fadeIn();  
-}
-
-
-})
-.catch(error => {
-console.log(error.response.data.errors)
-$('.alert-danger').addClass('d-block');
-$('.modal-before').removeClass('d-block');
-});
 
 
 // bulk function
@@ -473,15 +545,21 @@ $('input[name="checkItem[]"]').change(function() {
 
 
 
-$('#modal-add-data').on('hidden.bs.modal', function(e)
-    { 
-
+$('#modal-add-data').on('hidden.bs.modal', function(e){
+    // reset values
+    var form = $("#insert_form");
+    var input_message = CKEDITOR.instances.message;
+    var total_file_text = $('.total_files');
+    form.trigger('reset');
+    form.find('.avatar').removeClass('active');
+    input_message.setData();
+    total_file_text.text('').removeClass('d-block');
         
        
     }) ;
 
 
-$('#customFileLang').change(function(e){
+$('#photo').change(function(e){
 
 var fileName = $(this).get(0).files;
 $ht = fileName.length+' archivos seleccionados';

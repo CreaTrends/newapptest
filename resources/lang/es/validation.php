@@ -2,6 +2,6 @@
 
 return [
 
-'required'             => 'The :attribute chupal.',
+'required'             => 'el campo :attribute es un campo obligatorio.',
 
 ];

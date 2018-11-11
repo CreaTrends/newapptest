@@ -54,7 +54,11 @@ class AlbumController extends Controller
             'album_owner' => 'required|exists:users,id',
         ]);
         
-        
+        if($request->curso == 'all'){
+            $request->curso = Curso::all()->pluck('id')->toArray();
+        }
+
+        //return $request->curso;
 
         $album = Album::create($request->all());
         $album->curso()->attach($request->curso);

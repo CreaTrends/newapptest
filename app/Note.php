@@ -32,7 +32,7 @@ class Note extends Model
     }
     public function readed()
     {
-        return $this->belongsToMany(User::class,'note_user')->wherePivot('readed','=','1')->wherePivot('user_id','!=',auth()->user()->id);
+        return $this->belongsToMany(User::class,'note_user')->with('profile')->wherePivot('readed','=','1')->wherePivot('user_id','!=',auth()->user()->id);
     }
     public function unreaded()
     {
