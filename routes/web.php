@@ -19,14 +19,11 @@ Route::get('/', function () {
 
 Route::get('testeando', function () {
 
-    $users = App\User::All();
+    //echo asset('storage/file.txt');
 
-    $note = App\Note::find(1);
-
-    foreach($users as $user){
-        //$user->notify(new NewNoteNotification($note, $note->user->id));
-        $user->notifications()->delete();
-    }
+    $contents = Storage::files;
+    $dt = now();
+    return $dt;
     
     //Notification::send($user, new NewNoteNotification($note));
 
@@ -106,6 +103,7 @@ Route::get('messagemodal/{id}', ['as' => 'admin.message.showmodal', 'uses' => 'M
 Route::put('/message/{id}', ['as' => 'admin.inbox.update', 'uses' => 'MessagesController@update']);
 Route::post('/messages/filter', ['as' => 'admin.messages.filter', 'uses' => 'MessagesController@filterUser'])->middleware('auth');
 Route::post('/messages/removeparticipant/{id}', ['as' => 'admin.messages.removeparticpant', 'uses' => 'MessagesController@removeparticipant'])->middleware('auth');
+Route::get('/message/delete/{id}', ['as' => 'message.delete', 'uses' => 'MessagesController@delete']);
 // albums 
 Route::resource('albums','AlbumController');
 
@@ -134,6 +132,7 @@ Route::middleware(['password_expired'])->group(function () {
     Route::get('messages', ['as' => 'apoderado.messages', 'uses' => 'ApoderadoController@inbox']);
     Route::get('message/{id}', ['as' => 'apoderados.inbox.show', 'uses' => 'ApoderadoController@inboxshow']);
     Route::put('/message/{id}', ['as' => 'apoderados.inbox.update', 'uses' => 'MessagesController@update']);
+    Route::delete('/message/{id}', ['as' => 'apoderados.inbox.delete', 'uses' => 'MessagesController@removeparticipant']);
     Route::get('profile/{id}',['as' => 'apoderado.profile', 'uses' => 'ApoderadoController@profile']);
     Route::put('profile/{id}',['as' => 'apoderado.profile.update', 'uses' => 'ApoderadoController@updateProfile']);
     Route::get('notes', ['as' => 'apoderado.notes', 'uses' => 'ApoderadoController@notes'],[

@@ -52,17 +52,17 @@
             @endforeach
         </div>
         <div class="mt-4">
-            <form action="{{ route('apoderados.inbox.update', $thread->id) }}" method="post">
+            <form action="{{ route('apoderados.inbox.update', $thread->id) }}" method="post" id="message-form">
                 {{ method_field('put') }}
                 {{ csrf_field() }}
                 
                 <!-- Message Form Input -->
                 <div class="form-group">
-                    <textarea name="message" class="form-control" rows="3">{{ old('message') }}</textarea>
+                    <textarea name="message" class="form-control" rows="3" id="new-message">{{ old('message') }}</textarea>
                 </div>
                 <!-- Submit Form Input -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary custom-btn is-lightblue">Enviar Mensaje</button>
+                    <button type="submit" id="submit-message" class="btn btn-primary custom-btn is-lightblue" disabled>Enviar Mensaje</button>
                 </div>
             </form>
         </div>
@@ -75,6 +75,15 @@
 <script>
 
 $(document).ready(function() {
+    var message_area = $('textarea[name="message"]');
+$(document).on('keyup', message_area, function() {
+    var message_trim = $('textarea[name="message"]').val();
+    if (message_trim != '') {
+        $('#submit-message').prop('disabled', false).removeClass('disabled');
+    } else {
+        $('#submit-message').prop('disabled', true).addClass('disabled');
+    }
+});
   $('.messages').addClass('d-block');
   $('.messages').slimscroll({
         height: '300px',
@@ -89,39 +98,39 @@ $(document).ready(function() {
   });
 
 $('form').submit(function(e) {
-                        e.preventDefault();
-                        var data = $(this).serialize();
-                        var url = $(this).attr('action');
-                        var method = $(this).attr('method');
-                        // clear textarea/ reset form
-                        $(this).trigger('reset');
-                        $.ajax({
-                            method: method,
-                            data: data,
-                            url: url,
-                            success: function(response) {
-                                var thread = $('#message-' + response.message.thread_id);
-                                
-                                $('body').find(thread).append(response.html);
+    e.preventDefault();
+    var data = $(this).serialize();
+    var url = $(this).attr('action');
+    var method = $(this).attr('method');
+    // clear textarea/ reset form
+    $(this).trigger('reset');
+    $.ajax({
+        method: method,
+        data: data,
+        url: url,
+        success: function(response) {
+            var thread = $('#message-' + response.message.thread_id);
 
-                                console.log(response);
-                                /*$('.messages').slimscroll({
-                                    start: $('#thread_list_33'),
-                                });*/
-                                var scrollTo_int = $('.messages').prop('scrollHeight') + 'px';
-                                console.log(scrollTo_int)
-                                 $('.messages').slimscroll({
-                                    scrollTo : scrollTo_int,
-                                  }).bind('slimscroll', function(e, pos) {
-                                    console.log(pos);
-                                  });
-                                
-                            },
-                            error: function(error) {
-                                console.log(error);
-                            }
-                        });
-                    });
+            $('body').find(thread).append(response.html);
+
+            console.log(response);
+            /*$('.messages').slimscroll({
+                start: $('#thread_list_33'),
+            });*/
+            var scrollTo_int = $('.messages').prop('scrollHeight') + 'px';
+            console.log(scrollTo_int)
+            $('.messages').slimscroll({
+                scrollTo: scrollTo_int,
+            }).bind('slimscroll', function(e, pos) {
+                console.log(pos);
+            });
+
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+});
             </script>
 
 @endsection

@@ -27,18 +27,18 @@
         @endforeach
     </ul>
     <div class="mt-4">
-        <form action="{{ route('admin.inbox.update', $thread->id) }}" method="post">
+        <form action="{{ route('admin.inbox.update', $thread->id) }}" method="post" id="message-form">
             {{ method_field('PUT') }}
             {{ csrf_field() }}
-            
+            <input type="hidden" name="new_recipientsSelected" >
             <!-- Message Form Input -->
             <div class="form-group">
-                <textarea name="message" class="form-control" rows="3">{{ old('message') }}</textarea>
+                <textarea name="message" class="form-control" rows="3" id="new-message">{{ old('message') }}</textarea>
             </div>
             
             <!-- Submit Form Input -->
             <div class="form-group">
-                <button type="submit" class="btn btn-primary custom-btn is-lightblue">Enviar Mensaje</button>
+                <button type="submit" id="submit-message" class="btn btn-primary custom-btn is-lightblue disabled" disabled>Enviar Mensaje</button>
             </div>
         </form>
     </div>
@@ -50,7 +50,7 @@
     @foreach($participants as $user)
         <li class="list-group-item d-flex justify-content-between justify-content-center align-items-stretch px-1 py-2" id="recipient-{{$user->id}}">
             <label class="form-check-label d-flex w-100" for="recipients-{{$user->id}}">
-                <input type="checkbox" class="form-check-input d-none" id="recipients-{{$user->id}}" name="raecipients[]" value="{{$user->id}}">
+                <input type="checkbox" class="form-check-input d-none" id="recipients-{{$user->id}}" name="recipients[]" value="{{$user->id}}">
                 <div class="avatar w-25 mr-3" id="uid-{{$user->id}}">
                     
                     
@@ -93,9 +93,20 @@
 
     @endforeach
     </ul>
-    <div class="btn-group w-100 mt-5 d-none" role="group" aria-label="Basic example">
-  <button type="button" class="btn btn-secondary btn-block custom-btn is-lightgreen">Invitar apoderado</button>
-</div>
+    
+    <!-- target people -->
+        <div class="btn-group w-100 mt-3 text-right justify-content-between align-items-center" role="group" aria-label="Basic example">
+            
+        <form method="POST" id="addParticipant-form">
+            {{ csrf_field() }}
+            {{ method_field('POST') }}
+            <input type="hidden" name="thread_id[]" value="{{$thread->id}}">
+            <button type="button" name="add-partipant" id="addParticipant" class="btn btn-primary custom-btn is-small is-lightgreen">Agregar Apoderados <i class="fas fa-plus"></i></button>
+            <button type="submit" name="submit-partipant" id="addParticipant" class="btn btn-primary custom-btn is-small is-lightgreen">listo <i class="fas fa-plus"></i></button>
+        </form>
+            
+        </div>
+    <!-- end target epople -->
 </div>
 <div class="col-lg-12 mt-5">
     

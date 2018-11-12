@@ -14,11 +14,12 @@
                 <a class="nav-link" href="{{route('apoderado.messages')}}">Mensajes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
+                <a class="nav-link" href="{{route('apoderado.notes')}}">Circulares</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.messages')}}">Mensajes</a>
+                <a class="nav-link" href="{{route('apoderado.albums')}}">Galerias</a>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
             </li>

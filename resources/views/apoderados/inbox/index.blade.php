@@ -12,25 +12,6 @@
 </div>
 @endsection
 @section('content')
-<div class="row">
-    <div class="col-md-12 my-3">
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link " href="{{route('apoderado.feed')}}">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{route('apoderado.messages')}}">Mensajes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
-            </li>
-        </ul>
-    </div>
-</div>
-
 <div class="row justify-content-center">
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
         <h5 class="d-flex justify-content-between border-bottom border-gray pb-2 my-3 fw-900">
@@ -41,7 +22,7 @@
         <!-- note id {{$thread->id}}-->
         
         <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-1 border-bottom widget-feed"
-            data-id="{{$thread->id}} " data-order="{{$loop->iteration}}">
+            data-id="{{$thread->id}} " data-order="{{$loop->iteration}}" id="thread-id-{{$thread->id}}">
             <div class="mr-2 widget-feed-left">
                 <div class="p-2 text-center widget-info h-100 d-flex justify-content-center flex-column ">
                     <h3 class="mb-0" style="position: relative;" alt="Circular leida " title="Circular leida">
@@ -80,10 +61,54 @@
                     </small></p>
                 </a>
             </div>
+            <div class="p-3  mr-auto">
+                <a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="is-options-menu">
+                    <i class="fas fa-ellipsis-h"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                    <button class="dropdown-item btn-action" type="button" data-url="{{ route('apoderados.inbox.show',$thread->id)}}" id="btnAction1">Ver</button>
+                    <div class="dropdown-divider"></div>
+                    <form action="{{route('apoderados.inbox.delete',Auth::user()->id)}}" method="POST" id="delete-this-message">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <input type="hidden" name="thread_id[]" value="{{$thread->id}}">
+                        <input type="hidden" name="recipientuser[]" value="{{Auth::user()->id}}">
+                        <button type="submit" class="dropdown-item">Eliminar</button>
+                    </form>
+                </div>
+            </div>
         </div>
         @endforeach
     </div>
 </div>
 
 @endsection
+@section('scripts')
+<script>
+$(document).on('submit', '#delete-this-message', function(event) {
+    event.preventDefault();
+    $_form = $(this);
+    $_id = $_form.find('input[name="recipientuser[]"]').val();
+    $_thread_id = $_form.find('input[name="thread_id[]"]').val();
+    axios({
+            method: "delete",
+            url: $(this).attr('action'),
+            data: {
+                user_id: $_id,
+                thread_id: $_thread_id,
+            },
+        }).then(function(response) {
+            $(document).find('#recipient-' + $_id).fadeOut().remove();
+            $(document).find('[id=rep][value=' + $_id + ']').remove();
+            $('#thread-id-'+$_thread_id).stop().fadeOut(100,function(){
+                $(this).remove();
+            });
+            
+        })
+        .catch(error => {
+            console.log(error)
+        });
+});
 
+</script>
+@endsection

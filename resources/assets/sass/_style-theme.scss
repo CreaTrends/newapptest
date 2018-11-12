@@ -630,7 +630,26 @@ main.is-login{
         }
     }
 }
+.is-message-bubble{
+  animation: animateElement linear .3s;
+  animation-iteration-count: 1;
+  background:#f0faff;
+  margin-bottom:0px;
+  width:100%;
+  min-height:30px;
+  border-radius:0px;
+ }
 
+@keyframes animateElement{
+  0% {
+    opacity:0;
+    transform:  translate(0px,20px);
+  }
+  100% {
+    opacity:1;
+    transform:  translate(0px,0px);
+  }
+}
 // dropmenu
 .is-options-menu {
         background-color: #fdfdfd;

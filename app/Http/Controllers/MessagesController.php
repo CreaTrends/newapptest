@@ -39,6 +39,7 @@ class MessagesController extends Controller
         $cursos = Curso::all();
 
         //
+        auth()->user()->notifications()->delete();
 
         return view('admin.message.index', compact('threads','user_list','cursos'));
         /*echo "<pre>";
@@ -89,14 +90,6 @@ class MessagesController extends Controller
             $q->whereIn('alumno_id',$input['recipients']);
         })->pluck('id')->toArray();
 
-        
-
-/*
-
-        return response()->json([
-                'status' => $input['recipients'],
-                'message' => $message_to
-            ]);*/
         $thread = Thread::create([
             'subject' => $input['subject'],
         ]);
@@ -130,7 +123,6 @@ class MessagesController extends Controller
             ]);
         }
 
-        
 
         if(auth()->user()->hasRole('parent')){
             return redirect()->back()->with('info','Mensaje enviado con éxito');
@@ -144,7 +136,14 @@ class MessagesController extends Controller
     }
     public function update($id)
     {
+        
 
+        /*$rr = explode(',',Input::get('new_recipientsSelected'));
+        $user_list = User::whereHas('students',function($q) use($rr){
+            $q->whereIn('alumno_id',$rr);
+        })->get()->pluck('id');
+
+        return $user_list;*/
 
 
         try {
@@ -174,7 +173,8 @@ class MessagesController extends Controller
             //$thread->removeParticipant(Input::get('recipients')) ;
             $thread->addParticipant(Input::get('recipients'));
         }
-        $html = view('admin.message.html-message', compact('message'))->render();
+        $html_parent = view('admin.message.html-message', compact('message'))->render();
+        $html_admin = view('admin.message.single-message', compact('message'))->render();
         // check if pusher is allowed
         if(config('chatmessenger.use_pusher')) {
             $this->oooPushIt($message);
@@ -183,7 +183,8 @@ class MessagesController extends Controller
             return response()->json([
                 'status' => 'OK',
                 'message' => $message,
-                'html' => $html,
+                'html' => $html_parent,
+                'admin'=>$html_admin,
                 'thread_subject' => $message->thread->subject,
             ]);
         }
@@ -196,11 +197,18 @@ class MessagesController extends Controller
     {
 
         $id = $request->id;
-        $users = Alumno::with('parent','curso')->whereHas('curso', function($q) use($id) {
+        if($request->id > 0){
+            $users = Alumno::with('parent','curso')->whereHas('curso', function($q) use($id) {
             $q->where('curso_id','=', $id);
         })->whereHas('parent',function($q){
             $q->Wherenotnull('user_id');
         })->get();
+        }else {
+            $users = Alumno::with('parent','curso')->whereHas('parent',function($q){
+            $q->Wherenotnull('user_id');
+        })->get();
+        }
+        
 
         $html = view('admin.message.listusers-ajax', compact('users'))->render();
 
@@ -221,7 +229,7 @@ class MessagesController extends Controller
         // don't show the current user in list
         $userId = Auth::id();
         $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
-$thread->markAsRead($userId);
+        $thread->markAsRead($userId);
         
 
         $participants = User::with('profile')->selectRaw('users.id,users.name,participants.deleted_at as borrado')
@@ -253,6 +261,10 @@ $thread->markAsRead($userId);
         
         
     }
+    public function addparticipant(Request $request,$id){
+
+
+    }
     public function removeparticipant(Request $request,$id){
 
 
@@ -266,7 +278,7 @@ $thread->markAsRead($userId);
 
         
 
-        if(Input::has('user_id')){
+        if(Input::has('user_id') && Input::get('user_id') == Auth::id()){
             /*$thread->removeParticipant(Input::has('user_id')) ;*/
             $thread->removeParticipant(Input::get('user_id')) ;
             //$thread->addParticipant(Input::get('user_id'));
@@ -287,6 +299,29 @@ $thread->markAsRead($userId);
             
             $thread->removeParticipant(Input::get('recipients'));
         }*/
+
+    }
+
+    public function delete(Request $request,$id){
+
+        try {
+            $thread = Thread::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            Session::flash('error_message', 'The thread with ID: ' . $request->thread_id . ' was not found.');
+            return response()->json(['error'=>'The thread with ID: ' . $request->thread_id . ' was not found.'],404);
+        }
+
+       
+
+        return response()->json([
+                'status' => 'OK',
+                'message' => $thread,
+                'html' => $thread->messages(),
+                'thread_subject' => $thread->messages(),
+            ]);
+
+
+        return $thread->messages();
 
     }
 }

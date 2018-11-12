@@ -174,7 +174,7 @@
                                     @role('superadministrator')
                                     <li class="list-group-item d-flex justify-content-start align-items-center px-1 py-2">
                                         <label class="form-check-label d-flex w-100" for="recipients_all">
-                                            <input type="checkbox" class="d-block"
+                                            <input type="checkbox" class="d-none"
                                              name="recipients_all" id="recipients_all">
                                             <div class="avatar" id="uid-all">
                                                 <img class="align-self-center mr-0 rounded-circle mw-25" src="https://www.gravatar.com/avatar/{{md5(time())}}?s=48&d=identicon&r=PG" width="48">
@@ -193,7 +193,7 @@
                                     @foreach($cursos as $curso)
                                     <li class="list-group-item d-flex justify-content-start align-items-center px-1 py-2">
                                         <label class="form-check-label d-flex w-100" for="recipients-{{$curso->id}}">
-                                            <input type="checkbox" class="d-block" id="recipients-{{$curso->id}}" name="recipients[]" value="{{$curso->id}}">
+                                            <input type="checkbox" class="d-none" id="recipients-{{$curso->id}}" name="recipients[]" value="{{$curso->id}}">
                                             <div class="avatar" id="uid-{{$curso->id}}">
                                                 <img class="align-self-center mr-0 rounded-circle mw-25" src="https://www.gravatar.com/avatar/{{md5($curso->id)}}?s=48&d=identicon&r=PG" width="48">
                                             </div>
@@ -320,10 +320,6 @@ $(document).on('click', '.view_note', function(){
                 railBorderRadius: '0',
                 start: 'top'
             });
-
-            
-
-
         })
         .catch(error => {
             console.log(error.response.data.errors)

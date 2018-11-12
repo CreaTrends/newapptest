@@ -12,28 +12,7 @@
 </div>
 @endsection
 @section('content')
-<div class="row">
-    <div class="col-md-12 my-3">
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link " href="{{route('apoderado.feed')}}">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{route('apoderado.notes')}}">Circulares</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.messages')}}">Mensajes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
-            </li>
-        </ul>
-    </div>
-</div>
+
 <div class="row justify-content-center">
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
         <h5 class="d-flex justify-content-between border-bottom border-gray pb-2 my-3 fw-900">
@@ -77,14 +56,14 @@
                     <i class="fas fa-ellipsis-h"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item btn-action" type="button" data-url="{{ route('apoderado.notes.display',$note->id)}}" id="btnAction1">Ver</button>
-                        <div class="dropdown-divider"></div>
-                        <form action="{{route('notes.deleteuser',$note->id)}}" method="POST">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            <button class="dropdown-item">Eliminar</button>
-                        </form>
-                    </div>
+                    <button class="dropdown-item btn-action" type="button" data-url="{{ route('apoderado.notes.display',$note->id)}}" id="btnAction1">Ver</button>
+                    <div class="dropdown-divider"></div>
+                    <form action="{{route('notes.deleteuser',$note->id)}}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <button class="dropdown-item">Eliminar</button>
+                    </form>
+                </div>
             </div>
         </div>
         @endforeach
