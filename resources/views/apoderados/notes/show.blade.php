@@ -49,8 +49,12 @@
                            {!! $note->body !!}
                         </p>
                         @if($note->attached)
+                        @foreach($note->attached as $images)
+                        <?php $prefix = Request::route()->getPrefix(); ?>
                         <h5 class="py-3">Archivo Adjunto <i class="icofont icofont-attachment"></i></h5>
-                        <a href="{{route('apoderado.tools.download',$note->id)}}">Descargar</a>
+                        <a href="{{url($prefix.'/tools/download',['id'=>$note->id,'file'=>$images['encrypt']])}}">Descargar</a>
+                        
+                        @endforeach
                         @endif
                     </div>
                 </li>

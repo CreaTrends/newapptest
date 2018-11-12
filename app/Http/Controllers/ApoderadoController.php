@@ -221,6 +221,9 @@ class ApoderadoController extends Controller
         });
 
         $alumno_profile = Alumno::with('curso')->findOrFail($alumno_id);
+
+        $user = \Auth::user();
+        $notification = Auth::user()->notifications()->findOrFail($request->nid)->markAsRead();
         
         //dd($alumno_profile);
         /*echo "<pre>";

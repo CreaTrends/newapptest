@@ -21,9 +21,13 @@ Route::get('testeando', function () {
 
     //echo asset('storage/file.txt');
 
-    $contents = Storage::files;
-    $dt = now();
-    return $dt;
+    
+    
+
+    $users = App\User::all();
+    foreach($users as $user ){
+        $user->notifications()->delete();
+    }
     
     //Notification::send($user, new NewNoteNotification($note));
 
@@ -140,14 +144,15 @@ Route::middleware(['password_expired'])->group(function () {
 ]);
     Route::delete('notes/deleteuser/{id}','NoteController@deleteuser')->name('notes.deleteuser');
     Route::get('notes/display/{id}','NoteController@displaynote')->name('apoderado.notes.display');
-    Route::get('notes/{id}',['as' => 'apoderado.notes.show', 'uses' => 'ApoderadoController@noteshow']);
+    Route::get('notes/{id}/{nid?}',['as' => 'apoderado.notes.show', 'uses' => 'ApoderadoController@noteshow']);
     Route::get('/tools/download/{id}/{file}', 'ToolController@DownloadAttach')->name('apoderados.tools.download');
 
     Route::get('albums',['as' => 'apoderado.albums', 'uses' => 'ApoderadoController@albums']);
     Route::get('album/{id}/{token}',['as' => 'apoderado.album', 'uses' => 'ApoderadoController@album']);
 
     Route::get('child/{id}/feed',['as' => 'child.feed', 'uses' => 'ApoderadoController@show']);
-    Route::get('child/{id}/feed/{ss}',['as' => 'child.feed', 'uses' => 'ApoderadoController@show']);
+    Route::get('child/{id}/feed/{date?}',['as' => 'child.feed', 'uses' => 'ApoderadoController@show']);
+    Route::get('notebook/{id}',['as' => 'notebook.show', 'uses' => 'NotebookController@show']);
 });
 
 

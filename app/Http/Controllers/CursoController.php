@@ -360,7 +360,7 @@ class CursoController extends Controller
 
 
             
-            foreach($tt->parent as $apoderados){
+            /*foreach($tt->parent as $apoderados){
                 $email = User::where('id',$apoderados->id)->first();
                 $sender = Profile::where('user_id',auth()->user()->id)->first();
 
@@ -373,6 +373,15 @@ class CursoController extends Controller
                 Mail::to($email)->send(new DailyReportEmail($objDemo));
                 //$emails = ['myoneemail@esomething.com', 'myother@esomething.com','myother2@esomething.com'];
                 
+            }*/
+
+            // verificamos notificaciones 
+            //$sent_to = User::whereIn('id',$recipientes)->get();
+
+            foreach($tt->parent as $users){
+                $user = User::findorFail($users->id);
+                $user->notify(new NewNotebook($notebook, auth()->user()->id));
+                //$user->notifications()->delete();
             }
             
             

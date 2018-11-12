@@ -49,17 +49,9 @@
           <div class="dropdown-menu dropdown-menu-right notificationDropdown p-0" aria-labelledby="dropnotifications" id="notificationDropdown">
             <h6 class="border-bottom border-bottom py-3 px-3 pb-0 mb-0"><strong>Notification</strong></h6>
             <div class="is-dropdown-container">
-            @foreach(Auth::user()->notifications as $notification)
-            <a href=" {{route('apoderado.notes.show',['id'=>$notification->data['action'],'nid'=>$notification->id])}} " class="d-block notification-link p-2 border-bottom  {{$notification->read_at ? '':'is-active'}}">
-              <div class="d-flex flex-row mb-0 pt-2 pb-2 notification-item" id="notification-item" data-notification="{{$notification->id}}" data-order="{{$loop->iteration}}">
-                  <img src="{!! url('/static/image/profile/'.App\User::find($notification->data['user_id'])->profile->image) !!}" alt="Notification Image"  class="img-fluid border-0 rounded-circle">
-                  <div class="pl-3 pr-2">
-                    <p class="font-weight-medium mb-1"><strong>{{App\User::find($notification->data['user_id'])->name}}</strong> just sent a new circular! <strong>{{ $notification->data['message'] }}</strong></p>
-                    <p class="text-muted mb-0 text-small">{{ $notification->created_at->diffForHumans() }}</p>
-                  </div>
-              </div>
-            </a>
-            @endforeach
+
+            @each('partials.notification-list', Auth::user()->notifications, 'notification', 'partials.no-notifications')
+            
 
             </div>
             <div class="dropdown-divider"></div>

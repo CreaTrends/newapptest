@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Notebook;
+use App\User;
+use App\Alumno;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -55,9 +57,13 @@ class NotebookController extends Controller
      * @param  \App\Notebook  $notebook
      * @return \Illuminate\Http\Response
      */
-    public function show(Notebook $notebook)
+    public function show(Request $request,$id)
     {
         //
+
+        $creator_user = Notebook::findOrFail(6);
+
+        return $creator_user->info()->get();
     }
 
     /**

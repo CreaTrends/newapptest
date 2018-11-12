@@ -139,13 +139,13 @@ class NoteController extends Controller
         
         
         // verificamos notificaciones 
-        /*$sent_to = User::whereIn('id',$recipientes)->get();
+        $sent_to = User::whereIn('id',$recipientes)->get();
 
         foreach($sent_to as $users){
             $user = User::findorFail($users->id);
             $user->notify(new NewNoteNotification($note, $user->id));
             //$user->notifications()->delete();
-        }*/
+        }
 
         $html = view('admin.notes.noteslist', compact('note'))->render();
 

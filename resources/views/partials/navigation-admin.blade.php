@@ -46,7 +46,25 @@
 
         <!-- dropdown notification -->
 
-        @include('partials.notifications')
+        <li class="nav-item mr-3 mt-1 dropdown">
+          <a href="{{ url('/admin')}}" class="nav-link is-notify is-active"  id="dropnotifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-bell is-active"></i>
+            <span class="badge badge-danger is-badge-notify {{Auth::user()->unreadNotifications->count() > 0 ? true:'d-none'}} ">
+              {{Auth::user()->unreadNotifications->count()}}
+            </span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right notificationDropdown p-0" aria-labelledby="dropnotifications" id="notificationDropdown">
+            <h6 class="border-bottom border-bottom py-3 px-3 pb-0 mb-0"><strong>Notification</strong></h6>
+            <div class="is-dropdown-container">
+
+            @each('partials.notification-list', Auth::user()->notifications, 'notification', 'partials.no-notifications')
+            
+
+            </div>
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-center" href="#">Marcar como leidas</a>
+          </div>
+        </li>
         <!-- dropdown profile -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
