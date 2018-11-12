@@ -12,7 +12,12 @@
             <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed  border-top border-light  rounded" id="child-{{$child->id}}">
                 <div class="mr-2 widget-feed-left">
                     <div class="p-2  text-center widget-info h-100 d-flex justify-content-center flex-column">
-                        <img src="https://cdn.dribbble.com/users/345970/avatars/small/0092209c0eddd9d7a0cfaa54a92fd39d.png?1530163405" class="align-self-center mr-0 rounded-circle mw-25" width="80">
+                        @if(empty($child->image))
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="https://ui-avatars.com/api/?background=5A55A3&color=fff&name={{$child->firstname}}+{{$child->lastname}}" width="48">
+                    @else
+                    
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/'.$child->image) !!}" width="48">
+                    @endif
                     </div>
                 </div>
                 <div class="py-2 px-2 widget-feed-right align-self-center">
@@ -28,7 +33,7 @@
     </div>
 
 </div>
-<div class="row justify-content-center">
+<div class="row justify-content-center d-none">
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
         <h5 class="border-bottom border-gray pb-2 my-3 fw-900">Recent updates</h5>
         

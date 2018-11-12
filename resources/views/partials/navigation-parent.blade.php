@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-md navbar-light bg-light mb-0 bg-white border-bottom shadow-sm user-nav py-3">
   <div class="container">
-    <a class="navbar-brand" href="#"><img class="img-fluid" src="http://gogo-react.crealeaf.com/assets/img/logo-black.svg" width="100" alt=""></a>
+    <a class="navbar-brand" href="#"><img class="img-fluid" src="http://www.jardinanatolia.cl/wp-content/themes/ultrabootstrap/images/logo_footer.jpg" width="100" alt=""></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#parentNavbar" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
     <i class="fas fa-bars"></i>
     </button>
