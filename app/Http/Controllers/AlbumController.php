@@ -7,6 +7,8 @@ use App\User;
 use App\Curso;
 use App\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\Filesystem;
 
 class AlbumController extends Controller
 {
@@ -43,9 +45,10 @@ class AlbumController extends Controller
     public function store(Request $request)
     {
         //
+        $token = bin2hex(openssl_random_pseudo_bytes(20));
         $userID = auth()->user()->id;
         $request->request->add(['album_name' => $request->album_name]);
-        $request->request->add(['album_token' => bin2hex(openssl_random_pseudo_bytes(30))]);
+        $request->request->add(['album_token' => $token]);
         $request->request->add(['album_owner' => $userID]);
 
         $validatedData = $request->validate([
@@ -67,8 +70,9 @@ class AlbumController extends Controller
             $name = $photo->getClientOriginalName();
             $sub_name = md5($name.time()).'.'.$photo->getClientOriginalExtension();
             $thumb_name = 'thumb_'.md5($name.time()).'.'.$photo->getClientOriginalExtension();
-            $folder_album = md5(time());
-            $path = '/static/image/albums/'.$folder_album.'/';
+            $folder_album = time();
+            $path = '/uploads/albums/'.$token.'/';
+            //$photo->move(public_path().$path, $sub_name);
             $photo->move(public_path().$path, $sub_name);
             $avatar= public_path().$path.$sub_name;
             \Image::make($avatar)->fit(200, 200)->save( public_path($path .$thumb_name ) );
@@ -135,8 +139,27 @@ class AlbumController extends Controller
      * @param  \App\Album  $album
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Album $album)
+    public function destroy(Request $request, $id)
     {
         //
+        $albums = Album::findOrfail($id);
+
+        $token = $albums->pluck('album_token')->toArray();
+
+        $path = '/albums/'.$albums->album_token;
+
+        /*Storage::deleteDirectory($path);
+
+        return Storage::directories('public');*/
+
+        /*\File::delete($path);*/
+
+
+        $albums->photo()->delete();
+        $albums->delete();
+
+        
+
+        return redirect()->back()->with('info', 'Album Eliminado');
     }
 }

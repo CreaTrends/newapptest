@@ -70,7 +70,7 @@
             {{ Auth::user()->name }}
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown07">
-            <a class="dropdown-item" href="{{route('usuarios.edit',Auth::user()->id)}}">Perfil</a>
+            <a class="dropdown-item" href="{{route('apoderado.profile',Auth::user()->id)}}">Perfil</a>
             <a href="{{ route('logout') }}" class="dropdown-item"
               onclick="event.preventDefault();document.getElementById('logout-form').submit();">
               Logout

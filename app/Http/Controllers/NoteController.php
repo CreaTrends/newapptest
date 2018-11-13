@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Note;
+
 use Illuminate\Http\Request;
-use Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use App\Notifications\NewNoteNotification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Carbon\Carbon;
+
+use App\Note;
 use App\User;
 use App\Profile;
 use App\Curso;
 use App\Alumno;
-
-use App\Notifications\NewNoteNotification;
-
-use Illuminate\Support\Facades\Auth;
-
-use Carbon\Carbon;
-
-use Illuminate\Support\Facades\Crypt;
 
 class NoteController extends Controller
 {
@@ -45,7 +44,25 @@ class NoteController extends Controller
             $notes = $query->orderBy('created_at','DESC');
 
             $notes = $query->get();
-            $cursos = Curso::all();
+
+            $cursos = Curso::query();
+            $cursos = $cursos->when($user->hasRole('teacher', true), function ($q) {
+                $q->whereHas('teacher', function ($query) {
+                    $query->where('user_id', auth()->user()->id);
+                });
+            });
+
+            $cursos = $cursos->get();
+
+            //return response()->json($cursos,200,[],JSON_PRETTY_PRINT);
+            /*$cursos->when($user->hasRole('teacher', true), function ($q) {
+                return $q->whereHas('students',function($q) use($message_to){
+                    $q->whereIn('alumno_id',$message_to);
+                });
+            });
+            $cursos->when(request('filter_by') == 'date', function ($q) {
+                return $q->orderBy('created_at', request('ordering_rule', 'desc'));
+            });*/
        
             //return $cursos;
         //return $request->get('filter');
@@ -117,13 +134,20 @@ class NoteController extends Controller
             foreach($request->file('photos') as $image)
             {
                 $name=$image->getClientOriginalName();
+
+                $uploadedFile = $image;
+                $filename = time().$uploadedFile->getClientOriginalName();
                 
-                $sub_name= md5($name.time()).'.'.$image->getClientOriginalExtension();
-                $image->move(public_path().'/static/files/', $sub_name);
+                $sub_name = time().'.'.$image->getClientOriginalExtension();
+                //$image->move(public_path().'/static/files/', $sub_name);
+
+                
+ 
+                $image->move(public_path().'/uploads/notes/', $sub_name);
 
                 $the_file = array(
                     'name'=>$name,
-                    'encrypt'=>md5($name.time()).'.'.$image->getClientOriginalExtension(),
+                    'encrypt'=>$sub_name,
                     'type'=>$image->getClientOriginalExtension()
                 );
 
@@ -135,8 +159,10 @@ class NoteController extends Controller
             }
             $note->fill(['attached' => $data])->save();
         }
-       
-        
+      
+        /*$cover = $request->file('bookcover');
+        $extension = $cover->getClientOriginalExtension();
+        Storage::disk('public')->put($cover->getFilename().'.'.$extension,  File::get($cover));*/
         
         // verificamos notificaciones 
         $sent_to = User::whereIn('id',$recipientes)->get();
@@ -146,17 +172,34 @@ class NoteController extends Controller
             $user->notify(new NewNoteNotification($note, $user->id));
             //$user->notifications()->delete();
         }
+        // notificamos al equipo
+        if($request->has('include_team')) {
+
+            $to_teacher = User::where('id','!=',auth()->user()->id)->whereHas(
+                'roles', function($q){
+                    $q->whereIn('name', ['superadministrator','teacher','administrator']);
+                }
+            )->get();
+
+            foreach($to_teacher as $users){
+                $user = User::findorFail($users->id);
+                $user->notify(new NewNoteNotification($note, $user->id));
+                //$user->notifications()->delete();
+            }
+
+        }
+        
 
         $html = view('admin.notes.noteslist', compact('note'))->render();
 
-        if(request()->ajax()) {
+        
             return response()->json([
                 'status' => 'OK',
                 'sticky' => $note->sticky,
                 'id' => $note->id,
                 'html' => $html
             ]);
-        }
+        
         
 
         return response()->json(['error' => 'Not authorized.'],403);
@@ -416,21 +459,29 @@ class NoteController extends Controller
 
     public function deleteall(Request $request){
 
-        $rr = explode(',',$request->id);
-        $userIds = is_array($rr) ? $rr : (array) func_get_args();
+        $noteIds = explode(',',$request->id);
+        $userIds = is_array($noteIds) ? $noteIds : (array) func_get_args();
 
-        
+        $user = Auth::user();
+        $notes = Note::whereIn('id',$noteIds)->get();
 
-        $note = Note::whereIn('id',$rr)->delete();
-        if(request()->ajax()) {
-            return response()->json([
-                'status' => 'OK',
-                'ids'=>$rr,
-                'html' => ''
-            ]);
+        foreach($notes as $note){
+            $note->delete();
         }
+
         
-        return response()->json(['error' => 'Not authorized.'],403);
+        if(request()->ajax()) {
+        return response()->json([
+                'status' => 'OK',
+                'ids' => $notes->pluck('id'),
+                'title'=>$noteIds
+            ],200);
+        }
+
+        
+
+        
+        return response()->json(['error' => $notes],403);
 
         //$html = view('admin.notes.noteslist', compact('note'))->render();
 

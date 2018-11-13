@@ -65,7 +65,6 @@ class NewNotebook extends Notification
         ->from('no-reply@jardinanatolia.cl','Equipo Anatolia')
         ->subject($subject)
                 ->line('Hola Papa, hemos agregado un nuevo reporte con las actividades diarias de tu hij@, te invitamos a leer e informarte de toda las novedades de tu hij@ ')
-                ->line($this->notebook->info()->get())
                 ->action('Ver Reporte', route('apoderado.child',$this->notebook->info()->get()->pluck('id')[0]))
                 ->success();
     }

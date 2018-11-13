@@ -107,15 +107,14 @@
                     <p>Espera mientras enviamos la circular</p>
                     <div id="output" class="container"></div>
                     <div class="progress" style="width:400px">
-  <div id="dynamic" class="progress-bar progress-bar-success is-lightgreen" role="progressbar">
-    
-  </div>
-</div>
+                        <div id="dynamic" class="progress-bar progress-bar-success is-lightgreen" role="progressbar">
+                            
+                        </div>
+                    </div>
                 </div>
                 
             </div>
             <div class="modal-body">
-
                 <form method="post" id="insert_form" enctype="multipart/form-data">
                     {{ method_field('POST') }}
                     {{csrf_field()}}
@@ -128,6 +127,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <span id="display"></span>
                     <div class="container-fluid">
                         <div class="row">
                             
@@ -167,7 +167,6 @@
                             </div>
                             <div class="col-md-4">
                                 <input type="hidden" id="recipientsSelected" name="recipientsSelected" id="recipients_all"  />
-
                                 <label for="slug" class="custom-label">Selecciona Cursos</label>
                                 <ul class="list-group list-group-flush d-none curso-list" id="curso_list">
                                     <!-- all cursos -->
@@ -175,7 +174,7 @@
                                     <li class="list-group-item d-flex justify-content-start align-items-center px-1 py-2">
                                         <label class="form-check-label d-flex w-100" for="recipients_all">
                                             <input type="checkbox" class="d-none"
-                                             name="recipients_all" id="recipients_all">
+                                            name="recipients_all" id="recipients_all">
                                             <div class="avatar" id="uid-all">
                                                 <img class="align-self-center mr-0 rounded-circle mw-25" src="https://www.gravatar.com/avatar/{{md5(time())}}?s=48&d=identicon&r=PG" width="48">
                                             </div>
@@ -207,13 +206,18 @@
                                     </li>
                                     @endforeach
                                 </ul>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" name="include_team" id="include_team">
+                                    <label class="form-check-label" for="include_team">
+                                        Inlcuir Equipo Interno ?
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary custom-btn is-default" data-dismiss="modal">Close</button>
-                    
                     <input type="submit" name="insert" id="insert" value="Insert" class="btn btn-success custom-btn is-green" />
                 </div>
             </form>
@@ -222,7 +226,8 @@
 </div>
 @endsection
 @section('scripts')
-<script>  
+<script> 
+
  $(document).ready(function(){  
     //clear and reset form
 let readed_container = $("#readed_by_group");
@@ -233,17 +238,20 @@ $(document).on('submit', '#bulk_delete', function(event){
     var $_data_action = '{{route('notes.deleteall')}}';
 
     console.log($_data_bulklist);
+    //Ajax Function to send a get request
     axios({
                 method: "POST",
                 url: $_data_action,
                 data: {
                     id: $_data_bulklist,
                   },
-                header: {
-                'Content-Type': 'multipart/form-data'
-            }
+        onUploadProgress: function(progressEvent) {
+            var uploadPercentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+            console.log(uploadPercentage);
+        }
+    
             }).then(function (response) {
-        //console.log(response.data);
+        console.log(response.data);
         $.each(response.data.ids, function(index, item) {
             $('#list_note-'+item).stop().hide(function(){
                 $(this).remove();
@@ -259,6 +267,7 @@ $(document).on('submit', '#bulk_delete', function(event){
 
     $('.alert-danger').addClass('d-block');
     });
+     
 });
     
 $('#add').click(function() {
@@ -398,10 +407,10 @@ $(document).on('click', '.view_note', function(){
         });
     });
 
-$(document).on('submit', '#insert_form', function(event){
+$(document).on('submit', '#insert_form', function(event) {
 
     event.preventDefault();
-    
+
     var method = $(this).find('input[name=_method]').val() || 'POST';
     let action = $(this).find('input[name=action]').val();
     var _token = $('meta[name="_token"]').attr('content');
@@ -411,7 +420,7 @@ $(document).on('submit', '#insert_form', function(event){
     let progress = $('.progress');
     let bar = progress.find('.progress-bar');
 
-    
+
 
     let self = this;
 
@@ -420,69 +429,66 @@ $(document).on('submit', '#insert_form', function(event){
 
 
 
-   /* formData.append("file", file.files[0]);*/
-   formData.append('file', file);
+    /* formData.append("file", file.files[0]);*/
+    formData.append('file', file);
+    console.log(formData, formData[0], formData);
+    //Start the long running process
+    var loader = $('.modal-before');
+    var progressBar = document.getElementById("dynamic");
+    loader.addClass('d-block');
 
-var config = {
-    onUploadProgress: function(e) {
-    let percentCompleted = Math.round( (e.loaded * 100) / e.total );
-       console.log("Progress:-"+percentCompleted);
 
-       output.innerHTML = percentCompleted+'%';
 
-       //$(bar).text('subiendo').width(percentCompleted+'%');
-        if (e.lengthComputable) {
-        loader.addClass("d-block");
-        $('div.progress > div.progress-bar').css({ "width":percentCompleted + "%" }).text(percentCompleted+'%');
-        }
-        
-    }
-};
 
-axios.post(action, formData, config)
-    .then(function(res) {
-        output.className = 'container';
-        output.innerHTML = res.data;
-        
-        loader.removeClass("d-block");
-        console.log(res.data);
-        console.log(method);
-        if(method == 'POST'){
-            if(res.data.sticky > 0){
-              $('.table > tbody tr:first').before(res.data.html).fadeIn(function(){
-                $("#list_note-"+res.data.id).css('background-color', '#f0f8ff');
-                console.log($("#list_note-"+res.data.id));
-              })
-            }else {
-                $('.table > tbody').append(res.data.html);
+    axios.post(action, formData, {
+            onUploadProgress: function(evt) {
+                $("#dynamic").css('width', '0%');
+                var uploadPercentage = parseInt(Math.round((evt.loaded * 100) / evt.total));
+                if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total * 100;
+                    $("#dynamic").width(uploadPercentage + "%").text(uploadPercentage + "%");
+                }
+                console.log(uploadPercentage);
             }
-        }else {
-            console.log('el di a cambiar es : '+res.data.id);
-            $(document).find("#list_note-"+res.data.id).replaceWith(res.data.html);
-        }
-        
-
-        loader.removeClass("d-block");
-        $("#insert_form").trigger('reset');;
-        $('#modal-add-data').modal('hide');
-
-        
-        $("#insert_form").find('.avatar').removeClass('active');
-        
-        
-    })
-    .catch(function(err) {
-        console.log(err);
-        $('.alert-danger').removeClass('d-none');
-        
-        loader.removeClass("d-block");
-    });
+        })
+        .then(function(res) {
 
 
+            output.className = 'container';
+            output.innerHTML = res.data;
+
+            loader.removeClass("d-block");
+            console.log(res.data);
+            if (method == 'POST') {
+                if (res.data.sticky > 0) {
+                    $('.table > tbody tr:first').before(res.data.html).fadeIn(function() {
+                        $("#list_note-" + res.data.id).css('background-color', '#f0f8ff');
+                        console.log($("#list_note-" + res.data.id));
+                    })
+                } else {
+                    $('.table > tbody').append(res.data.html);
+                }
+            } else {
+                console.log('el di a cambiar es : ' + res.data.id);
+                $(document).find("#list_note-" + res.data.id).replaceWith(res.data.html);
+            }
 
 
+            loader.removeClass("d-block");
+            $("#insert_form").trigger('reset');;
+            $('#modal-add-data').modal('hide');
 
-// bulk function
+
+            $("#insert_form").find('.avatar').removeClass('active');
+
+
+        })
+        .catch(function(err) {
+            console.log(err);
+            $('.alert-danger').removeClass('d-none');
+
+            loader.removeClass("d-block");
+        });
 
 });
 
@@ -571,7 +577,7 @@ $('.total_files').text($ht).addClass('d-block').fadeIn('slow');
         
         $('.curso-list').addClass('d-block');
         $('.curso-list').slimscroll({
-        height: '400px',
+        height: '41vh',
         color: 'rgba(0,0,0,.8)',
         size: '5px',
         alwaysVisible: true,

@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="py-2 px-2 widget-feed-right align-self-center">
-                    <p class="mb-1 text-primary"><a href="{{route('apoderado.child',$child->id)}}">
+                    <p class="mb-1 text-primary"><a href="{{route('child.feed',$child->id)}}">
                         {{$child->firstname}}
                         {{$child->lastname}}
                     </a></p>

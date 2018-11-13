@@ -56,12 +56,12 @@ class ToolController extends Controller
                     
                 })->get();
 
-                if(request()->ajax()) {
+                /*if(request()->ajax()) {
                     return response()->json([
                         'status' => 'OK',
                         'html' => $data
                     ]);
-                }
+                }*/
 
                 if(!empty($data) && $data->count()){
  
@@ -107,14 +107,16 @@ class ToolController extends Controller
                             if(!empty($insert)){
 
                                 // insertamos alumno
-                                $alumno = new Alumno();
-                                $alumno->firstname = $value->a_nombre.' '.$value->a_snombre; //add a default value here
-                                $alumno->lastname = $value->a_paterno.' '.$value->a_materno; //add a default value here
-                                $alumno->save();
-                                $alumno->curso()->attach($curso_id);
+                                if(!empty($value->p_email) || !empty($value->m_email)){
+                                    $alumno = new Alumno();
+                                    $alumno->firstname = $value->a_nombre.' '.$value->a_snombre; //add a default value here
+                                    $alumno->lastname = $value->a_paterno.' '.$value->a_materno; //add a default value here
+                                    $alumno->save();
+                                    $alumno->curso()->attach($curso_id);
+                                }
 
                                // insertamos apoderado 1
-                                if(count($pName) > 1){
+                                if(!empty($value->p_email)){
                                     $checkUser = User::where('email','=',$value->p_email)->first();
 
                                     if(count($checkUser) > 0){
@@ -154,7 +156,7 @@ class ToolController extends Controller
                                     
                                 }
                                 // insertamos apoderado2
-                                if(count($mName) > 1){
+                                if(!empty($value->m_email)){
                                     $checkUser = User::where('email','=',$value->m_email)->first();
 
                                     if(count($checkUser) > 0 ){
