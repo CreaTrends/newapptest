@@ -21,7 +21,10 @@
       
 </div> -->
 <header>
-    @includeWhen(Auth::check(), 'partials.navigation')
+    @if(Auth::check())
+    @includeWhen(auth()->user()->first_login > 0, 'partials.navigation')
+    @endif
+    
     
 </header>
 <main id="app" class="container h-100 mt-5 is-login">

@@ -27,7 +27,7 @@
 @endforeach
 </div>
 @endrole
-@if(count($note->attached) > 0)
+@if(!empty($note->attached))
 <h6 class="d-flex justify-content-between border-bottom border-gray pb-2 my-3 fw-900">
 <strong>Archivos Adjuntos</strong>
 </h6>

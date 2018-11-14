@@ -1,9 +1,5 @@
 @extends('layouts.adminDashboard')
 @section('content')
-@include('partials.messageflash')
-
-
-
 
 <div class="row justify-content-center">
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
@@ -84,7 +80,7 @@
 
 
 </div>
-<hr>
+
 <!-- Mesagge -->
 <div id="view-message-modal" class="modal fade view-message-modal" tabindex="-1" role="dialog" data-action="view-message">
     <div class="modal-dialog modal-dialog-centered modal-lg">

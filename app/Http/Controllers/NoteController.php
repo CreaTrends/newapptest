@@ -116,9 +116,10 @@ class NoteController extends Controller
         })->pluck('id')->toArray();
 
         // setup variables
+        $fake_curso = Curso::first()->id;
 
         $request['user_id'] = auth()->user()->id;
-        $request['curso_id'] = 1;
+        $request['curso_id'] = $fake_curso;
         $request['body'] = $request->message;
 
         // insertamos la circular

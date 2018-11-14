@@ -33,14 +33,7 @@
             @include('partials.pagetitle')
 
             <div class="container mt-0">
-                <div class="row">
-                    
-                    
-                    
-                    <div class="col-md-12">
-                            @yield('content')
-                    </div>
-                </div>
+                @yield('content')
             </div>
         </main>
         <!-- Scripts -->
