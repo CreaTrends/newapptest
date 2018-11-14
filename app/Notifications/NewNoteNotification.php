@@ -61,7 +61,7 @@ class NewNoteNotification extends Notification
         $user = User::find($this->user_id);
         $subject = $this->note->user->profile->first_name.' '.$this->note->user->profile->last_name .' te envio una nueva circular';
         return (new MailMessage)
-        ->from('no-reply@jardinanatolia.cl','Equipo Anatolia')
+        ->from('info@jardinanatolia.cl','Equipo Anatolia')
         ->subject($subject)
                 ->line('Hola '.$user->name.', hemos generado una nueva circular informativa de nuestro jardín, te invitamos a leer e informarte de toda las novedades de tu hij@ ')
                 ->action('Leer Circular', route('apoderado.notes.show',$this->note->id))

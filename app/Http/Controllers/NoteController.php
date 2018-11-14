@@ -40,6 +40,7 @@ class NoteController extends Controller
             $query->when($request->get('filter') == 'sent', function ($q, $user_id) { 
                 return $q->whereUserId($user_id);
             });
+            $notes = $query->with('author');
             $notes = $query->orderBy('sticky','DESC');
             $notes = $query->orderBy('created_at','DESC');
 

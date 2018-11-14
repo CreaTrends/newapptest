@@ -51,6 +51,10 @@ class Note extends Model
     {
         return $this->belongsTo(Profile::class,'user_id');
     }
+    public function authors()
+    {
+        return $this->belongsTo(Profile::class,'user_id');
+    }
 
     public function getUseremail_by_curso($user_id){
         
