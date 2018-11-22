@@ -18,8 +18,11 @@ use Faker\Generator as Faker;
 use Lexx\ChatMessenger\Models\Message;
 use Lexx\ChatMessenger\Models\Participant;
 use Lexx\ChatMessenger\Models\Thread;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
+
 
 class ApoderadoController extends Controller
 {
@@ -86,13 +89,20 @@ class ApoderadoController extends Controller
     }
 
     public function inbox(){
-        // latest
+        // All threads, ignore deleted/archived participants
         $threads = Thread::getAllLatest()->get();
         // All threads that user is participating in
-        $threads = Thread::forUser(Auth::id())->latest('updated_at')->get();
+        $threads = Thread::forUser(Auth::id())->latest('updated_at')->paginate(10);
+        // All threads that user is participating in, with new messages
+        //$threads = Thread::forUserWithNewMessages(Auth::id())->latest('updated_at')->get();
 
-        $count = Auth::user()->newThreadsCount();
+        $user_list = Alumno::with('parent','curso')->whereHas('parent',function($q){
+            $q->Wherenotnull('user_id');
+        })->get();
 
+        $cursos = Curso::all();
+       /* echo "<pre>";
+        return json_encode($threads, JSON_PRETTY_PRINT);*/
         /*echo "<pre>";
         return json_encode($threads,JSON_PRETTY_PRINT);*/
         return view('apoderados.inbox.index',compact('threads'));
@@ -110,8 +120,7 @@ class ApoderadoController extends Controller
         $userId = Auth::id();
         $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
         $thread->markAsRead($userId);
-        /*echo "<pre>";
-        return json_encode($thread->getLatestMessageAttribute(), JSON_PRETTY_PRINT);*/
+        
         return view('apoderados.inbox.show', compact('thread', 'users'));
     }
 
@@ -146,7 +155,7 @@ class ApoderadoController extends Controller
     public function show(Request $request,$id,$date=NULL)
     {
         //
-        if(count($date)>0){
+        if(!empty($date)>0){
             $dt = Carbon::parse($date)->toDateString();
 
         }else {

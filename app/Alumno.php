@@ -22,6 +22,15 @@ class Alumno extends Model
     {
         return $this->belongsToMany(User::class,'curso_teacher','user_id');
     }
+    public function getListalumnosbyUser()
+    {
+        return $this->belongsToMany(User::class,'curso_teacher','user_id');
+    }
+    public function checkUsercurso()
+    {
+        return $this->belongsToMany(Curso::class,'curso_teacher','user_id');
+    }
+
     public function parent()
     {
         return $this->belongsToMany(User::class,'alumno_parent');

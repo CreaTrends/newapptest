@@ -192,68 +192,72 @@
 @section('scripts')
 <script>
 var cursoapp = new Vue({
-el:'#app',
-data:{
-modalTitle:'',
-attachment:'',
-files: {},
-file: {},
-formData: {},
-loading:false,
-errors:'',
-curso_id :{!! $cursos->id !!},
-selected :'',
-fillCurso: {'id': '', 'name': '', 'slug': ''},
-},
-methods:{
-showEdit:function(){
-$('#edit').modal('show');
-},
-showImport:function(){
-this.modalTitle = 'Importar Alumnos';
-$("#import-file").modal('show');
-},
-getFileName() {
-this.errors = [];
-this.attachment = this.$refs.file.files[0];
-},
-export(){
+    el: '#app',
+    data: {
+        modalTitle: '',
+        attachment: '',
+        files: {},
+        file: {},
+        formData: {},
+        loading: false,
+        errors: '',
+        curso_id: {!! $cursos->id !!},
+        selected: '',
+        fillCurso: {
+            'id': '',
+            'name': '',
+            'slug': ''
+        },
+    },
+    methods: {
+        showEdit: function() {
+            $('#edit').modal('show');
+        },
+        showImport: function() {
+            this.modalTitle = 'Importar Alumnos';
+            $("#import-file").modal('show');
+        },
+        getFileName() {
+            this.errors = [];
+            this.attachment = this.$refs.file.files[0];
+        },
+        export () {
 
-},
-importExcel(){
-this.attachment = this.$refs.file.files[0];
-this.loading=true;
-this.formData = new FormData();
-this.formData.append('file', this.attachment);
-this.formData.append('curso_id', this.curso_id);
-this.formData.append('send_email', this.selected);
-var url = "{{ url('admin/tools/import/') }}";
-axios.post(url,this.formData, {
+        },
+        importExcel() {
+            this.attachment = this.$refs.file.files[0];
+            this.loading = true;
+            this.formData = new FormData();
+            this.formData.append('file', this.attachment);
+            this.formData.append('curso_id', this.curso_id);
+            this.formData.append('send_email', this.selected);
+            var url = "{{ url('admin/tools/import/') }}";
+            axios.post(url, this.formData, {
 
-headers: {
-'Content-Type': 'multipart/form-data'
-}
-})
-.then(response => {
-this.loading = false;
-this.errors = [];
-console.log(response.data);
-$("#import-file").modal('hide');
-toastr.success('Curso actualizado con éxito');
-}).catch((error) => {
-if (error.response) {
-this.attachment='';
-this.loading = false;
-this.errors = 'Corrija para poder crear con éxito';
-}
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(response => {
+                    this.loading = false;
+                    this.errors = [];
+                    console.log(response.data);
+                    $("#import-file").modal('hide');
+                    toastr.success('Curso actualizado con éxito');
+                }).catch((error) => {
+                    if (error.response) {
+                        this.attachment = '';
+                        this.loading = false;
+                        this.errors = 'Corrija para poder crear con éxito';
+                    }
 
-});
-},
-onClose:function(event){
-console.log('cerramos');
-this.attachment='';
-}
-}
+                });
+        },
+        onClose: function(event) {
+            console.log('cerramos');
+            this.attachment = '';
+        }
+    }
 });
 </script>
 <script>

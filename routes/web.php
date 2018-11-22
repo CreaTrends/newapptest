@@ -19,28 +19,15 @@ Route::get('/', function () {
 
 Route::get('testeando', function () {
 
-    //echo asset('storage/file.txt');
-
-    $oo[] = "superadministrator,teacher";
+    Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
+    {
+        $message->to('jalbornozdesign@gmail.com')->from('aaa@ggg.com','aaaaa');
+    });
     
-/*$students = App\User::where('id','!=',auth()->user()->id)->whereHas(
-    'roles', function($q){
-        $q->whereIn('name', ['superadministrator','teacher','administrator']);
-    }
-)->get();
-return $students;*/
-$users = App\User::all();
-        foreach($users as $user){
-            /*$user = User::findorFail($users->id);
-            $user->notify(new NewNoteNotification($note, $user->id));*/
-            $user->notifications()->delete();
-        }
-    
-    //Notification::send($user, new NewNoteNotification($note));
+});
 
-
-    //$thread->user->notify(new RepliedToThread($thread));
-    
+Route::get('notebooks-indeex', function () {
+    return view('admin.notebooks.show');
 });
 
 
@@ -71,6 +58,8 @@ Route::resource('/cursos/notes', 'NoteController');
 Route::get('cursos/{id}/notebook/', 'CursoController@notebook')->name('notebook.create');
 Route::post('cursos/notebook/', 'CursoController@notebookstore')->name('notebook.store');
 Route::get('cursos/notebook/{id}', 'NotebookController@index')->name('notebook.show');
+
+Route::post('cursos/deleteall','CursoController@deleteall')->name('cursos.deleteall');
 //Route::get('cursos/notebook/{id}', 'NotebookController@index')->name('cursos.notebook');
 /*
 
@@ -92,6 +81,7 @@ Route::resource('/usuarios', 'UserController');
 Route::resource('/settings', 'SettingController');
 Route::put('/alumnos/updateinfo/{alumno}', 'AlumnoController@updateinfo')->name('alumnos.updateinfo');
 Route::put('/alumnos/updatecurso/{alumno}', 'AlumnoController@updateCurso')->name('alumnos.updatecurso');
+Route::post('alumnos/deleteall','AlumnoController@deleteall')->name('alumnos.deleteall');
 /*Route::resource('/actividades', 'ActividadController');
 Route::resource('/comunicaciones', 'ComunicacionController');
 Route::resource('/galerias', 'GeleriaController');

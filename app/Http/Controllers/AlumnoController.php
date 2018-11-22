@@ -26,52 +26,114 @@ class AlumnoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        //$user = Auth::user();
-        
-        
-       /* $user = Curso::with('teacher','alumnos')->whereHas('teacher', function($q) {
-                $q->where('user_id','=', 3);
-            })->get();*/
-        /*$alumnos = Alumno::select('*')
-        ->join('cursos', 'cursos.id', '=', 'alumnos.curso_id')
-        ->join('curso_user', 'curso_user.curso_id', '=', 'cursos.id')
-        ->join('users', 'users.id', '=', 'curso_user.user_id')
-        ->where('users.id', 3)
-        ->get();*/
 
         $user = \Auth::user();
         $name=$user->name;
         $roles = $user->roles()->get();
         $user_id = $user->id;
 
-        if($user->hasRole(['admin','superadministrator'])){
-        
-        $alumnos = Alumno::with('teacher')->paginate(5);
-        }else {
-            $alumnos = User::with('teacher_course')->get();
-            
-        }
-        /*$users = Curso::
-            whereHas('teacher', function($q) {
-                $q->where('user_id','=', 3);
-            })->
-            whereHas('alumnos', function($q) {
-                $q->where('user_id','=', 3);
-            })
-            ->get();*/
-        //$user->hasRole('owner')
-        /*$books = Curso::whereHas('author', function ($q) use ($authorId) {
-            $q->where('id', $authorId);
-        })->get();*/
+        $perPage = $request->has('limit') ? $request->get('limit') : 10;
 
-        /*echo "<pre>";
-        //$roles = $user->roles; // Get all user roles.
-        return json_encode($alumnos,JSON_PRETTY_PRINT);*/
-       
-       return view('admin.students.index',compact('alumnos'));
+        // obtenemos el curso
+        $curso = Curso::wherehas('teacher',function($q)use($user_id){
+                $q->where('user_id',$user_id);
+            })->get()->pluck('id')->toArray();
+
+        
+
+        $query = Alumno::query();
+        //getting user role 
+        $query->when($user->hasRole('teacher'), function ($q) use($curso){ 
+            return $q->whereHas('curso',function($a) use($curso){
+                $a->whereIn('curso_id',$curso);
+            });
+        });
+        // estados
+
+        $query->when($request->get('status') != null, function ($q) use($request){ 
+            return $q->where('status',$request->get('status'));
+        });
+        // curso
+        $query->when($request->get('curso') > 0, function ($q) use($request){ 
+            return $q->whereHas('curso',function($a) use($request){
+                $a->where('curso_id',$request->curso);
+            });
+        });
+        $alumnos = $query->paginate($perPage);
+
+
+        $cursos = Curso::all();
+
+        //Declare new queries you want to append to string:
+        $newQueries = [
+            'status'=> $request->get('status'),
+            'curso'=> $request->get('curso')
+        ];
+
+        $the_url = route('alumnos.index',array_filter($newQueries));
+
+        $data['limits'] = array();
+        
+        $limits = array_unique(array(10, 25, 50, 75, 100));
+        
+        sort($limits);
+        foreach($limits as $value) {
+                $filters['limits'][] = array(
+                    'text'  => $value,
+                    'value' => $value,
+                    'href'  => array_filter($newQueries) ? url($the_url.'&limit='.$value) : url($the_url.'?limit='.$value)
+                );
+        }
+
+        $newQueries = [
+            'status'=> $request->get('status'),
+            'limit'=> $request->get('limit'),
+        ];
+
+        $the_url = route('alumnos.index',array_filter($newQueries));
+
+        $filters['cursos'][] = array(
+                    'text'  => '----Filtra por curso-----',
+                    'value' => '0',
+                    'href'  => array_filter($newQueries) ? url($the_url.'&curso=') : url($the_url.'?curso=')
+
+                );
+        foreach($cursos as $value) {
+                $filters['cursos'][] = array(
+                    'text'  => $value->name,
+                    'value' => $value->id,
+                    'href'  => array_filter($newQueries) ? url($the_url.'&curso='.$value->id) : url($the_url.'?curso='.$value->id)
+
+                );
+        }
+        
+
+        $newQueries = [
+            'curso'=> $request->get('curso'),
+            'limit'=> $request->get('limit'),
+        ];
+
+        $the_url = route('alumnos.index',array_filter($newQueries));
+
+        $status = array_unique(array(
+            'default'=>null,
+            'activo'=>'1',
+            'inactivo'=>'0'
+        ));
+
+        foreach($status as $value=>$key) {
+                $filters['status'][] = array(
+                    'text'  => $key == null ? 'Estado':$value ,
+                    'value' => $key,
+                    'href'  => array_filter($newQueries) ? url($the_url.'&status='.$key) : url($the_url.'?status='.$key)
+
+                );
+        }
+
+        
+       return view('admin.students.index',compact('alumnos','cursos','perPage','filters'));
 
     }
 
@@ -217,6 +279,33 @@ class AlumnoController extends Controller
         $taks = Alumno::findOrFail($id);
         $taks->delete();
         return redirect()->back()->with('deleteInfo','El Alumno Ha sido eliminado');
+    }
+
+    public function deleteall(Request $request){
+
+        $alumnoIds = explode(',',$request->id);
+        $userIds = is_array($alumnoIds) ? $alumnoIds : (array) func_get_args();
+
+        $user = \Auth::user();
+        $alumnos = Alumno::whereIn('id',$alumnoIds)->get();
+
+        /*foreach($notes as $note){
+            $note->delete();
+        }*/
+
+        
+        if(request()->ajax()) {
+        return response()->json([
+                'status' => 'OK',
+                'ids' => $alumnos->pluck('id'),
+                'title'=>$alumnoIds
+            ],200);
+        }
+
+        
+
+        return response()->json(['error' => $alumnos],200);
+
     }
 
     public function inviteParent(Request $request, $id){

@@ -53,7 +53,7 @@
                 <p class="file-name">{{$images['name']}}</p>
                 <div class="buttons">
                     <?php $prefix = Request::route()->getPrefix(); ?>
-                    <a href="{{url('/uploads/notes/' . $images['encrypt'])}}" class="view">Ver</a>
+                    <a href="{{url('/static/uploads/notes/' . $images['encrypt'])}}" class="view" target="_new">Ver</a>
                     <a href="{{url($prefix.'/tools/download',['id'=>$note->id,'file'=>$images['encrypt']])}}" class="download">Descargar</a>
                 </div>
             </div>

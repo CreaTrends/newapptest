@@ -87,16 +87,16 @@ class ToolController extends Controller
                                 'curso_id'          =>  $curso_id,
                                 'curso_name'        =>  $value->a_nivel,
                                 "mother_role"       =>  4,
-                                "mother_firstname"  =>  count($mName) > 1 ? $mName[0]:'',
-                                "mother_lastname"   =>  count($mName) > 1 ? $mName[1]:'',
+                                "mother_firstname"  =>  count((array)$mName) > 1 ? $mName[0]:'',
+                                "mother_lastname"   =>  count((array)$mName) > 1 ? $mName[1]:'',
                                 "mother_email"      =>  $value->m_email,
                                 "mother_phone"      =>  $value->m_celular,
                                 "mother_bday"       =>  Carbon::parse($value->m_nacimiento)->format('Y-m-d'),
                                 "mother_gender"     =>  'Female',
                                 "mother_image"      =>  'default.jpg',
                                 "parent_role"       =>  4,
-                                "parent_firstname"  =>  count($pName) > 1 ? $pName[0]:'',
-                                "parent_lastname"   =>  count($pName) > 1 ? $pName[1]:'',
+                                "parent_firstname"  =>  count((array)$pName) > 1 ? $pName[0]:'',
+                                "parent_lastname"   =>  count((array)$pName) > 1 ? $pName[1]:'',
                                 "parent_email"      =>  $value->p_email,
                                 "parent_phone"      =>  $value->p_celular,
                                 "parent_bday"       =>  Carbon::parse($value->p_nacimiento)->format('Y-m-d'),
@@ -119,7 +119,7 @@ class ToolController extends Controller
                                 if(!empty($value->p_email)){
                                     $checkUser = User::where('email','=',$value->p_email)->first();
 
-                                    if(count($checkUser) > 0){
+                                    if(count((array)$checkUser) > 0){
                                         $checkUser->students()->attach($alumno->id);
                                        
                                     }else {
@@ -135,8 +135,8 @@ class ToolController extends Controller
                                     $user->students()->attach($alumno->id);
                                     // asignamos un profile
                                     $profile = new Profile();
-                                    $profile->first_name = count($pName) > 1 ? $pName[0]:'';
-                                    $profile->last_name = count($pName) > 1 ? $pName[1]:'';
+                                    $profile->first_name = count((array)$pName) > 1 ? $pName[0]:'';
+                                    $profile->last_name = count((array)$pName) > 1 ? $pName[1]:'';
                                     $profile->email = $value->p_email;
                                     $profile->address = '';
                                     $profile->telephone = $value->m_celular;
@@ -159,7 +159,7 @@ class ToolController extends Controller
                                 if(!empty($value->m_email)){
                                     $checkUser = User::where('email','=',$value->m_email)->first();
 
-                                    if(count($checkUser) > 0 ){
+                                    if(count((array)$checkUser) > 0 ){
                                         $checkUser->students()->attach($alumno->id);
                                         continue;
                                     }else {
@@ -176,8 +176,8 @@ class ToolController extends Controller
 
                                     // asignamos un profile
                                     $profile = new Profile();
-                                    $profile->first_name = count($mName) > 1 ? $mName[0]:'';
-                                    $profile->last_name = count($mName) > 1 ? $mName[1]:'';
+                                    $profile->first_name = count((array)$mName) > 1 ? $mName[0]:'';
+                                    $profile->last_name = count((array)$mName) > 1 ? $mName[1]:'';
                                     $profile->email = $value->m_email;
                                     $profile->address = '';
                                     $profile->telephone = $value->m_celular;
@@ -341,7 +341,7 @@ class ToolController extends Controller
 
        
 
-        $myFile = public_path('/static/files/'.$request->file);
+        $myFile = public_path('/static/uploads/notes/'.$request->file);
 /*return response()->file($myFile);*/
         
         return response()->download($myFile,$y);

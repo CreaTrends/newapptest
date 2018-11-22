@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="p-3 widget-feed-right w-100 mr-auto">
-                <a style="color: #5770e4; text-decoration: none; color: inherit !important ;" class="text-red" href="{{ route('apoderados.inbox.show', $thread->id) }}">
+                <a href="{{route('apoderados.inbox.show',$thread->id)}}" style="color: #5770e4; text-decoration: none; color: inherit !important ;" class="text-red view_message"  data-id="{{$thread->id}}" data-url="{{ route('admin.message.showmodal', $thread->id) }}" id="thread-{{$thread->id}}">
                     <h6 class="mt-0 d-flex justify-content-between  fw-600">
                     <strong>
                     {{$thread->subject}}
@@ -66,19 +66,21 @@
                     <i class="fas fa-ellipsis-h"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <button class="dropdown-item btn-action" type="button" data-url="{{ route('apoderados.inbox.show',$thread->id)}}" id="btnAction1">Ver</button>
-                    <div class="dropdown-divider"></div>
-                    <form action="{{route('apoderados.inbox.delete',Auth::user()->id)}}" method="POST" id="delete-this-message">
+                    <button class="dropdown-item view_message" type="button" data-id="{{$thread->id}}"
+                    data-url="{{ route('admin.message.showmodal', $thread->id) }}" id="thread-{{$thread->id}}">Ver</button>
+                    <form action="{{route('admin.messages.removeparticpant',Auth::user()->id)}}" method="POST" id="removeParticipant">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
-                        <input type="hidden" name="thread_id[]" value="{{$thread->id}}">
                         <input type="hidden" name="recipientuser[]" value="{{Auth::user()->id}}">
-                        <button type="submit" class="dropdown-item">Eliminar</button>
+                        <input type="hidden" name="thread_id[]" value="{{$thread->id}}">
+                        <button type="submit" class="dropdown-item">Salir de conversacion</button>
                     </form>
                 </div>
             </div>
+            
         </div>
         @endforeach
+        
     </div>
 </div>
 

@@ -7,7 +7,7 @@
                 @if($note->sticky)
                 <i class="fas fa-star mr-2" style="color: #fca32a"></i>
                 @endif
-                <strong>{{$note->author->first_name}} {{$note->author->last_name}}</strong>
+                <strong>{{$note->user->profile->first_name}} {{$note->user->profile->last_name}}</strong>
             </div>
             <div class="w-auto flex-grow-1">
                 <div class="d-flex justify-content-between align-items-center">

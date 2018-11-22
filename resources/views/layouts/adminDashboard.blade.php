@@ -24,7 +24,7 @@
         <header>
             
         @auth
-          @if(Auth::user()->hasRole(['superadministrator', 'teacher']))
+          @if(Auth::user()->hasRole(['superadministrator', 'teacher','administrator']))
             @include('partials.navigation-admin')
           @endif()
         @endauth

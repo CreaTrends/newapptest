@@ -62,6 +62,15 @@ class CursoController extends Controller
 
         $users = User::where('id', '!=', $userId)->whereRoleIs('teacher')->get();
 
+        $cursos = Curso::query();
+        $cursos = $cursos->with('teacher','alumnos_list');
+        $cursos = $cursos->when($user->hasRole('teacher', true), function ($q) {
+            $q->whereHas('teacher', function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            });
+        });
+        $cursos = $cursos->paginate(10);
+
         return view('admin.cursos.index',compact('cursos','users'));
         /*echo "<pre>";
 

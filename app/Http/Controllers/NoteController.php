@@ -140,12 +140,12 @@ class NoteController extends Controller
                 $uploadedFile = $image;
                 $filename = time().$uploadedFile->getClientOriginalName();
                 
-                $sub_name = time().'.'.$image->getClientOriginalExtension();
+                $sub_name = md5($name.time()).'.'.$image->getClientOriginalExtension();
                 //$image->move(public_path().'/static/files/', $sub_name);
 
                 
  
-                $image->move(public_path().'/uploads/notes/', $sub_name);
+                $image->move(public_path().'/static/uploads/notes/', $sub_name);
 
                 $the_file = array(
                     'name'=>$name,
@@ -199,6 +199,7 @@ class NoteController extends Controller
                 'status' => 'OK',
                 'sticky' => $note->sticky,
                 'id' => $note->id,
+                'pro' => $note->user,
                 'html' => $html
             ]);
         
@@ -410,13 +411,20 @@ class NoteController extends Controller
             foreach($request->file('photos') as $image)
             {
                 $name=$image->getClientOriginalName();
+
+                $uploadedFile = $image;
+                $filename = md5($name.time()).$uploadedFile->getClientOriginalName();
                 
-                $sub_name= md5($name.time()).'.'.$image->getClientOriginalExtension();
-                $image->move(public_path().'/static/files/', $sub_name);
+                $sub_name = md5($name.time()).'.'.$image->getClientOriginalExtension();
+                //$image->move(public_path().'/static/files/', $sub_name);
+
+                
+ 
+                $image->move(public_path().'/static/uploads/notes/', $sub_name);
 
                 $the_file = array(
                     'name'=>$name,
-                    'encrypt'=>md5($name.time()).'.'.$image->getClientOriginalExtension(),
+                    'encrypt'=>$sub_name,
                     'type'=>$image->getClientOriginalExtension()
                 );
 

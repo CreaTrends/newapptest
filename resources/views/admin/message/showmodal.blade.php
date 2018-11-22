@@ -95,7 +95,7 @@
     </ul>
     
     <!-- target people -->
-        <div class="btn-group w-100 mt-3 text-right justify-content-between align-items-center" role="group" aria-label="Basic example">
+        <!-- <div class="btn-group w-100 mt-3 text-right justify-content-between align-items-center" role="group" aria-label="Basic example">
             
         <form method="POST" id="addParticipant-form">
             {{ csrf_field() }}
@@ -105,7 +105,7 @@
             <button type="submit" name="submit-partipant" id="addParticipant" class="btn btn-primary custom-btn is-small is-lightgreen">listo <i class="fas fa-plus"></i></button>
         </form>
             
-        </div>
+        </div> -->
     <!-- end target epople -->
 </div>
 <div class="col-lg-12 mt-5">

@@ -129,7 +129,7 @@
         <!-- end feed section -->
         
     </div>
-    @if(count($notebooks)>0)
+    @if(!empty($notebooks))
         <div class="col-md-7 col-lg-8" id="daily-feed">
             <!-- title -->
             <div class="d-flex justify-content-start mb-4">
@@ -234,7 +234,7 @@
             <!-- end naps feed -->
             @endif
 
-            @if(count($notebooks->activities) > 0)
+            @if(!empty($notebooks->activities))
             <!-- activities feed -->
             <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
                 <div class="mr-2 widget-feed-left">

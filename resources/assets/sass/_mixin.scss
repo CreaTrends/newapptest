@@ -207,6 +207,7 @@ $number-of-colors: length($y);
     .gradient-#{$key} {
 
         @include bg-gradient(45deg,$value,20%);
+        border:1px solid $value !important;
 
     }
 }
