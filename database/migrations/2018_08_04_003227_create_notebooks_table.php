@@ -16,12 +16,6 @@ class CreateNotebooksTable extends Migration
         
         Schema::create('notebooks', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('foods')->nullable();
-            $table->text('moods')->nullable();
-            $table->text('naps')->nullable();
-            $table->text('depositions')->nullable();
-            $table->text('accidents')->nullable();
-            $table->text('comment')->nullable();
             $table->text('activity')->nullable();
             $table->timestamp('notebook_date');
             $table->timestamps();
@@ -99,7 +93,8 @@ class CreateNotebooksTable extends Migration
         Schema::dropIfExists('attached_notebook');
         Schema::dropIfExists('notebooks');
         Schema::dropIfExists('attaches'); 
-        Schema::dropIfExists('activities');   
+        Schema::dropIfExists('activities');
+
         
         
     }

@@ -11,6 +11,12 @@ use App\Alumno;
 use App\Curso;
 
 use Carbon\Carbon;
+use Notification;
+use App\Notifications\NewNotebook;
+use Mail;
+use App\Mail\WelcomeParent;
+
+use App\Mail\DailyReportEmail;
 
 
 class NotebookController extends Controller
@@ -95,7 +101,29 @@ class NotebookController extends Controller
                 'attached'      => $attached,
                 'notebook_date' => Carbon::now(),
             ]);
+
+            
+
+
+
+
         }
+
+
+        foreach($alumnosIds as $id){
+                $apoderado[] = User::whereHas('students',function($q) use($id){
+                    $q->Where('alumno_id',$id);
+                })->get()->pluck('id');
+                
+            }
+
+        foreach ($apoderado as $value) {
+            # code...
+            $rr[] = $value;
+        }
+
+
+        
         /*$notebook = Notebook::create([
             'foods'         =>$activity_food,
             'moods'         =>$activity_moods,
@@ -105,10 +133,10 @@ class NotebookController extends Controller
 
         //$notebook->alumno()->attach($request->recipients);
 
-        /*return response()->json([
-                're'=>$activity_data,
+        return response()->json([
+                're'=>$alumnosIds,
                 'notebook_id'=>$request->all(),
-            ],200,[],JSON_PRETTY_PRINT);*/
+            ],200,[],JSON_PRETTY_PRINT);
            return back()->with('status', 'Hemos Actualizado la linea de tiempo');
     }
 
