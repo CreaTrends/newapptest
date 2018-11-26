@@ -174,8 +174,8 @@ class ApoderadoController extends Controller
             ],404);
         }
 
-        if(!empty($date)>0){
-            $dt = Carbon::parse($date)->toDateString();
+        if(!empty($request->date)>0){
+            $dt = Carbon::parse($request->date)->toDateString();
 
         }else {
           $dt = Carbon::today()->toDateString();  
@@ -229,17 +229,15 @@ class ApoderadoController extends Controller
         $prev_notebook = Carbon::parse($dt)->subDays(1)->toDateString();
 
         
-        $previousnotebook = Notebook::whereHas('alumno_notebook',function($q) use($id){
-            $q->where('alumno_id',$id);
-        })
+        $previousnotebook = Notebook::where('notebooks.alumno_id',$id)
+        ->whereNotNull('notebooks.data')
         ->whereDate('created_at','<',$dt)
         ->orderBy('created_at','DESC')
         ->pluck('created_at')->first();
 
 
-        $nextnotebook =  Notebook::whereHas('alumno_notebook',function($q) use($id){
-            $q->where('alumno_id',$id);
-        })
+        $nextnotebook =  Notebook::where('notebooks.alumno_id',$id)
+        ->whereNotNull('notebooks.data')
         ->whereDate('created_at','>',$dt)
         ->orderBy('created_at','ASC')
         ->pluck('created_at')->first();
@@ -274,9 +272,9 @@ class ApoderadoController extends Controller
         
         //dd($alumno_profile);
         /*echo "<pre>";
-        return json_encode([$previousnotebook,$nextnotebook],JSON_PRETTY_PRINT);*/
-       /*echo "<pre>";
-        return json_encode($notebooks,JSON_PRETTY_PRINT);*/
+        return json_encode([$previousnotebook,$nextnotebook],JSON_PRETTY_PRINT);
+       echo "<pre>";
+        return json_encode($previousnotebook,JSON_PRETTY_PRINT);*/
         /*return json_encode($previousnotebook,JSON_PRETTY_PRINT);*/
         return view('apoderados.show',compact('nextnotebook','previousnotebook','albums','notebooks','alumno_profile','notebook_select','notebook_date'));
     }
