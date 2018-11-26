@@ -307,15 +307,7 @@ $('#modal-add-parent').on('hidden.bs.modal', function (e) {
     form.addClass('d-none');
     form.trigger('reset');
 });
-$('input[name="all"]').change(function() {
-    $('input[name="selected[]"]').not(this).prop('checked', this.checked);
-    var myarray = [];
-    $.each($('input[name="selected[]"]:checked'), function(){
-    myarray.push($(this).val());
-    });
-    $('#listSelected').val(myarray);
-    console.log(myarray);
-});
+
 $('input[name="selected[]"]').change(function() {
     
     var myarray = [];

@@ -7,18 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class Notebook extends Model
 {
     protected $fillable = [
+        'alumno_id',
         'foods',
         'naps',
         'moods',
         'depositions',
         'accidents',
-        'comment'
+        'comment',
+        'activity_type',
+        'data',
+        'attached'
     ];
     protected $casts = [
-        'foods'=> 'array',
-        'naps'=> 'array',
-        'depositions'=> 'array',
+        'foods'         => 'array',
+        'naps'          => 'array',
+        'depositions'   => 'array',
+        'data'          => 'array',
+        'attached'      => 'array',
     ];
+
     public function getFoodsAttribute($value)
     {
         return json_decode($value);
@@ -37,6 +44,15 @@ class Notebook extends Model
         return $value;
     }
 
+    public function getDataAttribute($value)
+    {
+        return $value;
+    }
+    public function getAttachedAttribute($value)
+    {
+        return $value;
+    }
+
     //
     public function activities()
     {
@@ -44,7 +60,7 @@ class Notebook extends Model
     }
     public function alumno()
     {
-        return $this->belongsToMany(Alumno::class)->with('parent');
+        return $this->belongsTo(Alumno::class);
     }
     public function attachs()
     {

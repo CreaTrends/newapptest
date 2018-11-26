@@ -1046,3 +1046,36 @@ $darkslategray : #2e383e;
 .control--radio input:disabled ~ .control__indicator:after {
     background: #7b7b7b;
 }
+
+
+// general loading 
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.loading{
+    .loader{
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid #3498db;
+    width: 50px;
+    height: 50px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    }
+    .loaing-text {
+        & h5 {
+            font-family: "GT Eesti Display", Helvetica, sans-serif !important;
+            font-size: 1.05rem !important;
+            color: #2a3f81 !important;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+        }
+    }
+}

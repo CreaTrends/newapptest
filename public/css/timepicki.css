@@ -1,0 +1,102 @@
+/* 
+Created on: 17 Sep, 2014, 4:29:37 PM
+Author: senthil
+*/
+
+.ti_tx,
+.mi_tx,
+.mer_tx {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.time,
+.mins,
+.meridian {
+    width: 60px;
+    float: left;
+    margin: 0 10px;
+    font-size: 15px;
+    color: #2d2e2e;
+    font-family: arial;
+    font-weight: bold;
+}
+
+.prev,
+.next {
+    cursor: pointer;
+    /* padding: 1rem; */
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: auto;
+    font-family: "Font Awesome 5 Free";
+    border-radius: 5px;
+}
+.prev:before{
+        content: "\f106";
+    position: relative;
+    height: 10px;
+    top: 0;
+    left: 0;
+}
+.next:before {
+        content: "\f107";
+    position: relative;
+    height: 10px;
+    top: 0;
+    left: 0;
+}
+.prev:hover,
+.next:hover {
+    background-color: #ccc;
+}
+
+.next {
+    background-position: 50% 150%;
+}
+
+.prev {
+    background-position: 50% -50%;
+}
+
+.time_pick {
+    position: relative;
+}
+.time_pick > input {
+        border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.timepicker_wrap {
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 998;
+    display: none;
+    background: #fdfdfd;
+    border: 1px solid #ccc;
+    float: left;
+    position: absolute;
+    top: 100%;
+    margin-top: 5px;
+    left: 0;
+    min-width: 250px;
+}
+
+
+input.timepicki-input {
+    background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #CCCCCC;
+        border-radius: 5px 5px 5px 5px;
+        float: none;
+        margin: 0;
+        text-align: center;
+        width: 70%;
+}
+a.reset_time {
+    float: left;
+    margin-top: 5px;
+    color: #000;
+}

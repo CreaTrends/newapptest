@@ -121,6 +121,13 @@ $number-of-colors: length($y);
             background-color: transparent !important;
             border-color: $value !important;
             color: $value !important;
+            &.active {
+                background-color: $value !important;
+                border-color: $value !important;
+                color: lighten($value,95%) !important;
+                outline: none !important;
+                box-shadow: none !important;
+            }
             &:hover {
                 background-color: $value !important;
                 border-color: $value !important;

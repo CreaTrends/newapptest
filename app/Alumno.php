@@ -49,7 +49,7 @@ class Alumno extends Model
     }
     public function notebooks()
     {
-        return $this->belongsToMany(Notebook::class);
+        return $this->hasMany(Notebook::class);
     }
 
 }

@@ -48,6 +48,9 @@ Route::get('/', 'AdminController@index')->name('index');
 /*Cursos*/
 Route::resource('/cursos', 'CursoController');
 
+Route::get('notebook/forms', 'NotebookController@forms')->name('notebook.forms');
+Route::resource('notebook', 'NotebookController');
+
 
 Route::get('cursos/activity/{id}', 'CursoController@activity')->name('cursos.activity');
 Route::get('cursos/notes/{id}', 'CursoController@notes')->name('notes');
@@ -56,7 +59,7 @@ Route::get('cursos/notes/create/{id}', 'CursoController@notes')->name('notes.cre
 Route::resource('/cursos/notes', 'NoteController');
 
 Route::get('cursos/{id}/notebook/', 'CursoController@notebook')->name('notebook.create');
-Route::post('cursos/notebook/', 'CursoController@notebookstore')->name('notebook.store');
+//Route::post('cursos/notebook/', 'CursoController@notebookstore')->name('notebook.store');
 Route::get('cursos/notebook/{id}', 'NotebookController@index')->name('notebook.show');
 
 Route::post('cursos/deleteall','CursoController@deleteall')->name('cursos.deleteall');
