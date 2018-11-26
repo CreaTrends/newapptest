@@ -105,10 +105,11 @@ class NotebookController extends Controller
 
         //$notebook->alumno()->attach($request->recipients);
 
-        return response()->json([
+        /*return response()->json([
                 're'=>$activity_data,
                 'notebook_id'=>$request->all(),
-            ],200,[],JSON_PRETTY_PRINT);
+            ],200,[],JSON_PRETTY_PRINT);*/
+           return back()->with('status', 'Profile updated!');
     }
 
     /**

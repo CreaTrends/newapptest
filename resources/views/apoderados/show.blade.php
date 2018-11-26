@@ -190,7 +190,7 @@
                              @foreach($feed->attached as $attached)
                              
                                  <div class="col-6 col-md-3">
-                                    <a  data-fancybox="gallery-{{$feed->id}}" href="{{url('static/uploads/notebook/'.$attached)}}">
+                                    <a  data-fancybox="images" href="{{url('static/uploads/notebook/'.$attached)}}">
                                    <img class="img-fluid m-0 my-2" src="{{url('static/uploads/notebook/'.$attached)}}" alt="Card image cap">
                                    </a>   
                                  </div>
@@ -224,17 +224,11 @@
 @section('scripts')
 <script>
    
-$('[data-fancybox="gallery"]').fancybox({
-    selector : '[data-fancybox="images"]',
-    buttons: [
-        //"zoom",
-        //"share",
-        //"slideShow",
-        //"fullScreen",
-        //"download",
-        //"thumbs",
-        "close"
-    ]
+$('[data-fancybox="images"]').fancybox({
+    buttons : [
+    
+    'close'
+  ]
 });
     $(function() {
         $('#date_range').on('change',function (e) {
