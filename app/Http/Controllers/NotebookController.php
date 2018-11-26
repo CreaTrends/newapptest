@@ -109,7 +109,7 @@ class NotebookController extends Controller
                 're'=>$activity_data,
                 'notebook_id'=>$request->all(),
             ],200,[],JSON_PRETTY_PRINT);*/
-           return back()->with('status', 'Profile updated!');
+           return back()->with('status', 'Hemos Actualizado la linea de tiempo');
     }
 
     /**

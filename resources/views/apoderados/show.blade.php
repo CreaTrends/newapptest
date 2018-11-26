@@ -148,11 +148,7 @@
                     <!-- feed {{$feed->activity_type}}-->
                         <div class="card card-body mb-0 border-top-0 border-left-0 border-right-0 rounded-0 border-bottom p-2 pt-4 widget-feed"> 
                             <div class="media widget-feed-right">
-                                <div class="p-3 mr-3 {{$feed->css['bg-color']}} text-center widget-info h-100 d-flex justify-content-center flex-column" style="
-    border-radius: 100%;
-    width: 60px;
-    height: 60px !important;
-">
+                                <div class="p-3 mr-3 {{$feed->css['bg-color']}} text-center widget-info h-100 d-flex justify-content-center flex-column" style="border-radius: 100%;width: 60px;height: 60px !important;">
                                     <h2 class="mb-0"><i class="{{$feed->css['icon']}}"></i></h2>
                                 </div>
                                 <div class="media-body ">
@@ -178,7 +174,12 @@
                                         <br>
                                         @endforeach
                                     @else
-                                        {{$feed->info}}
+                                        @if($feed->activity_type == 'mood')
+                                            
+                                            {{ __('feed.'.$feed->activity_type.'.'.$feed->info) }}
+                                        @else
+                                            {{$feed->info}}
+                                            @endif
                                     @endif
                                     </p>
                                     

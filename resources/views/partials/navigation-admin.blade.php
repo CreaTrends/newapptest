@@ -19,6 +19,9 @@
               </div>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{route('notebook.index')}}">Libreta</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{route('notes.index')}}">Circulares</a>
             </li>
             <li class="nav-item">

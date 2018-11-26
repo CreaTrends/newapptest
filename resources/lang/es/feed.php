@@ -21,12 +21,14 @@ return [
         'deposition'=>'Mudas / Baño',
         'photo'=>':attribute fue etiquetado en una foto',
         'activity'=>':attribute Realizó actividades hoy',
-        'nota'=>':attribute '
+        'nota'=>'Notas / Observaciones',
+        'mood'=>'Estado de ánimo de :attribute'
     ],
-    'moods'=>[
+    'mood'=>[
         'happy' => 'Feliz',
         'sad' => 'Triste',
-        'normal'=>'Estado normal'
+        'normal'=>'Estado normal',
+        'angry'=>'Enojado'
     ],
     'food'=>[
         'type'=>':attribute ',

@@ -40,7 +40,11 @@
     <div class="col-6 col-lg-3 w-sm-50 mb-3 ">
         <div class="card card-body h-100">
             <div class="buton-icon-container  d-flex justify-content-center align-self-center ">
-                <a  href="#" role="button" class="link-item text-center">
+                <a  href="#" role="button" class="link-item text-center"
+                data-activity="Activity"
+                data-type="mood" 
+                data-url="{{route('notebook.store',['action'=>'mood'])}}"
+                id="open-modal">
                     <div class="icon-header is-lightgreen p-4 mb-3">
                         <i class="icofont icofont-emo-laughing"></i>
                     </div>
@@ -394,7 +398,9 @@ $(document).ready(function(){
 
 
 });
-
+@if (session('status'))
+            toastr.success("{{ session('status') }}");
+   @endif
 
 </script>
 
