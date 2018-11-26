@@ -145,6 +145,7 @@
                 @foreach($feeds as $feed)
                     <!-- data feed {{$loop->iteration}} -->
                     @if(!empty($feed->data))
+                    <!-- feed {{$feed->activity_type}}-->
                         <div class="card card-body mb-0 border-top-0 border-left-0 border-right-0 rounded-0 border-bottom p-2 pt-4 widget-feed"> 
                             <div class="media widget-feed-right">
                                 <div class="p-3 mr-3 {{$feed->css['bg-color']}} text-center widget-info h-100 d-flex justify-content-center flex-column" style="
@@ -189,7 +190,9 @@
                              @foreach($feed->attached as $attached)
                              
                                  <div class="col-6 col-md-3">
-                                   <img class="img-fluid m-0 my-2" src="{{url('static/uploads/notebook/'.$attached)}}" alt="Card image cap">   
+                                    <a  data-fancybox="gallery-{{$feed->id}}" href="{{url('static/uploads/notebook/'.$attached)}}">
+                                   <img class="img-fluid m-0 my-2" src="{{url('static/uploads/notebook/'.$attached)}}" alt="Card image cap">
+                                   </a>   
                                  </div>
                              
                              @endforeach
@@ -202,159 +205,8 @@
                 
                 @endforeach
             @endforeach
-            @if(!empty($notebooks->moods))
-            <!-- moods feed -->
-            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
-                <div class="mr-2 widget-feed-left">
-                    <div class="p-2 is-purple text-center widget-info h-100 d-flex justify-content-center flex-column">
-                        <h3 class="mb-0"><i class="icofont icofont-emo-laughing"></i></h3>
-                    </div>
-                </div>
-                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
-                    <h6 class="mt-0 d-flex justify-content-between ">
-                    <strong>Dia General</strong>
-                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
-                    </h6>
-                    <span class="badge badge-primary my-0 py-1 px-3 is-darkpink fw-300">
-                        <?php $r=str_replace('"', '', $notebooks->moods); ?>
-                        Estado de Animo : {{ __('apoderado.moods.'.$r) }}
-                    </span>
-                    @if(!empty($notebooks->comment))
-                    <p class="mb-0">
-                        {{$notebooks->comment}}
-                    </p>
-                    @endif
-                </div>
-            </div>
-            <!-- end moods feed -->
-            @endif
-            @if(!empty($notebooks->foods))
-            <!-- foods feed -->
-            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
-                <div class="mr-2 widget-feed-left">
-                    <div class="p-2 is-green text-center widget-info h-100 d-flex justify-content-center flex-column">
-                        <h3 class="mb-0"><i class="icofont icofont-fast-food"></i></h3>
-                    </div>
-                </div>
-                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
-                    <h6 class="mt-0 d-flex justify-content-between ">
-                    <strong>Comidas</strong>
-                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
-                    </h6>
-                    @foreach($notebooks->foods as $j)
-                        <p class="mb-0">
-                            {{ __('apoderado.food.'.$j->type) }}
-                            {{ __('apoderado.food_amount.'.$j->amount) }}
-                        </p>
-                    @endforeach
-                </div>
-            </div>
-            <!-- end foods feed -->
-            @endif
+            <!-- end feed {{$feed->activity_type}} -->
 
-            @if(!empty($notebooks->depositions))
-            <!-- depositions feed -->
-            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
-                <div class="mr-2 widget-feed-left">
-                    <div class="p-2 is-orange text-center widget-info h-100 d-flex justify-content-center flex-column">
-                        <h3 class="mb-0"><i class="icofont icofont-baby-cloth"></i></h3>
-                    </div>
-                </div>
-                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
-                    <h6 class="mt-0 d-flex justify-content-between ">
-                    <strong>Cambios / Mudas</strong>
-                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
-                    </h6>
-                    @foreach($notebooks->depositions as $j)
-                        <p class="mb-0">
-                            {{$j->time}} : {{ __('apoderado.poops.'.$j->type) }}
-                        </p>
-                    @endforeach
-                </div>
-            </div>
-            <!-- end depositions feed -->
-            @endif
-
-            @if(!empty($notebooks->naps))
-            <!-- naps feed -->
-            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
-                <div class="mr-2 widget-feed-left">
-                    <div class="p-2 is-red text-center widget-info h-100 d-flex justify-content-center flex-column">
-                        <h3 class="mb-0"><i class="icofont icofont-bed"></i></h3>
-                    </div>
-                </div>
-                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
-                    <h6 class="mt-0 d-flex justify-content-between ">
-                    <strong>Siestas / Descansos</strong>
-                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
-                    </h6>
-                    @foreach($notebooks->naps as $j)
-                        <p class="mb-0">
-                            De :  {{$j->start}} a {{$j->end}}
-                        </p>
-                    @endforeach
-                </div>
-            </div>
-            <!-- end naps feed -->
-            @endif
-
-            @if(!empty($notebooks->activities))
-            <!-- activities feed -->
-            <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
-                <div class="mr-2 widget-feed-left">
-                    <div class="p-2 is-pink text-center widget-info h-25 d-flex justify-content-center flex-column">
-                        <h3 class="mb-0"><i class="icofont icofont-abc"></i></h3>
-                    </div>
-                </div>
-                <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
-                    <h6 class="mt-0 d-flex justify-content-between ">
-                    <strong>Actividades Grupales</strong>
-                    <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
-                    </h6>
-                    @foreach($notebooks->activities as $j)
-                        @if(!empty($j))
-                        <p class="mb-0">
-                            {{$j->description}}
-                        </p>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-            <!-- end activities feed -->
-            @endif
-
-            @if(!empty($notebooks->attachs))
-            <!-- attachs feed -->
-            @foreach($notebooks->attachs as $images)
-                <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3  widget-feed rounded">
-                    <div class="mr-2 widget-feed-left">
-                        <div class="p-2 is-default text-center widget-info h-100 d-flex justify-content-center flex-column">
-                            <h3 class="mb-0"><i class="icofont icofont-camera"></i></h3>
-                        </div>
-                    </div>
-                    <div class="py-2 px-2 widget-feed-right w-100 ml-auto">
-                        <h6 class="mt-0 d-flex justify-content-between ">
-                        <strong>Galerias</strong>
-                        <small>{{\Carbon\Carbon::parse($notebooks->created_at)->diffForHumans()}}</small>
-                        </h6>
-                        <p class="mb-0">
-                            @foreach($notebooks->alumno as $alumno)
-                                {{ __('apoderado.tagged',['name' => $alumno->firstname]) }}
-                            @endforeach
-                        </p>
-                        @foreach($images->file as $image)
-                            <img class="card-img-bottom p-1 mt-2 " src="{{url('static/image/notebook/'.$image)}}" >
-                        @endforeach
-                    </div>
-                </div>
-            @endforeach
-            <!-- end attachs feed -->
-}
-}
-            
-       
-</div>
- @endif
    @else
         <div class="col-lg-8 text-center mh-100 ">
             <div class="d-flex justify-content-center align-items-stretch text-center mb-4">
@@ -372,7 +224,18 @@
 @section('scripts')
 <script>
    
-
+$('[data-fancybox="gallery"]').fancybox({
+    selector : '[data-fancybox="images"]',
+    buttons: [
+        //"zoom",
+        //"share",
+        //"slideShow",
+        //"fullScreen",
+        //"download",
+        //"thumbs",
+        "close"
+    ]
+});
     $(function() {
         $('#date_range').on('change',function (e) {
             var val = $(this).attr('name');
