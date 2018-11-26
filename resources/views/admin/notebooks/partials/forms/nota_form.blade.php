@@ -7,7 +7,7 @@
             <div class="form-row" >
                 
                 <div class="form-group col-md-12">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="data[]"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="data"></textarea>
                 </div>
                 
             </div>

@@ -92,8 +92,8 @@
             <div class="buton-icon-container  d-flex justify-content-center align-self-center ">
                 <a  href="#" role="button" class="link-item text-center"
                 data-activity="Activity"
-                data-type="muda" 
-                data-url="{{route('notebook.store',['action'=>'muda'])}}"
+                data-type="deposition" 
+                data-url="{{route('notebook.store',['action'=>'deposition'])}}"
                 id="open-modal">
                     <div class="icon-header is-orange p-4 mb-3">
                         <i class="icofont icofont-baby-cloth"></i>
@@ -313,19 +313,19 @@ $(document).on('click', '#open-modal', function(e) {
         console.log('se cargo');
     });
 
-    
+    console.log($(this).data('type'));
     axios.get('{{route('notebook.forms')}}', {
               params: {
-                form: $activity_type,
+                form: $(this).data('type'),
                 
               }
             }).then(function(response) {
-                
+                console.log('respuest : '+ response.data);
                 $modal.find('#form-template').html(response.data.form);
                 $('#loader-modal').addClass('d-none');
 
             }).catch(error => {
-            console.log(error.response.data.form)
+            console.log('tuvimos error');
             $modal.find('.error-overlay').removeClass('d-none');
 
         });
@@ -336,7 +336,7 @@ $('#modal-add-data').on('hidden.bs.modal', function (e) {
   $(document).find('input[name="new_recipientsSelected"]').val();
 })
 
-$(document).on('change', '#filter_users', function() {
+$(document).on('change', '#filter_users', function(activity_type) {
 
     console.log('cambiamos usuarios');
     
@@ -344,6 +344,8 @@ $(document).on('change', '#filter_users', function() {
     $id = $list.val();
     $select_input = $(document).find('input[name="new_recipientsSelected"]');
     $select_val = $select_input.val();
+
+    $activity_type = activity_type || null;
 
 
     $('#user_list').html('');
@@ -395,28 +397,5 @@ $(document).ready(function(){
 
 
 </script>
-<script>
-    $('#timepicker1').timepicki({increase_direction:'up'});
-    $('#timepicker2').timepicki({min_hour_value:4});
-    $('#timepicker3').timepicki({max_hour_value:8}); 
-    $('#timepicker4').timepicki({custom_classes:"myclass"});
-    $('#timepicker5').timepicki({show_meridian:false});
-    $('#timepicker6').timepicki({
-        step_size_hours:2,
-        step_size_minutes:15});
-    $('#timepicker7').timepicki({
-        overflow_minutes:true,
-        step_size_minutes:15});
-    $('#timepicker8').timepicki({start_time: ["06", "00", "AM"]});
-    $('#timepicker9').timepicki({disable_keyboard_mobile: true});
-    $('#timepicker10').timepicki({reset:true});
-    $('#timepicker11').timepicki({
-        show_meridian:false,
-        min_hour_value:0,
-        max_hour_value:23,
-        step_size_minutes:15,
-        overflow_minutes:true,
-        increase_direction:'up',
-        disable_keyboard_mobile: true});
-    </script>
+
 @endsection

@@ -26,10 +26,9 @@
                     </div>
                 </div>
                 <div class="p-2"></div>
-            </div>
-            
+            </div>            
         </div>
-        <a href="#" id="add_nap" data-link="">Agregar Siesta</a>
+        <a href="#" id="add_nap" data-link="">Agregar Muda</a>
         
     </div>
 </div>
@@ -54,22 +53,22 @@ $(document).ready(function() {
         html += '<div class="muda-item d-flex flex-row" id="row' + x + '">';
             html += '<div class="mr-3">';
                 html += '<div class="input-group mb-3">';
-                    html += '<input type="text" class="form-control is-timepicker" placeholder="Hora Inicio" aria-label="Hora Inicio" aria-describedby="basic-addon2" id="timepicker" name="data[' + x + '][start]">';
+                    html += '<input type="text" class="form-control is-timepicker" placeholder="Hora Inicio" aria-label="Hora Inicio" aria-describedby="basic-addon2" id="timepicker" name="data[' + x + '][time]">';
                 html += '<div class="input-group-append">';
                     html += '<span class="input-group-text" id="basic-addon2"><i class="far fa-clock"></i></span>';
                 html += '</div>';
             html += '</div>';
         html += '</div>';
         html += '<div class="mr-3">';
-        html += '<div class="form-group">';
-        html += '<select class="form-control input-sm" name="data['+ x +'][type]">';
-        html +='<option value="">Seleccionar</option>'
-        html += '<option value="normal">Normal</option>';
-        html += '<option value="hard">Duro</option>';
-        html += '<option value="soft">Blanda</option>';
-        html += '<option value="liquid">Liquido</option>';
-        html +="</select>";
-        html += '</div>';
+            html += '<div class="form-group">';
+                html += '<select class="form-control input-sm" name="data['+ x +'][type]">';
+                    html +='<option value="">Seleccionar</option>'
+                    html += '<option value="normal">Normal</option>';
+                    html += '<option value="hard">Duro</option>';
+                    html += '<option value="soft">Blanda</option>';
+                    html += '<option value="liquid">Liquido</option>';
+                html +="</select>";
+            html += '</div>';
         html += '</div>';
         html += '<button type="button" class="close remove_field align-self-center" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
         html += '</div>';

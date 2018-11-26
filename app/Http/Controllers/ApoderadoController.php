@@ -19,6 +19,7 @@ use Lexx\ChatMessenger\Models\Message;
 use Lexx\ChatMessenger\Models\Participant;
 use Lexx\ChatMessenger\Models\Thread;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
@@ -155,14 +156,33 @@ class ApoderadoController extends Controller
     public function show(Request $request,$id,$date=NULL)
     {
         //
+        
+
+        $child = $id;
+        try {
+            $apoderado = User::whereHas('students',function($q) use($id){
+                $q->where('alumno_id',$id);
+            })
+            ->whereRoleIs('parent')
+            ->findOrFail(Auth::id());
+
+        } catch(\Exception $e){
+             // do task when error
+              return response()->json([
+                'status' => 'error',
+                'message'=>$e->getMessage()
+            ],404);
+        }
+
         if(!empty($date)>0){
             $dt = Carbon::parse($date)->toDateString();
 
         }else {
           $dt = Carbon::today()->toDateString();  
         }
+
         $user_id = auth()->user()->id;
-        $apoderado = User::with('childs','profile')->where('id',$user_id)->first();
+        
         $alumno_id = $id;
 
         $curso = Curso::whereHas('childs',function($q) use($alumno_id){
@@ -177,7 +197,7 @@ class ApoderadoController extends Controller
         ->get();
 
 
-        $notebooks= Notebook::with('attachs')
+        /*$notebooks= Notebook::with('attachs')
         ->with('activities')
         ->selectRaw('alumno_parent.alumno_id as alumno_id, users.id as padre_id,notebooks.id as feed_id, notebooks.*')
         ->join('alumno_notebook','alumno_notebook.notebook_id','=','notebooks.id')
@@ -187,7 +207,22 @@ class ApoderadoController extends Controller
         ->where('alumno_parent.user_id',$user_id)
         ->whereDate('notebooks.created_at', '=', $dt)
         ->orderBy('notebooks.created_at', 'DESC')
-        ->first();
+        ->first();*/
+
+        $notebooks= Notebook::join('alumno_parent','alumno_parent.alumno_id','=','notebooks.alumno_id')
+        ->where('notebooks.alumno_id',$id)
+        ->where('alumno_parent.user_id',$user_id)
+        ->whereNotNull('notebooks.data')
+        ->whereDate('notebooks.created_at', '=', $dt)
+        ->orderBy('notebooks.created_at', 'DESC')
+        ->get()
+        ->groupBy(function($item){ 
+            
+            return Carbon::parse($item->created_at)->format('d-M-y');
+        });
+        
+        
+        
 
         //$date = Carbon::parse($dt)->toDateString();
         $next_notebook = Carbon::parse($dt)->addDays(1)->toDateString();
@@ -241,8 +276,8 @@ class ApoderadoController extends Controller
         /*echo "<pre>";
         return json_encode([$previousnotebook,$nextnotebook],JSON_PRETTY_PRINT);*/
        /*echo "<pre>";
-        return json_encode($notebooks,JSON_PRETTY_PRINT);
-        return json_encode($previousnotebook,JSON_PRETTY_PRINT);*/
+        return json_encode($notebooks,JSON_PRETTY_PRINT);*/
+        /*return json_encode($previousnotebook,JSON_PRETTY_PRINT);*/
         return view('apoderados.show',compact('nextnotebook','previousnotebook','albums','notebooks','alumno_profile','notebook_select','notebook_date'));
     }
     public function albums(){

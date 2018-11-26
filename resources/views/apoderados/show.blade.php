@@ -129,15 +129,79 @@
         <!-- end feed section -->
         
     </div>
+    
+
+
     @if(!empty($notebooks))
         <div class="col-md-7 col-lg-8" id="daily-feed">
             <!-- title -->
-            <div class="d-flex justify-content-start mb-4">
-                <span class="badge badge-primary my-0 py-2 px-3 is-lightblue  fw-300 time_line-date" >
-                            {{\Carbon\Carbon::parse($notebooks->created_at)->toFormattedDateString()}}
+            
+            @foreach($notebooks as $key => $feeds)
+                <div class="d-flex justify-content-start mb-4">
+                    <span class="badge badge-primary my-0 py-2 px-3 is-lightblue  fw-300 time_line-date" >
+                        {{\Carbon\Carbon::parse($key)->toFormattedDateString()}}
                     </span>
-            </div>
-        
+                </div>
+                @foreach($feeds as $feed)
+                    <!-- data feed {{$loop->iteration}} -->
+                    @if(!empty($feed->data))
+                        <div class="card card-body mb-0 border-top-0 border-left-0 border-right-0 rounded-0 border-bottom p-2 pt-4 widget-feed"> 
+                            <div class="media widget-feed-right">
+                                <div class="p-3 mr-3 {{$feed->css['bg-color']}} text-center widget-info h-100 d-flex justify-content-center flex-column" style="
+    border-radius: 100%;
+    width: 60px;
+    height: 60px !important;
+">
+                                    <h2 class="mb-0"><i class="{{$feed->css['icon']}}"></i></h2>
+                                </div>
+                                <div class="media-body ">
+                                    <h6 class="mt-0 d-flex justify-content-between ">
+                                    <strong>{{ __('feed.type.'.$feed->activity_type,['attribute' => $feed->name]) }}</strong>
+                                    <small>{{$feed->date}}</small>
+                                    </h6>
+                                    <p>
+                                    @if(is_array($feed->data))
+                                        @foreach($feed->data as $value)
+                                            @foreach($value as $a=>$b)
+                                                @if($feed->activity_type == 'food')
+                                                    {{ __('feed.'.$feed->activity_type.'.'.$b,[
+                                                    'attribute' => $b
+                                                    ]) }}
+                                                @else
+                                                    {{ __('feed.'.$feed->activity_type.'.'.$a,[
+                                                    'attribute' => $b,
+                                                    'name' => $feed->name
+                                                    ]) }}
+                                                @endif
+                                            @endforeach
+                                        <br>
+                                        @endforeach
+                                    @else
+                                        {{$feed->info}}
+                                    @endif
+                                    </p>
+                                    
+                                </div>
+                            </div>
+
+                            @if(!empty($feed->attached))
+                            <div class="row">
+                             @foreach($feed->attached as $attached)
+                             
+                                 <div class="col-6 col-md-3">
+                                   <img class="img-fluid m-0 my-2" src="{{url('static/uploads/notebook/'.$attached)}}" alt="Card image cap">   
+                                 </div>
+                             
+                             @endforeach
+                             </div>
+                                    @endif  
+                        </div>
+                        
+
+                    @endif
+                
+                @endforeach
+            @endforeach
             @if(!empty($notebooks->moods))
             <!-- moods feed -->
             <div class="bg-white d-flex justify-content-start align-items-stretch flex-md-row mb-3 shadow-sm widget-feed rounded">
@@ -285,6 +349,8 @@
                 </div>
             @endforeach
             <!-- end attachs feed -->
+}
+}
             
        
 </div>

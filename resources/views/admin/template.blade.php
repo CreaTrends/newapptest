@@ -1,6 +1,5 @@
 @extends('layouts.adminDashboard')
-@section('title', 'Bienvenido '.$user->profile->first_name.' '.$user->profile->last_name)
-@section('page-subtitle','Tu panel de control')
+
 @section('content')
 <section class="submenu-page navbar-light bg-white mb-5" id="submenu-profile">
     <div class="row">
