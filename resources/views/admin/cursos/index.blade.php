@@ -73,7 +73,7 @@
           
           <img class="aalign-self-center mr-3 rounded-circle mw-25" src="https://www.gravatar.com/avatar/{{md5($curso->id)}}?s=48&d=identicon&r=PG" width="48">
         </a>
-        <a href="{{route('cursos.edit', $curso->id)}}" class="">
+        <a href="{{route('cursos.show', $curso->id)}}" class="">
           <h4 class="item-title"> {{$curso->name}}</h4>
         </a>
       </div>
@@ -112,7 +112,7 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
             <button class="dropdown-item" type="button" id="view" data-id="{{$curso->id}}" data-url="{{ route('cursos.show',$curso->id)}}">Ver</button>
-            <a class="dropdown-item" href="{{route('cursos.edit',$curso->id)}}">Editar</a>
+            <a class="dropdown-item" href="{{route('cursos.show',$curso->id)}}">Editar</a>
             <div class="dropdown-divider"></div>
             <form action="{{route('cursos.destroy',$curso->id)}}" method="POST" id="bulk_delete" enctype="multipart/form-data">
               

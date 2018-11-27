@@ -41,6 +41,7 @@
             </div>
         </main>
         <!-- Scripts -->
+
         <script src="{{ asset('js/app.js') }}?v=<?php echo md5(time());?>"></script>
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <script src="{{ asset('js/tokenize2.min.js') }}"></script>
@@ -48,6 +49,25 @@
     <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
         @yield('scripts')
+    <script>
+            $(document).on('click','a[data-action="notification-hide"]',function(e){
+                e.stopPropagation();
+                $data = [];
+                $data.push($(this).data('alert-id'));
+                $data.push($(this).data('user'));
+                var $url = $(this).data('url');
+                notifications.deleteNotification($data,$url);
+
+            });
+
+            $(document).on('click','#markAllAsRead',function(e){
+                e.stopPropagation();
+                var $url = $(this).data('url');
+                notifications.markAllAsRead($url);
+
+            });
+          </script>
+        
         
     </body>
 </html>

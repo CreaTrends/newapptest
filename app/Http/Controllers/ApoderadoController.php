@@ -479,4 +479,6 @@ class ApoderadoController extends Controller
         return view('apoderados.notes.show',compact('notes','parent'));
 
     }
+
+    
 }

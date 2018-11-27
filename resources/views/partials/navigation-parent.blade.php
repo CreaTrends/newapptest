@@ -32,7 +32,7 @@
             $cssClass = $count == 0 ? 'd-none' : 'is-active';
             ?>
             <i class="fas fa-comment-alt {{$count == 0 ? '' : 'is-active'}}"></i>
-            <span class="badge badge-danger is-badge-notify is-active {{ $cssClass }}">
+            <span class="badge badge-danger massage-notification is-badge-notify is-active {{ $cssClass }}">
               {{Auth::user()->unreadMessagesCount()}}
             </span>
           </a>
@@ -40,22 +40,22 @@
         <!-- dropdown notification -->
 
         <li class="nav-item mr-3 mt-1 dropdown">
-          <a href="{{ url('/admin')}}" class="nav-link is-notify is-active"  id="dropnotifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a href="{{ url('/parent')}}" class="nav-link is-notify is-active"  id="dropnotifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell is-active"></i>
-            <span class="badge badge-danger is-badge-notify {{Auth::user()->unreadNotifications->count() > 0 ? true:'d-none'}} ">
+            <span class="badge badge-danger notification is-badge-notify {{Auth::user()->unreadNotifications->count() > 0 ? true:'d-none'}} ">
               {{Auth::user()->unreadNotifications->count()}}
             </span>
           </a>
           <div class="dropdown-menu dropdown-menu-right notificationDropdown p-0" aria-labelledby="dropnotifications" id="notificationDropdown">
             <h6 class="border-bottom border-bottom py-3 px-3 pb-0 mb-0"><strong>Notification</strong></h6>
-            <div class="is-dropdown-container">
+            <div class="is-dropdown-container" id="drop-notification-list">
 
             @each('partials.notification-list', Auth::user()->notifications, 'notification', 'partials.no-notifications')
             
 
             </div>
             <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-center" href="#">Marcar como leidas</a>
+              <a class="dropdown-item text-center" id="markAllAsRead" role="button" data-url='{{route('tools.readallnotification')}}'>Marcar como leidas</a>
           </div>
         </li>
         <!-- dropdown profile -->

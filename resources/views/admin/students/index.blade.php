@@ -93,7 +93,7 @@
 <div class="card items mb-5 ">
   <div class="Table">
     <div class="Table-row Table-header py-2 px-2">
-      <div class="Table-row-item Table-row-small justify-content-center align-items-center">
+      <div class="Table-row-item Table-row-small align-self-center">
         <label class="control control--checkbox">
           <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" name="all" />
           <div class="control__indicator"></div>
@@ -101,9 +101,9 @@
       </div>
       <div class="Table-row-item u-Flex-grow4">Nombre</div>
       <div class="Table-row-item u-Flex-grow4">Apóderados</div>
-      <div class="Table-row-item u-Flex-grow3">Curso / Nivel</div>
-      <div class="Table-row-item u-Flex-grow2">Estado</div>
-      <div class="Table-row-item"></div>
+      <div class="Table-row-item u-Flex-grow4">Curso / Nivel</div>
+      <div class="Table-row-item Table-row-small">Estado</div>
+      <div class="Table-row-item Table-row-small"></div>
     </div>
     @if(!empty($alumnos->toArray()))
     @foreach ($alumnos as $alumno)
@@ -149,7 +149,7 @@
           
         </div>
       </div>
-      <div class="Table-row-item u-Flex-grow3  align-self-center" data-header="Header4">
+      <div class="Table-row-item u-Flex-grow4  align-self-center" data-header="Header4">
         <div>
           @foreach($alumno->curso as $curso)
           <a href="{{route('cursos.edit', $curso->id)}}" class="d-block w-100">
@@ -162,7 +162,7 @@
           @endforeach
         </div>
       </div>
-      <div class="Table-row-item u-Flex-grow2 align-self-center" data-header="Header5">
+      <div class="Table-row-item Table-row-small align-self-center" data-header="Header5">
         @if($alumno->status > 0)
         <span class="badge badge-success text-white fw-300 px-2 py-1">
           Activo
@@ -173,7 +173,7 @@
         </span>
         @endif
       </div>
-      <div class="Table-row-item justify-content-center align-self-center align-items-center" data-header="Header6">
+      <div class="Table-row-item Table-row-small justify-content-center align-self-center align-items-center" data-header="Header6">
         <div class=" ml-auto">
           <a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="is-options-menu">
             <i class="fas fa-ellipsis-h"></i>

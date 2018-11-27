@@ -1,35 +1,36 @@
 <!-- Row note -->
-<tr id="list_note-{{$note->id}}">
-   <td>
-        <div class="d-block d-sm-block d-md-flex d-lg-flex d-xl-flex  justify-content-start align-items-center">
-            <input type="checkbox" name="checkItem[]" id="checkItem" class="mr-3" value="{{$note->id}}">
-            <div class="w-25" style="white-space: nowrap;">
-                @if($note->sticky)
-                <i class="fas fa-star mr-2" style="color: #fca32a"></i>
-                @endif
-                <strong>{{$note->user->profile->first_name}} {{$note->user->profile->last_name}}</strong>
-            </div>
-            <div class="w-auto flex-grow-1">
-                <div class="d-flex justify-content-between align-items-center">
-                    <a class="flex-column align-items-start" href="{{ route('notes.show', $note->id) }}">
-                        <strong class="mb-1" >{{ $note->subject }}</strong>
-                    </a>
-                    <small class="text-muted d-flex justify-content-between align-items-center">
-                    @if($note->attached)
-                    <i class="fas fa-paperclip mr-3"></i>
-                    @endif
-                    <?php
-                    $date = Carbon\Carbon::createFromTimeStamp(strtotime($note->created_at));
-                    $date_only = $date->formatLocalized('%d %B %Y');
-                    ?>
-                    {{Carbon\Carbon::parse($note->created_at)->formatLocalized('%d %b %Y')}}
-                </span>
-            </div>
-            <p class="mb-1 d-none d-md-block">{!!str_limit(strip_tags($note->body),100)!!}</p>
-            
+<div class="Table-row {{$note->sticky>0 ? 'sticky-row':''}}" id="note-row-{{$note->id}}">
+    <div class="Table-row-item Table-row-small align-self-center" data-header="Id">
+        <label class="control control--checkbox">
+            <input type="checkbox" name="selected[]" value="{{$note->id}}"/>
+            <div class="control__indicator"></div>
+        </label>
+    </div>
+    <div class="Table-row-item u-Flex-grow3" data-header="Header2">
+        
+        <a href="" class="">
+            <h4 class="item-title"> {{$note->user->profile->first_name}} {{$note->user->profile->last_name}}</h4>
+        </a>
+        
+    </div>
+    <div class="Table-row-item u-Flex-grow5" data-header="Header3">
+        
+        <div class="d-block">
+            <a href="javascript:void(0);" class="view_note d-block" data-id="{{$note->id}}" data-url="{{ route('notes.display',$note->id)}}" id="note-{{$note->id}}">{{ $note->subject }}</a>
+            <small class="text-muted d-flex justify-content-between align-items-center">
+                {!!str_limit(strip_tags($note->body),100)!!}
+            </small>
         </div>
-    </td>
-    <td>
+    </div>
+    <div class="Table-row-item u-Flex-grow2" data-header="Header3">
+        {{Carbon\Carbon::parse($note->created_at)->formatLocalized('%d %b %Y')}}
+    </div>
+    <div class="Table-row-item u-Flex-grow1">
+        @if($note->sticky)
+        <i class="fas fa-star mr-2 align-self-center" style="color: #fca32a"></i>
+        @endif
+    </div>
+    <div class="Table-row-item Table-row-small">
         <a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="is-options-menu">
             <i class="fas fa-ellipsis-h"></i>
         </a>
@@ -43,5 +44,5 @@
                 <button class="dropdown-item">Eliminar</button>
             </form>
         </div>
-    </td>
-</tr>
+    </div>
+</div>

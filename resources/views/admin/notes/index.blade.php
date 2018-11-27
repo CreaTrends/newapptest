@@ -3,14 +3,16 @@
 
 <!-- start form -->
 
-<div class="d-block d-md-flex no-block align-items-center bg-light py-3 px-3 mt-4">
-    <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input sl-all" id="cstall">
-        <label class="custom-control-label" for="cstall"><strong>Seleccionar todo</strong></label>
-        
+
+<!-- top toolbar filter -->
+<div class="d-block d-md-flex no-block align-items-center py-0 px-0 my-4">
+    <div class="toolbar-card" role="toolbar">
+        <div class="toolbar-card mr-auto" role="toolbar">
+            
+        </div>
     </div>
     <div class="ml-auto mr-2">
-        <button type="button" class="btn custom-btn is-lightblue" data-toggle="modal" data-target="#modal-add-data" id="add">Crear Circular</button>
+        <button type="submit" class="btn custom-btn is-lightblue" data-toggle="modal" data-target="#modal-add-data" id="add">Agregar Circular</button>
     </div>
     <div >
         <a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="is-options-menu">
@@ -28,22 +30,38 @@
             </form>
         </div>
     </div>
-    
 </div>
-
-
-<div class="table-responsive" style="border: 1px solid rgba(120, 130, 140, 0.13) !important;">
-    <table class="table">
-
-        <tbody>
-            @each('admin.notes.noteslist', $notes, 'note')
-            
-        </tbody>
-    </table>
-
+<!-- Header paginator -->
+<div class="d-block d-md-flex justify-content-between py-3 px-3 my-3 header-paginator">
+    <div class="h-100 align-self-center">
+        Mostrando <strong>{{$notes->count()}}</strong> Circulares
+    </div>
+    <div class="d-flex justify-content-between h-100">
+        <div class="mr-4 align-self-center"> {{$notes->firstItem()}} al {{$notes->lastItem()}}  de {{$notes->total()}} </div>
+        <div class="ml-auto pb-0">{{$notes->links('pagination::simple-bootstrap-4')}}</div>
+    </div>
 </div>
-<div class="my-3">
-
+<!-- Start Table -->
+<div class="card items ">
+    <div class="Table">
+        <div class="Table-row Table-header py-2 px-2">
+            <div class="Table-row-item Table-row-small align-self-center">
+                <label class="control control--checkbox">
+                    <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" name="all" />
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div class="Table-row-item u-Flex-grow3">Nombre</div>
+            <div class="Table-row-item u-Flex-grow5">subject</div>
+            <div class="Table-row-item u-Flex-grow2">Fecha</div>
+            <div class="Table-row-item u-Flex-grow1">Destacado</div>
+            <div class="Table-row-item Table-row-small"></div>
+        </div>
+        
+        @each('admin.notes.noteslist', $notes, 'note')
+    </div>
+    <div class="my-3">
+    </div>
 </div>
 <!-- Modal -->
 <!-- view / edit note -->
@@ -77,8 +95,7 @@
                 
             </div>
             <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary custom-btn is-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary custom-btn is-green">Enviar Circular</button>
+                    <button type="button" class="btn btn-secondary custom-btn is-default" data-dismiss="modal">Cerrar</button>
                 </div>
         </div>
     </div>
@@ -231,43 +248,37 @@
  $(document).ready(function(){  
     //clear and reset form
 let readed_container = $("#readed_by_group");
-$(document).on('submit', '#bulk_delete', function(event){
+$(document).on('submit', '#bulk_delete', function(event) {
     event.preventDefault();
     var form = $(this);
     var $_data_bulklist = form.find('#noteSelected').val();
     var $_data_action = '{{route('notes.deleteall')}}';
-
     console.log($_data_bulklist);
     //Ajax Function to send a get request
     axios({
-                method: "POST",
-                url: $_data_action,
-                data: {
-                    id: $_data_bulklist,
-                  },
+        method: "POST",
+        url: $_data_action,
+        data: {
+            id: $_data_bulklist,
+        },
         onUploadProgress: function(progressEvent) {
             var uploadPercentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
             console.log(uploadPercentage);
         }
-    
-            }).then(function (response) {
+    }).then(function(response) {
         console.log(response.data);
         $.each(response.data.ids, function(index, item) {
-            $('#list_note-'+item).stop().hide(function(){
+            $('#note-row-' + item).stop().fadeOut(300, function() {
                 $(this).remove();
-                $(this).find('input[name="checkItem[]"]').prop( "checked", false );
-
+                $(this).find('input[name="checkItem[]"]').prop("checked", false);
             })
         });
         form[0].reset();
-
-    })
-    .catch(error => {
-    console.log(error.response.data.errors)
-
-    $('.alert-danger').addClass('d-block');
+        toastr.success("Circular Eliminada con Éxito");
+    }).catch(error => {
+        console.log(error.response.data.errors)
+        $('.alert-danger').addClass('d-block');
     });
-     
 });
     
 $('#add').click(function() {
@@ -461,12 +472,15 @@ $(document).on('submit', '#insert_form', function(event) {
             console.log(res.data);
             if (method == 'POST') {
                 if (res.data.sticky > 0) {
-                    $('.table > tbody tr:first').before(res.data.html).fadeIn(function() {
-                        $("#list_note-" + res.data.id).css('background-color', '#f0f8ff');
-                        console.log($("#list_note-" + res.data.id));
+                    $('.Table-header').after(res.data.html).fadeIn(function() {
+                        $("#note-row-" + res.data.id).css('background-color', '#f0f8ff');
+                        console.log($("#note-row-" + res.data.id));
                     })
                 } else {
-                    $('.table > tbody').append(res.data.html);
+                    $( ".Table > .sticky-row" ).last().after(res.data.html).fadeIn(function() {
+                        $("#note-row-" + res.data.id).css('background-color', '#f0f8ff');
+                        console.log($("#note-row-" + res.data.id));
+                    });
                 }
             } else {
                 console.log('el di a cambiar es : ' + res.data.id);
@@ -522,22 +536,19 @@ $(document).on('submit', '#insert_form', function(event) {
     $('#recipientsSelected').val(k);
 
 
-$('#cstall').change(function() {
-    $('input[name="checkItem[]"]').not(this).prop('checked', this.checked);
+    $('input[name="all"]').change(function() {
+    $('input[name="selected[]"]').not(this).prop('checked', this.checked);
     var myarray = [];
-    $.each($('input[name="checkItem[]"]:checked'), function(){
-        myarray.push($(this).val());
+    $.each($('input[name="selected[]"]:checked'), function(){
+    myarray.push($(this).val());
     });
-    
     $('#noteSelected').val(myarray);
     console.log(myarray);
-
 });
-
-$('input[name="checkItem[]"]').change(function() {
+$('input[name="selected[]"]').change(function() {
     
     var myarray = [];
-    $.each($('input[name="checkItem[]"]:checked'), function(){
+    $.each($('input[name="selected[]"]:checked'), function(){
         myarray.push($(this).val());
     });
     

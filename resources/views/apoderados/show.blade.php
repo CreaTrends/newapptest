@@ -145,7 +145,7 @@
                 @foreach($feeds as $feed)
                     <!-- data feed {{$loop->iteration}} -->
                     @if(!empty($feed->data))
-                    <!-- feed {{$feed->activity_type}}-->
+                    
                         <div class="card card-body mb-0 border-top-0 border-left-0 border-right-0 rounded-0 border-bottom p-2 pt-4 widget-feed"> 
                             <div class="media widget-feed-right">
                                 <div class="p-3 mr-3 {{$feed->css['bg-color']}} text-center widget-info h-100 d-flex justify-content-center flex-column" style="border-radius: 100%;width: 60px;height: 60px !important;">
@@ -206,7 +206,7 @@
                 
                 @endforeach
             @endforeach
-            <!-- end feed {{$feed->activity_type}} -->
+            
 
    @else
         <div class="col-lg-8 text-center mh-100 ">

@@ -352,4 +352,83 @@ class ToolController extends Controller
  
 
     }
+
+    public function notificationdelete(Request $request){
+
+        try {
+            $notification = auth()->user()->notifications()->where('id',$request->get('nid'))->first();
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message'=>'Invalid Url'
+            ],404);
+        }
+        
+        
+        if($notification){
+            $notification->delete();
+        }
+
+        if(request()->ajax()) {
+            return response()->json([
+                'message' => 'delete',
+                'status' => 'Ok',
+                'count'=>auth()->user()->unreadNotifications->count()
+            ], 200);
+        }
+
+        return response()->json([
+                'status' => 'error',
+                'message'=>'Invalid Url'
+            ],404);
+
+    }
+    public function notificationreadall(Request $request){
+
+
+        $user = auth()->user();
+
+        foreach (auth()->user()->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
+
+        $html_response =  view('partials.no-notifications')->render();
+
+        if(request()->ajax()) {
+            return response()->json([
+                'status' => 'Ok',
+                'html' => $html_response,
+                'count'=>auth()->user()->unreadNotifications->count()
+            ], 200);
+        }
+
+        return response()->json([
+                'status' => 'error',
+                'message'=>'Invalid Url'
+            ],404);
+
+    }
+    public function notificationmarkasread(Request $request){
+
+        $notification = auth()->user()->notifications()->where('id',$request->get('nid'))->first();
+        
+        if($notification){
+            $notification->markAsRead();
+        }
+
+        if(request()->ajax()) {
+            return response()->json([
+                'message' => 'mark as read unique',
+                'status' => 'Ok'
+            ], 200);
+        }
+
+
+        return response()->json([
+                'status' => 'error',
+                'message'=>'Invalid Url'
+            ],404);
+
+    }
 }

@@ -49,6 +49,13 @@
     <script src="{{ asset('js/timepicki.js') }}?v=<?php echo md5(time());?>"></script>
 
         @yield('scripts')
+        <script>
+          function markAsRead(id){
+            event.preventDefault();
+            var id = this.id || null;
+            console.log($(this));
 
+          }
+          </script>
     </body>
 </html>

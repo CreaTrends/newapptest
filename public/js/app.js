@@ -55250,6 +55250,64 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
     elWidth = $('#element').parent().width();
     console.log($(document).height());
 })(jQuery);
+$(document).ready(function () {
+    notifications = {
+        markAsRead: function markAsRead(notification, url) {
+
+            var $el = $('div[data-notification=' + notification[0] + ']');
+            axios.get(url, {
+                params: {
+                    nid: notification[0] || null,
+                    uid: notification[1] || null
+                }
+            }).then(function (response) {
+                $container.fadeOut(300, function () {
+                    $container.remove();
+                });
+                console.log('respuest : ' + response.data.status);
+            }).catch(function (error) {
+                console.log('tuvimos error');
+            });
+        },
+        markAllAsRead: function markAllAsRead(url) {
+
+            var $el = $(this).data('notification');
+
+            console.log($el);
+            axios.get(url, {
+                params: {
+                    uid: ''
+                }
+            }).then(function (response) {
+                $('#drop-notification-list').find(".notification-item").removeClass('is-active');
+                $('.notification').addClass('d-none');
+                console.log('respuest : ' + response.data.message);
+            }).catch(function (error) {
+                console.log('tuvimos error');
+            });
+        },
+        deleteNotification: function deleteNotification(notification, url) {
+
+            var $el = $('div[data-notification=' + notification[0] + ']');
+
+            $container = $('div[data-notification=' + notification[0] + ']');
+            axios.get(url, {
+                params: {
+                    nid: notification[0],
+                    uid: notification[1]
+                }
+            }).then(function (response) {
+                $container.fadeOut(300, function () {
+                    $container.remove();
+                });
+                $('.notification').text(response.data.count);
+                console.log('respuest : ' + response.data.status);
+            }).catch(function (error) {
+                console.log('tuvimos error');
+            });
+        }
+    };
+});
 
 $('.dropdown-menu .body .menu').slimscroll({
     height: '254px',

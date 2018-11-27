@@ -146,6 +146,7 @@ Route::middleware(['password_expired'])->group(function () {
     Route::get('notes/display/{id}','NoteController@displaynote')->name('apoderado.notes.display');
     Route::get('notes/{id}',['as' => 'apoderado.notes.show', 'uses' => 'ApoderadoController@noteshow']);
     Route::get('/tools/download/{id}/{file}', 'ToolController@DownloadAttach')->name('apoderados.tools.download');
+    
 
     Route::get('albums',['as' => 'apoderado.albums', 'uses' => 'ApoderadoController@albums']);
     Route::get('album/{id}/{token}',['as' => 'apoderado.album', 'uses' => 'ApoderadoController@album']);
@@ -167,11 +168,11 @@ Route::get('password/expired', 'Auth\FirstloginController@index')
         Route::post('password/post_expired', 'Auth\FirstloginController@update')
         ->name('password.post_expired');
 
-/*Route::group(['prefix' => 'teacher','middleware' => 'auth', 'middleware' => ['role:teacher']], function () {
-    Route::resource('/', 'TeacherController');
-    Route::get('cursos', ['as' => 'teacher.cursos', 'uses' => 'CursoController@index']);
-    Route::get('/getdata', 'CursoController@getdata')->name('cursos.getdata');
-});*/
+Route::group(['prefix' => 'tools/notifications','middleware' => 'auth'], function () {
+    Route::get('delete', 'ToolController@notificationdelete')->name('tools.deletenotification');
+    Route::get('readall', 'ToolController@notificationreadall')->name('tools.readallnotification');
+    Route::get('markasread', 'ToolController@notificationmarkasread')->name('tools.markasreadnotification');
+});
 
 
 

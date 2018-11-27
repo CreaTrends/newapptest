@@ -51,7 +51,7 @@
 
         <li class="nav-item mr-3 mt-1 dropdown">
           <a href="{{ url('/admin')}}" class="nav-link is-notify is-active"  id="dropnotifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-bell is-active"></i>
+            <i class="fas fa-bell {{Auth::user()->unreadNotifications->count() > 0 ? 'is-active': ''}}"></i>
             <span class="badge badge-danger is-badge-notify {{Auth::user()->unreadNotifications->count() > 0 ? true:'d-none'}} ">
               {{Auth::user()->unreadNotifications->count()}}
             </span>
@@ -65,7 +65,14 @@
 
             </div>
             <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-center" href="#">Marcar como leidas</a>
+              <a class="dropdown-item text-center" 
+              href="#" 
+              id="markAsred" 
+              data-notification="{{Auth::id()}}" 
+              role="button" 
+              onclick="markAsRead();return false;">
+              Marcar como leidas
+            </a>
           </div>
         </li>
         <!-- dropdown profile -->
@@ -95,4 +102,5 @@
     </div>
   </div>
 </nav>
+
 

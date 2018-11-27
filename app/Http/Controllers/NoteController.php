@@ -44,7 +44,7 @@ class NoteController extends Controller
             $notes = $query->orderBy('sticky','DESC');
             $notes = $query->orderBy('created_at','DESC');
 
-            $notes = $query->get();
+            $notes = $query->paginate(10);
 
             $cursos = Curso::query();
             $cursos = $cursos->when($user->hasRole('teacher', true), function ($q) {

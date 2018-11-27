@@ -2,27 +2,8 @@
 @section('title', 'Curso')
 @section('page-subtitle','Maneja tus cursos')
 @section('content')
-<section class="submenu-page navbar-light bg-white mb-2" id="submenu-profile">
-    <div class="row">
-        <div class="col-md-12 my-3">
-            <ul class="nav nav-pills">
-                <li class="nav-item">
-                    <a class="nav-link " href="{{route('index')}}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{route('cursos.index')}}">Cursos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{{route('notebook.create',$cursos->id)}}">Libreta</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{{route('notes',$cursos->id)}}">Circulares</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</section>
-<div class="d-flex justify-content-end align-items-stretch mb-4">
+
+<div class="d-flex justify-content-end align-items-stretch my-4">
     <div class="">
         <button type="submit" class="btn custom-btn is-default mr-2" data-toggle="modal" data-target="#edit-curso">Editar</button>
         <button type="button" class="btn custom-btn is-lightblue mr-2" data-toggle="modal" data-target="#add-child">
@@ -52,7 +33,7 @@
                 @endif
                 @endforeach
                 </h6>
-                <h6><strong>Menu Semanal :</strong> del 16/07/2018 al  22/07/2018</h6>
+                
                 
             </td>
         </tr>
