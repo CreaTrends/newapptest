@@ -69,12 +69,41 @@
                 <span class="badge badge-pill badge-primary is-lightgreen px-3 is-green fw-300">{{$alumno->name}}</span>
                 @endforeach
             </div>
+            
         </div>
     </div>
 </div>
 @endsection
 @section('content')
+<!-- <div class="row justify-content-center">
+    
+    <div class="col-md-8 text-center">
+        <div class="  toolbar-access d-flex justify-content-center my-3">
+            <div class="card card-body w-75 border-0 mr-1">
+                    
+                    <div class="">
+                        <i class="fas fa-comment"></i>
+                        <p class="card-title mb-0">Mensajes</p>
+                    </div>
+                </div>
+                <div class="card card-body w-75 border-0  mr-1 pb-0 pt-2 px-2">
+                    
+                    <div class="">
+                        <i class="fas fa-images ml-auto"></i>
+                        <p class="card-title mb-0">Galerias</p>
+                    </div>
+                </div>
+                <div class="card card-body w-75 border-0 ml-auto">
+                    
+                    <div class="">
+                        <i class="fas fa-user-circle ml-auto"></i>
+                        <p class="card-title mb-0">Perfil</p>
+                    </div>
+                </div>
+        </div>
+    </div>
 
+</div> -->
 <div class="row justify-content-center">
     <div class="col-md-7 col-lg-8 border-bottom border-gray mb-4">
         

@@ -134,9 +134,11 @@ Route::middleware(['password_expired'])->group(function () {
     Route::get('childs', 'ApoderadoController@child')->name('apoderado.childs');
     Route::get('childs/{id}', 'ApoderadoController@showChild')->name('apoderador.childs.show');
     Route::get('messages', ['as' => 'apoderado.messages', 'uses' => 'ApoderadoController@inbox']);
+
     Route::get('message/{id}', ['as' => 'apoderados.inbox.show', 'uses' => 'ApoderadoController@inboxshow']);
     Route::put('/message/{id}', ['as' => 'apoderados.inbox.update', 'uses' => 'MessagesController@update']);
     Route::delete('/message/{id}', ['as' => 'apoderados.inbox.delete', 'uses' => 'MessagesController@removeparticipant']);
+
     Route::get('profile/{id}',['as' => 'apoderado.profile', 'uses' => 'ApoderadoController@profile']);
     Route::put('profile/{id}',['as' => 'apoderado.profile.update', 'uses' => 'ApoderadoController@updateProfile']);
     Route::get('notes', ['as' => 'apoderado.notes', 'uses' => 'ApoderadoController@notes'],[
@@ -155,6 +157,10 @@ Route::middleware(['password_expired'])->group(function () {
     Route::get('child/{id}/feed',['as' => 'child.feed', 'uses' => 'ApoderadoController@show']);
     /*Route::get('cauro/{id}',['as' => 'cauro', 'uses' => 'ApoderadoController@cauro']);*/
     Route::get('notebook/{id}',['as' => 'notebook.show', 'uses' => 'NotebookController@show']);
+
+
+    Route::get('/messages/new', 'ApoderadoController@createmessage')->name('apoderados.message.create');
+    Route::post('inbox', ['as' => 'apoderado.messages.store', 'uses' => 'MessagesController@store']);
 });
 
 
@@ -168,7 +174,7 @@ Route::get('password/expired', 'Auth\FirstloginController@index')
         Route::post('password/post_expired', 'Auth\FirstloginController@update')
         ->name('password.post_expired');
 
-Route::group(['prefix' => 'tools/notifications','middleware' => 'auth'], function () {
+Route::group(['prefix' => 'tools/notifications','middleware' => 'auth','middleware' => ['role:teacher|administrator|superadministrator|parent']], function () {
     Route::get('delete', 'ToolController@notificationdelete')->name('tools.deletenotification');
     Route::get('readall', 'ToolController@notificationreadall')->name('tools.readallnotification');
     Route::get('markasread', 'ToolController@notificationmarkasread')->name('tools.markasreadnotification');

@@ -16,7 +16,7 @@ class Alumno extends Model
     
     public function curso()
     {
-        return $this->belongsToMany(Curso::class,'alumno_curso');
+        return $this->belongsToMany(Curso::class,'alumno_curso')->with('teacher');
     }
     public function teacher()
     {
@@ -26,9 +26,9 @@ class Alumno extends Model
     {
         return $this->belongsToMany(User::class,'curso_teacher','user_id');
     }
-    public function checkUsercurso()
+    public function curso_teacher()
     {
-        return $this->belongsToMany(Curso::class,'curso_teacher','user_id');
+        return $this->belongsToMany(Curso::class,'curso_teacher','curso_id')->with('teacher');
     }
 
     public function parent()

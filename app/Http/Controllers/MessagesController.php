@@ -86,9 +86,9 @@ class MessagesController extends Controller
 
         $input = Input::all();
 
-        $message_to = User::whereHas('students',function($q) use($input){
+        $message_to = Input::has('recipients') ? User::whereHas('students',function($q) use($input){
             $q->whereIn('alumno_id',$input['recipients']);
-        })->pluck('id')->toArray();
+        })->pluck('id')->toArray() : null;
 
         $thread = Thread::create([
             'subject' => $input['subject'],
@@ -111,15 +111,23 @@ class MessagesController extends Controller
             // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
             $thread->addParticipant($message_to);
         }
+        if (!empty($input['teacher_recipients'])) {
+            // add code logic here to check if a thread has max participants set
+            // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
+            $thread->addParticipant(explode(',',$input['teacher_recipients']));
+        }
         // check if pusher is allowed
         if(config('chatmessenger.use_pusher')) {
             $this->oooPushIt($message);
         }
+
+        $html_parent = view('admin.message.html-message', compact('message'))->render();
         if(request()->ajax()) {
             return response()->json([
                 'status' => 'OK',
                 'message' => $message,
                 'thread' => $thread,
+                'html' => $html_parent,
             ]);
         }
 

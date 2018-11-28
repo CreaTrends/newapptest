@@ -15,6 +15,8 @@ use DB;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
+use Exception;
+
 use Lexx\ChatMessenger\Models\Message;
 use Lexx\ChatMessenger\Models\Participant;
 use Lexx\ChatMessenger\Models\Thread;
@@ -480,5 +482,41 @@ class ApoderadoController extends Controller
 
     }
 
-    
+    public function createmessage(Request $request){
+
+        
+
+        try {
+            $childs = Alumno::with('curso')->whereHas('parent',function($q){
+                $q->Where('user_id',Auth::id());
+            })
+            ->get()->pluck('id');
+
+        } catch(ModelNotFoundException $e){
+           // do task when error
+           Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
+            return redirect()->route('apoderado.messages');
+        }
+
+        
+        
+
+        $teachers = User::selectRaw('*')
+        ->join('curso_teacher','curso_teacher.user_id','users.id')
+        ->join('alumno_curso','alumno_curso.curso_id','curso_teacher.curso_id')
+        ->whereIn('alumno_curso.alumno_id',$childs)
+        ->GroupBy('users.name')
+        ->get()->pluck('id');
+
+        $threads = Thread::getAllLatest()->get();
+
+        
+        $recipients = $teachers;
+        /*echo "<pre>";
+        return json_encode($recipients,JSON_PRETTY_PRINT);*/
+        return view('apoderados.inbox.create', compact('recipients','childs'));
+
+    }
+
+
 }
