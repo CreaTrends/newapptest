@@ -13,6 +13,8 @@
 use App\Notifications\NewNoteNotification;
 use App\Note;
 
+use App\Events\StatusLiked;
+
 Route::get('/', function () {
     return redirect('home');
 })->middleware('auth');
@@ -29,7 +31,23 @@ Route::get('testeando', function () {
 Route::get('notebooks-indeex', function () {
     return view('admin.notebooks.show');
 });
+Route::get('pushertest', function () {
 
+
+
+    $note = Note::find(116);
+    $user = auth()->user();
+    $message = "Hello";
+
+  $user = App\User::find(Auth::id());
+
+  event(new StatusLiked($note,$user));
+
+    return "Event has been sent!";
+});
+Route::get('pusher', function () {
+    return view('counter');
+})->middleware('auth');
 
 
 Auth::routes();

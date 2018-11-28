@@ -7,10 +7,12 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
 use App\Note;
 use App\User;
 
-class NewNoteNotification extends Notification
+class NewNoteNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
@@ -48,7 +50,7 @@ class NewNoteNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['mail','database','broadcast'];
     }
 /**
      * Get the mail representation of the notification.
