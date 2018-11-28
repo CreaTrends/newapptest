@@ -369,12 +369,16 @@ class ToolController extends Controller
         if($notification){
             $notification->delete();
         }
+        
+            $html_response =  view('partials.no-notifications')->render();
+        
 
         if(request()->ajax()) {
             return response()->json([
                 'message' => 'delete',
                 'status' => 'Ok',
-                'count'=>auth()->user()->unreadNotifications->count()
+                'count'=>auth()->user()->unreadNotifications->count(),
+                'html'=>auth()->user()->Notifications->count() > 0 ? null : $html_response
             ], 200);
         }
 

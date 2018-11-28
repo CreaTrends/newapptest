@@ -55300,7 +55300,12 @@ $(document).ready(function () {
                     $container.remove();
                 });
                 $('.notification').text(response.data.count);
-                console.log('respuest : ' + response.data.status);
+                if (response.data.html != null) {
+                    $('#drop-notification-list').html(response.data.html);
+                    $('#drop-notification-list').find(".notification-item").removeClass('is-active');
+                    $('.notification').addClass('d-none');
+                }
+                console.log('respuest : ' + response.data.html);
             }).catch(function (error) {
                 console.log('tuvimos error');
             });

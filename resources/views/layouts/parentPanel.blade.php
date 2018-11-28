@@ -49,6 +49,24 @@
     <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
         @yield('scripts')
-        
+        <script>
+            $('#markAllAsRead').on('click',function(){
+                event.stopPropagation();
+                $url = $(this).data('url');
+                notifications.markAllAsRead($url);
+
+            });
+            $('a[data-action="notification-hide"]').on('click',function(){
+                event.stopPropagation();
+                $url = $(this).data('url');
+                $uid = $(this).data('user');
+                $nid = $(this).data('alert-id');
+                var data = [];
+                data.push($nid);
+                data.push($uid);
+                notifications.deleteNotification(data,$url);
+
+            });
+            </script>
     </body>
 </html>

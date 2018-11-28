@@ -2040,31 +2040,31 @@ Multiple mode
 }
 
 table tr:nth-of-type(1n + 1) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
+  background-color: #7EC440 !important;
 }
 
 table tr:nth-of-type(1n + 2) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
+  background-color: #fca32a !important;
 }
 
 table tr:nth-of-type(1n + 3) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
+  background-color: #00AEEF !important;
 }
 
 table tr:nth-of-type(1n + 4) .is-icon-avatar:nth-child(odd) {
-  background-color: #00AEEF !important;
+  background-color: #00a9fa !important;
 }
 
 table tr:nth-of-type(1n + 5) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+  background-color: #00AEEF !important;
 }
 
 table tr:nth-of-type(1n + 6) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+  background-color: #1FD988 !important;
 }
 
 table tr:nth-of-type(1n + 7) .is-icon-avatar:nth-child(odd) {
-  background-color: #00AEEF !important;
+  background-color: #5659A6 !important;
 }
 
 table tr:nth-of-type(1n + 8) .is-icon-avatar:nth-child(odd) {
@@ -2072,7 +2072,7 @@ table tr:nth-of-type(1n + 8) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 9) .is-icon-avatar:nth-child(odd) {
-  background-color: #377dff !important;
+  background-color: #00a9fa !important;
 }
 
 table tr:nth-of-type(1n + 10) .is-icon-avatar:nth-child(odd) {
@@ -2080,71 +2080,71 @@ table tr:nth-of-type(1n + 10) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 11) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
+  background-color: #1FD988 !important;
 }
 
 table tr:nth-of-type(1n + 12) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
+  background-color: #1FD988 !important;
 }
 
 table tr:nth-of-type(1n + 13) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
-}
-
-table tr:nth-of-type(1n + 14) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 15) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 16) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
-}
-
-table tr:nth-of-type(1n + 17) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
-}
-
-table tr:nth-of-type(1n + 18) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
-}
-
-table tr:nth-of-type(1n + 19) .is-icon-avatar:nth-child(odd) {
   background-color: #5659A6 !important;
 }
 
-table tr:nth-of-type(1n + 20) .is-icon-avatar:nth-child(odd) {
-  background-color: #377dff !important;
-}
-
-table tr:nth-of-type(1n + 21) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 22) .is-icon-avatar:nth-child(odd) {
-  background-color: #377dff !important;
-}
-
-table tr:nth-of-type(1n + 23) .is-icon-avatar:nth-child(odd) {
+table tr:nth-of-type(1n + 14) .is-icon-avatar:nth-child(odd) {
   background-color: #ff593d !important;
 }
 
-table tr:nth-of-type(1n + 24) .is-icon-avatar:nth-child(odd) {
-  background-color: #377dff !important;
-}
-
-table tr:nth-of-type(1n + 25) .is-icon-avatar:nth-child(odd) {
+table tr:nth-of-type(1n + 15) .is-icon-avatar:nth-child(odd) {
   background-color: #f43893 !important;
 }
 
+table tr:nth-of-type(1n + 16) .is-icon-avatar:nth-child(odd) {
+  background-color: #fca32a !important;
+}
+
+table tr:nth-of-type(1n + 17) .is-icon-avatar:nth-child(odd) {
+  background-color: #00a9fa !important;
+}
+
+table tr:nth-of-type(1n + 18) .is-icon-avatar:nth-child(odd) {
+  background-color: #00AEEF !important;
+}
+
+table tr:nth-of-type(1n + 19) .is-icon-avatar:nth-child(odd) {
+  background-color: #00AEEF !important;
+}
+
+table tr:nth-of-type(1n + 20) .is-icon-avatar:nth-child(odd) {
+  background-color: #00AEEF !important;
+}
+
+table tr:nth-of-type(1n + 21) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 22) .is-icon-avatar:nth-child(odd) {
+  background-color: #f43893 !important;
+}
+
+table tr:nth-of-type(1n + 23) .is-icon-avatar:nth-child(odd) {
+  background-color: #7EC440 !important;
+}
+
+table tr:nth-of-type(1n + 24) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 25) .is-icon-avatar:nth-child(odd) {
+  background-color: #00AEEF !important;
+}
+
 table tr:nth-of-type(1n + 26) .is-icon-avatar:nth-child(odd) {
-  background-color: #377dff !important;
+  background-color: #5659A6 !important;
 }
 
 table tr:nth-of-type(1n + 27) .is-icon-avatar:nth-child(odd) {
-  background-color: #00AEEF !important;
+  background-color: #1FD988 !important;
 }
 
 table tr:nth-of-type(1n + 28) .is-icon-avatar:nth-child(odd) {
@@ -2152,31 +2152,31 @@ table tr:nth-of-type(1n + 28) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 29) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 30) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
-}
-
-table tr:nth-of-type(1n + 31) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 32) .is-icon-avatar:nth-child(odd) {
   background-color: #f43893 !important;
 }
 
+table tr:nth-of-type(1n + 30) .is-icon-avatar:nth-child(odd) {
+  background-color: #f43893 !important;
+}
+
+table tr:nth-of-type(1n + 31) .is-icon-avatar:nth-child(odd) {
+  background-color: #1FD988 !important;
+}
+
+table tr:nth-of-type(1n + 32) .is-icon-avatar:nth-child(odd) {
+  background-color: #fca32a !important;
+}
+
 table tr:nth-of-type(1n + 33) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
+  background-color: #fca32a !important;
 }
 
 table tr:nth-of-type(1n + 34) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+  background-color: #377dff !important;
 }
 
 table tr:nth-of-type(1n + 35) .is-icon-avatar:nth-child(odd) {
-  background-color: #5659A6 !important;
+  background-color: #00AEEF !important;
 }
 
 table tr:nth-of-type(1n + 36) .is-icon-avatar:nth-child(odd) {
@@ -2184,23 +2184,23 @@ table tr:nth-of-type(1n + 36) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 37) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
+  background-color: #5659A6 !important;
 }
 
 table tr:nth-of-type(1n + 38) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
+  background-color: #377dff !important;
 }
 
 table tr:nth-of-type(1n + 39) .is-icon-avatar:nth-child(odd) {
-  background-color: #00AEEF !important;
+  background-color: #00a9fa !important;
 }
 
 table tr:nth-of-type(1n + 40) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+  background-color: #1FD988 !important;
 }
 
 table tr:nth-of-type(1n + 41) .is-icon-avatar:nth-child(odd) {
-  background-color: #5659A6 !important;
+  background-color: #00a9fa !important;
 }
 
 table tr:nth-of-type(1n + 42) .is-icon-avatar:nth-child(odd) {
@@ -2208,19 +2208,19 @@ table tr:nth-of-type(1n + 42) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 43) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
+  background-color: #7EC440 !important;
 }
 
 table tr:nth-of-type(1n + 44) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
+  background-color: #5659A6 !important;
 }
 
 table tr:nth-of-type(1n + 45) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
+  background-color: #5659A6 !important;
 }
 
 table tr:nth-of-type(1n + 46) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
+  background-color: #377dff !important;
 }
 
 table tr:nth-of-type(1n + 47) .is-icon-avatar:nth-child(odd) {
@@ -2228,55 +2228,55 @@ table tr:nth-of-type(1n + 47) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 48) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
-}
-
-table tr:nth-of-type(1n + 49) .is-icon-avatar:nth-child(odd) {
   background-color: #377dff !important;
 }
 
+table tr:nth-of-type(1n + 49) .is-icon-avatar:nth-child(odd) {
+  background-color: #f43893 !important;
+}
+
 table tr:nth-of-type(1n + 50) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
+  background-color: #00AEEF !important;
 }
 
 table tr:nth-of-type(1n + 51) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 52) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
-}
-
-table tr:nth-of-type(1n + 53) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
-}
-
-table tr:nth-of-type(1n + 54) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
-}
-
-table tr:nth-of-type(1n + 55) .is-icon-avatar:nth-child(odd) {
   background-color: #1FD988 !important;
 }
 
-table tr:nth-of-type(1n + 56) .is-icon-avatar:nth-child(odd) {
+table tr:nth-of-type(1n + 52) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 53) .is-icon-avatar:nth-child(odd) {
   background-color: #7EC440 !important;
 }
 
-table tr:nth-of-type(1n + 57) .is-icon-avatar:nth-child(odd) {
+table tr:nth-of-type(1n + 54) .is-icon-avatar:nth-child(odd) {
+  background-color: #1FD988 !important;
+}
+
+table tr:nth-of-type(1n + 55) .is-icon-avatar:nth-child(odd) {
   background-color: #ff593d !important;
 }
 
-table tr:nth-of-type(1n + 58) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
+table tr:nth-of-type(1n + 56) .is-icon-avatar:nth-child(odd) {
+  background-color: #1FD988 !important;
 }
 
-table tr:nth-of-type(1n + 59) .is-icon-avatar:nth-child(odd) {
+table tr:nth-of-type(1n + 57) .is-icon-avatar:nth-child(odd) {
+  background-color: #7EC440 !important;
+}
+
+table tr:nth-of-type(1n + 58) .is-icon-avatar:nth-child(odd) {
   background-color: #00a9fa !important;
 }
 
+table tr:nth-of-type(1n + 59) .is-icon-avatar:nth-child(odd) {
+  background-color: #f43893 !important;
+}
+
 table tr:nth-of-type(1n + 60) .is-icon-avatar:nth-child(odd) {
-  background-color: #5659A6 !important;
+  background-color: #377dff !important;
 }
 
 /***************
