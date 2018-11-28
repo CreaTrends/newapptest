@@ -55234,7 +55234,7 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
   key: '616e46518525782047a6',
   cluster: 'us2',
-  encrypted: true
+  encrypted: false
 });
 
 /***/ }),

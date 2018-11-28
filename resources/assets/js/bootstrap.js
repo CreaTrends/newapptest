@@ -52,7 +52,7 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '616e46518525782047a6',
     cluster: 'us2',
-    encrypted: true
+    encrypted: false
 });
 
 
