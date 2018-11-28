@@ -12,6 +12,7 @@
 */
 use App\Notifications\NewNoteNotification;
 use App\Note;
+use App\Mail\TestMail;
 
 use App\Events\StatusLiked;
 
@@ -21,10 +22,10 @@ Route::get('/', function () {
 
 Route::get('testeando', function () {
 
-    Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
-    {
-        $message->to('jalbornozdesign@gmail.com')->from('aaa@ggg.com','aaaaa');
-    });
+
+    $data = ['message' => 'This is a test!'];
+
+    Mail::to('jalbornozdesign@gmail.com')->send(new TestMail($data));
     
 });
 
