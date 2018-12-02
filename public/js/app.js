@@ -55232,9 +55232,8 @@ if (token) {
 window.Pusher = __webpack_require__("./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
-  key: '616e46518525782047a6',
-  cluster: 'us2',
-  encrypted: false
+  key: 'e32c10491d3f15febccc',
+  cluster: 'mt1'
 });
 
 /***/ }),

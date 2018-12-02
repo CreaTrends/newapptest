@@ -43,22 +43,7 @@ class CursoController extends Controller
         //
         $user = User::find(auth()->user()->id);
         $userId=$user->id;
-        $cursos = User::with('teacher_course')->withCount('teacher_course')->where('id',$user->id)->get();
-        //return view('admin.cursos.index',compact('cursos'));
-
         
-
-
-        if(!auth()->user()->hasRole('administrator|superadministrator')){
-            $cursos = Curso::with('teacher','alumnos_list')->whereHas('teacher', function($q) use($userId){
-                $q->where('user_id', $userId);
-            })->get();
-            $users = User::where('id', '!=', $userId)->whereRoleIs('teacher')->get();
-
-            return view('admin.cursos.index',compact('cursos','users'));
-        }
-
-        $cursos = Curso::with('teacher','alumnos_list')->get();
 
         $users = User::where('id', '!=', $userId)->whereRoleIs('teacher')->get();
 

@@ -318,9 +318,20 @@ class ApoderadoController extends Controller
         return view('apoderados.albums.index',compact('albums'));
 
     }
-    public function album($id){
+    public function album($id,$token){
 
-        $albums = Album::with('photo')->findOrFail($id);
+        try {
+           $albums = Album::with('photo')->where([
+                "album_id"=>$id,
+                "album_token"=>$token
+            ])->firstOrFail(); 
+       } catch(\Exception $e){
+                return response()->json([
+                'success' => false,
+                'message' => 'unauthorize',
+            ], 403);
+       }
+        
 
         return view('apoderados.albums.show',compact('albums'));
 

@@ -106,7 +106,7 @@ class MessagesController extends Controller
             'last_read' => new Carbon,
         ]);
         // Recipients
-        if (count($message_to) > 0) {
+        if (!empty($message_to)) {
             // add code logic here to check if a thread has max participants set
             // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
             $thread->addParticipant($message_to);

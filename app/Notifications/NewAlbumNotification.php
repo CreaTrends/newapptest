@@ -7,10 +7,11 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-use App\Notebook;
+
+use App\Album;
 use App\User;
 
-class NewNotebook extends Notification
+class NewAlbumNotification extends Notification
 {
     use Queueable;
     /**
@@ -18,7 +19,7 @@ class NewNotebook extends Notification
      *
      * @var \App\Models\Post
      */
-    protected $notebook;
+    protected $album;
     /**
      * User id property.
      *
@@ -31,10 +32,10 @@ class NewNotebook extends Notification
      *
      * @return void
      */
-    public function __construct(Notebook $notebook, $user_id)
+    public function __construct(Album $album, $user_id)
     {
         //
-        $this->notebook = $notebook;
+        $this->album = $album;
         $this->user_id = $user_id;
     }
 
@@ -46,7 +47,7 @@ class NewNotebook extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database','broadcast'];
+        return ['mail','database'];
     }
 
     /**
@@ -57,20 +58,18 @@ class NewNotebook extends Notification
      */
     public function toMail($notifiable)
     {
-        
         $from = User::findOrFail($this->user_id);
         $to = '';
-        $subject = $from->profile->first_name.' '.$from->profile->last_name .' te envio un nuevo reporte diario';
+        $subject = 'Equipo Jardín Anatolia :: Hemos ingresado una nueva galeria';
         return (new MailMessage)
         ->from('no-reply@jardinanatolia.cl','Equipo Anatolia')
         ->subject($subject)
-                ->line('Hola Papa, hemos agregado un nuevo reporte con las actividades diarias de tu hij@, te invitamos a leer e informarte de toda las novedades de tu hij@ ')
-                ->action('Ver Reporte', route('apoderado.child',$this->notebook->info()->get()->pluck('id')[0]))
+                ->line('Hola Apoderad@, hemos agregado una nueva galeria de imagenes donde fue etiquetado tu hij@ ')
+                ->action('Ver Galeria', route('apoderado.album',['id'=>$this->album->album_id,'token'=>$this->album->album_token]))
                 ->success();
+
+
     }
-
-    
-
 
     /**
      * Get the array representation of the notification.
@@ -80,9 +79,11 @@ class NewNotebook extends Notification
      */
     public function toArray($notifiable)
     {
+        $from = User::findOrFail($this->user_id);
+        $route = $notifiable->hasRole('parent') ? 'apoderado':'admin';
         return [
-            'message' => $this->notebook->subject,
-            'action' => $this->notebook->info()->get()->pluck('id')[0],
+            'message' => $this->album->album_name,
+            'action' => route($route.'.album',['id'=>$this->album->album_id,'token'=>$this->album->album_token]),
             'user_id' => $this->user_id,
         ];
     }

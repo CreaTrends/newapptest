@@ -78,9 +78,10 @@ class NewNoteNotification extends Notification implements ShouldBroadcast
      */
     public function toArray($notifiable)
     {
+        $route = $notifiable->hasRole('parent') ? 'apoderado.notes.show':'notes.index';
         return [
             'message' => $this->note->subject,
-            'action' => $this->note->id,
+            'action' => route($route,['id'=>$this->note->id]),
             'user_id' => $this->note->user->id,
         ];
     }

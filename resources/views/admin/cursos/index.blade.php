@@ -128,61 +128,6 @@
     @endif
   </div>
 </div>
-<div class="d-flex justify-content-between align-items-stretch mb-4 py-4">
-	<div class="">
-		<button type="submit" class="btn custom-btn is-lightgreen" data-toggle="modal" data-target="#create">Agregar Curso</button>
-	</div>
-</div>
-<table class="table table table-bordered">
-	<thead class="thead-light">
-		<tr class="d-flex">
-			<th colspan="2" class="col-sm-12">Alumnos</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach($cursos as $curso)
-		<tr class="d-flex">
-			<td  class="col-sm-6  d-flex justify-content-start">
-				
-				<div>
-					<h6 class="my-0"><strong>{{$curso->name}}</strong></h6>
-					@if($curso->teacher)
-					<small class="text-muted">Profesor :</small>
-					
-					<small class="text-muted">
-					<strong>
-					
-					@foreach($curso->teacher as $teacher)
-					{{$teacher->name}}
-					@endforeach
-					
-					</strong>
-					</small>
-					@endif
-				</div>
-			</td>
-			
-			<td class="col-sm-3 justify-content-center">
-				cantidad de alumnos : <h4>{{$curso->alumnos->count()}}</h4>
-			</td>
-			<td class="col-sm-3 justify-content-start d-flex ">
-				<div class="mr-2">
-					<a href="{{route('cursos.show',$curso->id)}}" class="btn custom-btn is-green is-small">Editar</a>
-				</div>
-				<div class="jj">
-					<form action="{{route('cursos.destroy',$curso->id)}}" method="POST">
-	                {{ csrf_field() }}
-	                {{ method_field('DELETE') }}
-	                <button class="btn custom-btn is-red is-small"> <i class="icofont icofont-trash"></i></button>
-	            	</form>
-				</div>
-				
-				
-			</td>
-		</tr>
-		@endforeach
-	</tbody>
-</table>
 
 <div id="mf-view-modal" class="modal fade mf-view-modal" tabindex="-1" role="dialog" data-action="view-curso">
     <div class="modal-dialog modal-dialog-centered modal-lg">

@@ -22,10 +22,15 @@ Route::get('/', function () {
 
 Route::get('testeando', function () {
 
-
-    $data = ['message' => 'This is a test!'];
-
-    Mail::to('jalbornozdesign@gmail.com')->send(new TestMail($data));
+$to_name = 'juan';
+$to_email = 'santiagodeepsound@gmail.com';
+$data = array('name'=>"Sam Jose", "body" => "Test mail");
+    
+Mail::send('email.test', $data, function($message) use ($to_name, $to_email) {
+    $message->to($to_email, $to_name)
+            ->subject('Artisans Web Testing Mail');
+    $message->from('jlabornozdesign@gmail.com','Artisans Web');
+});
     
 });
 
@@ -36,13 +41,15 @@ Route::get('pushertest', function () {
 
 
 
-    $note = Note::find(116);
+    $note = Note::first();
     $user = auth()->user();
     $message = "Hello";
 
-  $user = App\User::find(Auth::id());
+    $user = App\User::find(3);
+    $user->notify(new NewNoteNotification($note, $user->id));
+    $user = App\User::find(Auth::id());
 
-  event(new StatusLiked($note,$user));
+  //event(new StatusLiked($note,$user));
 
     return "Event has been sent!";
 });

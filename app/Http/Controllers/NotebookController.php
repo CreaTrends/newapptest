@@ -90,6 +90,7 @@ class NotebookController extends Controller
                 
                 $sub_name= md5($name.time()).'.'.$image->getClientOriginalExtension();
                 $image->move(public_path().'/static/uploads/notebook/', $sub_name);
+                
                 $attached[] = $sub_name;  
             }
         }

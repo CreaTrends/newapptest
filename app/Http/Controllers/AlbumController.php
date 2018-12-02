@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 
+use App\Notifications\NewAlbumNotification;
+
 class AlbumController extends Controller
 {
     /**
@@ -59,23 +61,31 @@ class AlbumController extends Controller
         
         if($request->curso == 'all'){
             $request->curso = Curso::all()->pluck('id')->toArray();
+        }else {
+            $request->curso = Curso::where('id',$request->curso)->pluck('id')->toArray();
         }
 
         //return $request->curso;
 
         $album = Album::create($request->all());
         $album->curso()->attach($request->curso);
+
+        /*
         //$album->photos()->save(json_encode($request->photos));
         foreach ($request->file('photos') as $photo) {
             $name = $photo->getClientOriginalName();
-            $sub_name = md5($name.time()).'.'.$photo->getClientOriginalExtension();
-            $thumb_name = 'thumb_'.md5($name.time()).'.'.$photo->getClientOriginalExtension();
+            $file_name = md5($name.time()).'.'.$photo->getClientOriginalExtension();
+            $sub_name = $file_name;
+            $thumb_name = 'thumb_'.$file_name;
+            $crop_name = 'crop_'.$file_name;
             $folder_album = time();
-            $path = '/uploads/albums/'.$token.'/';
+            $path = '/static/uploads/albums/'.$folder_album.'/';
             //$photo->move(public_path().$path, $sub_name);
             $photo->move(public_path().$path, $sub_name);
+
             $avatar= public_path().$path.$sub_name;
-            \Image::make($avatar)->fit(200, 200)->save( public_path($path .$thumb_name ) );
+
+            \Image::make($avatar)->fit(400)->save( public_path($path .$thumb_name ) );
             
 
             $form = new Photo();
@@ -83,6 +93,28 @@ class AlbumController extends Controller
             $form->album_id=$album->album_id;
             $form->photo_path=$path;
             $form->save();
+        }*/
+        $aa = is_array($request->curso) ? $request->curso : (array) $request->curso;
+
+        //$alumno_parent_sent = Curso::with('parent_list')->whereIn('id',$aa)->get()->pluck('parent_list');
+
+        $curso_id = $request->curso;
+
+        //return response()->json($alumno_parent_sent,[],200,JSON_PRETTY_PRINT);
+        $sent_to = User::selectRaw('users.*')
+        ->join('alumno_parent','alumno_parent.user_id','=','users.id')
+        ->join('alumno_curso','alumno_curso.alumno_id','=','alumno_parent.alumno_id')
+        ->join('cursos','cursos.id','=','alumno_curso.curso_id')
+        ->whereIn('cursos.id',$curso_id)
+        ->get();
+
+        //return response()->json($sent_to,200,[],JSON_PRETTY_PRINT);
+
+
+        foreach($sent_to as $users){
+            $user = User::findorFail($users->id);
+            $user->notify(new NewAlbumNotification($album, \Auth::id()));
+            //$user->notifications()->delete();
         }
         
         //$album->photos()->attach($album->id);

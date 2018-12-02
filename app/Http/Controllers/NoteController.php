@@ -68,6 +68,12 @@ class NoteController extends Controller
             //return $cursos;
         //return $request->get('filter');
             //return response()->json($notes,200,[],JSON_PRETTY_PRINT);
+
+            $notification = auth()->user()->notifications()->where('id',$request->get('nid'))->first();
+        /*dd($notes);*/
+        if($notification){
+            $notification->markAsRead();
+        }
         
 
         return view('admin.notes.index', compact('notes','user','cursos'));
