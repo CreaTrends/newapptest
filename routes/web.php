@@ -16,21 +16,54 @@ use App\Mail\TestMail;
 
 use App\Events\StatusLiked;
 
+//use Newsletter;
+use \DrewM\MailChimp\MailChimp;
+
 Route::get('/', function () {
     return redirect('home');
 })->middleware('auth');
 
 Route::get('testeando', function () {
 
-$to_name = 'juan';
-$to_email = 'santiagodeepsound@gmail.com';
-$data = array('name'=>"Sam Jose", "body" => "Test mail");
-    
-Mail::send('email.test', $data, function($message) use ($to_name, $to_email) {
-    $message->to($to_email, $to_name)
-            ->subject('Artisans Web Testing Mail');
-    $message->from('jlabornozdesign@gmail.com','Artisans Web');
-});
+$MailChimp = new MailChimp('f18cea50340b78c0ca8e9d4309020aee-us17');
+
+
+$result = $MailChimp->get('lists');
+$reply_to = 'contacto@jardinanatolia.cl';
+$from_name = 'test anatolia';
+
+$result = $MailChimp->post("campaigns", [
+    'type' => 'regular',
+    'recipients' => ['list_id' => '32bab74239'],
+    'settings' => [
+        'subject_line' => 'Your Purchase Receipt-'.+time(),
+           'reply_to' => $reply_to,
+           'from_name' => $from_name,
+           'template_id'=>100553
+          ]
+    ]);
+
+$response = $MailChimp->getLastResponse();
+$responseObj = json_decode($response['body']);
+
+$html = 'aaaaaa';
+$result = $MailChimp->put('campaigns/' . $responseObj->id . '/content', [
+      'template' => ['id' => 100553, 
+        'sections' => [
+            "preheader_leftcol_content"=>'top pre header',
+            "preheader_rightcol_content"=>'right pre header,api.php',
+            "postcard"=>'http://www.jardinanatolia.cl/wp-content/uploads/2017/11/IMG_7813-910x400.jpg',
+            "body_content"=>'esto es el body'
+        ]
+        ]
+
+      ]);
+
+
+$result = $MailChimp->post('campaigns/' . $responseObj->id . '/actions/send');
+
+
+return response()->json($result,200,[],JSON_PRETTY_PRINT);
     
 });
 

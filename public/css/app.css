@@ -2040,15 +2040,15 @@ Multiple mode
 }
 
 table tr:nth-of-type(1n + 1) .is-icon-avatar:nth-child(odd) {
-  background-color: #5659A6 !important;
+  background-color: #f43893 !important;
 }
 
 table tr:nth-of-type(1n + 2) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+  background-color: #00a9fa !important;
 }
 
 table tr:nth-of-type(1n + 3) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
+  background-color: #7EC440 !important;
 }
 
 table tr:nth-of-type(1n + 4) .is-icon-avatar:nth-child(odd) {
@@ -2056,7 +2056,7 @@ table tr:nth-of-type(1n + 4) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 5) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
+  background-color: #7EC440 !important;
 }
 
 table tr:nth-of-type(1n + 6) .is-icon-avatar:nth-child(odd) {
@@ -2064,15 +2064,15 @@ table tr:nth-of-type(1n + 6) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 7) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 8) .is-icon-avatar:nth-child(odd) {
   background-color: #f43893 !important;
 }
 
+table tr:nth-of-type(1n + 8) .is-icon-avatar:nth-child(odd) {
+  background-color: #7EC440 !important;
+}
+
 table tr:nth-of-type(1n + 9) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
+  background-color: #377dff !important;
 }
 
 table tr:nth-of-type(1n + 10) .is-icon-avatar:nth-child(odd) {
@@ -2080,11 +2080,11 @@ table tr:nth-of-type(1n + 10) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 11) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
+  background-color: #7EC440 !important;
 }
 
 table tr:nth-of-type(1n + 12) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
+  background-color: #ff593d !important;
 }
 
 table tr:nth-of-type(1n + 13) .is-icon-avatar:nth-child(odd) {
@@ -2096,27 +2096,27 @@ table tr:nth-of-type(1n + 14) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 15) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
-}
-
-table tr:nth-of-type(1n + 16) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
-}
-
-table tr:nth-of-type(1n + 17) .is-icon-avatar:nth-child(odd) {
-  background-color: #377dff !important;
-}
-
-table tr:nth-of-type(1n + 18) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
-}
-
-table tr:nth-of-type(1n + 19) .is-icon-avatar:nth-child(odd) {
   background-color: #00AEEF !important;
 }
 
+table tr:nth-of-type(1n + 16) .is-icon-avatar:nth-child(odd) {
+  background-color: #fca32a !important;
+}
+
+table tr:nth-of-type(1n + 17) .is-icon-avatar:nth-child(odd) {
+  background-color: #00a9fa !important;
+}
+
+table tr:nth-of-type(1n + 18) .is-icon-avatar:nth-child(odd) {
+  background-color: #1FD988 !important;
+}
+
+table tr:nth-of-type(1n + 19) .is-icon-avatar:nth-child(odd) {
+  background-color: #377dff !important;
+}
+
 table tr:nth-of-type(1n + 20) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
+  background-color: #00AEEF !important;
 }
 
 table tr:nth-of-type(1n + 21) .is-icon-avatar:nth-child(odd) {
@@ -2124,131 +2124,131 @@ table tr:nth-of-type(1n + 21) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 22) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+  background-color: #fca32a !important;
 }
 
 table tr:nth-of-type(1n + 23) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
-}
-
-table tr:nth-of-type(1n + 24) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
-}
-
-table tr:nth-of-type(1n + 25) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 26) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 27) .is-icon-avatar:nth-child(odd) {
-  background-color: #377dff !important;
-}
-
-table tr:nth-of-type(1n + 28) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
-}
-
-table tr:nth-of-type(1n + 29) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 30) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 31) .is-icon-avatar:nth-child(odd) {
-  background-color: #5659A6 !important;
-}
-
-table tr:nth-of-type(1n + 32) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 33) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
-}
-
-table tr:nth-of-type(1n + 34) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 35) .is-icon-avatar:nth-child(odd) {
-  background-color: #377dff !important;
-}
-
-table tr:nth-of-type(1n + 36) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 37) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
-}
-
-table tr:nth-of-type(1n + 38) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 39) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 40) .is-icon-avatar:nth-child(odd) {
-  background-color: #5659A6 !important;
-}
-
-table tr:nth-of-type(1n + 41) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 42) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
-}
-
-table tr:nth-of-type(1n + 43) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
-}
-
-table tr:nth-of-type(1n + 44) .is-icon-avatar:nth-child(odd) {
-  background-color: #fca32a !important;
-}
-
-table tr:nth-of-type(1n + 45) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
-}
-
-table tr:nth-of-type(1n + 46) .is-icon-avatar:nth-child(odd) {
-  background-color: #00a9fa !important;
-}
-
-table tr:nth-of-type(1n + 47) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
-}
-
-table tr:nth-of-type(1n + 48) .is-icon-avatar:nth-child(odd) {
   background-color: #00AEEF !important;
 }
 
-table tr:nth-of-type(1n + 49) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+table tr:nth-of-type(1n + 24) .is-icon-avatar:nth-child(odd) {
+  background-color: #fca32a !important;
 }
 
-table tr:nth-of-type(1n + 50) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+table tr:nth-of-type(1n + 25) .is-icon-avatar:nth-child(odd) {
+  background-color: #f43893 !important;
 }
 
-table tr:nth-of-type(1n + 51) .is-icon-avatar:nth-child(odd) {
-  background-color: #ff593d !important;
+table tr:nth-of-type(1n + 26) .is-icon-avatar:nth-child(odd) {
+  background-color: #00AEEF !important;
 }
 
-table tr:nth-of-type(1n + 52) .is-icon-avatar:nth-child(odd) {
+table tr:nth-of-type(1n + 27) .is-icon-avatar:nth-child(odd) {
+  background-color: #00a9fa !important;
+}
+
+table tr:nth-of-type(1n + 28) .is-icon-avatar:nth-child(odd) {
+  background-color: #7EC440 !important;
+}
+
+table tr:nth-of-type(1n + 29) .is-icon-avatar:nth-child(odd) {
+  background-color: #00a9fa !important;
+}
+
+table tr:nth-of-type(1n + 30) .is-icon-avatar:nth-child(odd) {
+  background-color: #7EC440 !important;
+}
+
+table tr:nth-of-type(1n + 31) .is-icon-avatar:nth-child(odd) {
+  background-color: #fca32a !important;
+}
+
+table tr:nth-of-type(1n + 32) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 33) .is-icon-avatar:nth-child(odd) {
+  background-color: #fca32a !important;
+}
+
+table tr:nth-of-type(1n + 34) .is-icon-avatar:nth-child(odd) {
+  background-color: #f43893 !important;
+}
+
+table tr:nth-of-type(1n + 35) .is-icon-avatar:nth-child(odd) {
+  background-color: #00AEEF !important;
+}
+
+table tr:nth-of-type(1n + 36) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 37) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 38) .is-icon-avatar:nth-child(odd) {
   background-color: #1FD988 !important;
 }
 
-table tr:nth-of-type(1n + 53) .is-icon-avatar:nth-child(odd) {
+table tr:nth-of-type(1n + 39) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 40) .is-icon-avatar:nth-child(odd) {
   background-color: #7EC440 !important;
+}
+
+table tr:nth-of-type(1n + 41) .is-icon-avatar:nth-child(odd) {
+  background-color: #f43893 !important;
+}
+
+table tr:nth-of-type(1n + 42) .is-icon-avatar:nth-child(odd) {
+  background-color: #00AEEF !important;
+}
+
+table tr:nth-of-type(1n + 43) .is-icon-avatar:nth-child(odd) {
+  background-color: #f43893 !important;
+}
+
+table tr:nth-of-type(1n + 44) .is-icon-avatar:nth-child(odd) {
+  background-color: #377dff !important;
+}
+
+table tr:nth-of-type(1n + 45) .is-icon-avatar:nth-child(odd) {
+  background-color: #ff593d !important;
+}
+
+table tr:nth-of-type(1n + 46) .is-icon-avatar:nth-child(odd) {
+  background-color: #7EC440 !important;
+}
+
+table tr:nth-of-type(1n + 47) .is-icon-avatar:nth-child(odd) {
+  background-color: #1FD988 !important;
+}
+
+table tr:nth-of-type(1n + 48) .is-icon-avatar:nth-child(odd) {
+  background-color: #7EC440 !important;
+}
+
+table tr:nth-of-type(1n + 49) .is-icon-avatar:nth-child(odd) {
+  background-color: #1FD988 !important;
+}
+
+table tr:nth-of-type(1n + 50) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 51) .is-icon-avatar:nth-child(odd) {
+  background-color: #377dff !important;
+}
+
+table tr:nth-of-type(1n + 52) .is-icon-avatar:nth-child(odd) {
+  background-color: #5659A6 !important;
+}
+
+table tr:nth-of-type(1n + 53) .is-icon-avatar:nth-child(odd) {
+  background-color: #00AEEF !important;
 }
 
 table tr:nth-of-type(1n + 54) .is-icon-avatar:nth-child(odd) {
@@ -2260,23 +2260,23 @@ table tr:nth-of-type(1n + 55) .is-icon-avatar:nth-child(odd) {
 }
 
 table tr:nth-of-type(1n + 56) .is-icon-avatar:nth-child(odd) {
-  background-color: #5659A6 !important;
+  background-color: #fca32a !important;
 }
 
 table tr:nth-of-type(1n + 57) .is-icon-avatar:nth-child(odd) {
-  background-color: #7EC440 !important;
+  background-color: #fca32a !important;
 }
 
 table tr:nth-of-type(1n + 58) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
+  background-color: #377dff !important;
 }
 
 table tr:nth-of-type(1n + 59) .is-icon-avatar:nth-child(odd) {
-  background-color: #1FD988 !important;
+  background-color: #00AEEF !important;
 }
 
 table tr:nth-of-type(1n + 60) .is-icon-avatar:nth-child(odd) {
-  background-color: #f43893 !important;
+  background-color: #1FD988 !important;
 }
 
 /***************
@@ -13325,9 +13325,14 @@ main.is-login {
 .activity-icon {
   background-color: #6bd098;
   color: white;
-  padding: .5rem;
-  font-size: 2rem;
+  padding: 12px 12px;
+  font-size: 25px;
   border-radius: 100%;
+  min-width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 1.4rem !important;
+  /* position: relative; */
 }
 
 .activity-icon.icon-table-small {
@@ -13463,17 +13468,6 @@ main.is-login {
   height: 120px;
   line-height: 120px;
   color: #fdfdfd;
-}
-
-.time_line-date:before {
-  content: '';
-  position: absolute;
-  width: 3px;
-  height: 24px;
-  background-color: #cccccc;
-  top: 100%;
-  left: 49%;
-  z-index: 0;
 }
 
 /**/
@@ -13816,7 +13810,7 @@ main.is-login {
 }
 
 .notificationDropdown .is-dropdown-container .is-active {
-  background-color: #e4eaf6;
+  background-color: #f6f9ff;
 }
 
 .notificationDropdown .is-dropdown-container img {
@@ -14273,6 +14267,34 @@ main.is-login {
   color: #2a3f81 !important;
   font-weight: 500;
   letter-spacing: -0.3px;
+}
+
+/* navbar toggle */
+.navbar-toggler {
+  padding: 0;
+  font-size: 1.1875rem;
+  line-height: 1;
+  background-color: transparent;
+  border: 0px solid transparent;
+  border-radius: 0rem;
+}
+
+.navbar-toggler > i {
+  width: 40px;
+  height: 40px;
+  color: #2196F3;
+  font-size: 1.5rem;
+  font-weight: normal;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0 !important;
+  background-color: #f5f5f5;
+  font-size: 12px;
+  font-weight: 700 !important;
 }
 
 .toast-title {

@@ -70,7 +70,7 @@ class AlbumController extends Controller
         $album = Album::create($request->all());
         $album->curso()->attach($request->curso);
 
-        /*
+        
         //$album->photos()->save(json_encode($request->photos));
         foreach ($request->file('photos') as $photo) {
             $name = $photo->getClientOriginalName();
@@ -93,7 +93,7 @@ class AlbumController extends Controller
             $form->album_id=$album->album_id;
             $form->photo_path=$path;
             $form->save();
-        }*/
+        }
         $aa = is_array($request->curso) ? $request->curso : (array) $request->curso;
 
         //$alumno_parent_sent = Curso::with('parent_list')->whereIn('id',$aa)->get()->pluck('parent_list');

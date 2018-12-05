@@ -21,6 +21,7 @@ use App\Mail\DailyReportEmail;
 
 class NotebookController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -103,41 +104,22 @@ class NotebookController extends Controller
                 'notebook_date' => Carbon::now(),
             ]);
 
-            
+            $users[] = User::wherehas('students',function($q) use($alumno){
+                $q->where('alumno_id',$alumno);
+            })->get()->pluck('id');
 
+            foreach($users as $user){
+                $apoderados = User::findOrfail($user);
 
+                foreach($apoderados as $apoderado ){
+                   $apoderado->notify(new NewNotebook($notebook, auth()->user()->id)); 
+                }
 
-
-        }
-
-
-        foreach($alumnosIds as $id){
-                $apoderado[] = User::whereHas('students',function($q) use($id){
-                    $q->Where('alumno_id',$id);
-                })->get()->pluck('id');
                 
             }
-
-        foreach ($apoderado as $value) {
-            # code...
-            $rr[] = $value;
         }
 
-
-        
-        /*$notebook = Notebook::create([
-            'foods'         =>$activity_food,
-            'moods'         =>$activity_moods,
-            'notebook_date' => Carbon::now(),
-
-        ]);*/
-
-        //$notebook->alumno()->attach($request->recipients);
-
-        /*return response()->json([
-                're'=>$alumnosIds,
-                'notebook_id'=>$request->all(),
-            ],200,[],JSON_PRETTY_PRINT);*/
+        //return response()->json($apoderado,200,[],JSON_PRETTY_PRINT);
            return back()->with('status', 'Hemos Actualizado la linea de tiempo');
     }
 

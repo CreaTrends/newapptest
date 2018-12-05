@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notebook extends Model
 {
+
     protected $fillable = [
         'alumno_id',
         'foods',
@@ -64,6 +65,8 @@ class Notebook extends Model
     {
         return \Carbon\Carbon::parse($this->notebook_date)->diffForHumans();
     }
+
+    
 
     public function getTimeAttribute()
     {

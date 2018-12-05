@@ -1,9 +1,12 @@
 
 <nav class="navbar navbar-expand-md navbar-light bg-light mb-0 bg-white border-bottom shadow-sm user-nav py-3">
   <div class="container">
+    <a class="navbar-toggler navbar-toggler top-mobile-buttons" href="{{ route('apoderado.feed') }}" role="button">
+    <i class="icofont icofont-simple-left"></i>
+    </a>
     <a class="navbar-brand" href="#"><img class="img-fluid" src="http://www.jardinanatolia.cl/wp-content/themes/ultrabootstrap/images/logo_footer.jpg" width="100" alt=""></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#parentNavbar" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fas fa-bars"></i>
+    <button class="navbar-toggler top-mobile-buttons" type="button" data-toggle="collapse" data-target="#parentNavbar" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="icofont icofont-navigation-menu"></i>
     </button>
     <div class="collapse navbar-collapse" id="parentNavbar">
       <ul class="navbar-nav mr-auto">
@@ -41,7 +44,7 @@
 
         <li class="nav-item mr-3 mt-1 dropdown">
           <a href="{{ url('/parent')}}" class="nav-link is-notify is-active"  id="dropnotifications" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-bell is-active"></i>
+            <i class="icofont icofont-alarm is-active"></i>
             <span class="badge badge-danger notification is-badge-notify {{Auth::user()->unreadNotifications->count() > 0 ? true:'d-none'}} ">
               {{Auth::user()->unreadNotifications->count()}}
             </span>
@@ -54,8 +57,7 @@
             
 
             </div>
-            <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-center" id="markAllAsRead" role="button" data-url='{{route('tools.readallnotification')}}'>Marcar como leidas</a>
+              <a href="javascript:void(0);"class="dropdown-item text-center" id="markAllAsRead" role="button" data-url='{{route('tools.readallnotification')}}'><h6><strong>Marcar como leidas</strong></h6></a>
           </div>
         </li>
         <!-- dropdown profile -->

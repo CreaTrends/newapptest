@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" class="h-100">
+<html lang="{{ app()->getLocale() }}" style="position: relative; min-height: 100%">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
         @yield('rawcss')
     </head>
-    <body class="h-100">
+    <body style="margin-bottom: 130px">
         <!--     <div id="app">
             
             
@@ -27,7 +27,7 @@
             @include('partials.mobile-navigation-parent')
           @endif()
         @endauth
-        <main id="app" class="is-login h-100">
+        <main id="app" class="pb-5">
             @yield('profile-header')
             <div class="container mt-0">
                 <div class="row">
@@ -40,6 +40,16 @@
                 </div>
             </div>
         </main>
+        <footer class="footer">
+            <div class="container col-12 col-md-8  ">
+                <div class="d-flex justify-content-center align-self-center">
+                    <div class="text-muted align-self-center">
+                        Jardín Anatolia 2018-2019 . Powered by <a href="#">Creatrends.cl</a>
+                    </div>
+                </div>
+                
+            </div>
+        </footer>
         <!-- Scripts -->
 
         <script src="{{ asset('js/app.js') }}?v=<?php echo md5(time());?>"></script>

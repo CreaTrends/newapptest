@@ -380,11 +380,16 @@ main.is-login{
     }
 }
 .activity-icon{
-    background-color: #6bd098;
+        background-color: #6bd098;
     color: white;
-        padding: .5rem;
-    font-size: 2rem;
+    padding: 12px 12px;
+    font-size: 25px;
     border-radius: 100%;
+    min-width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 1.4rem !important;
+    /* position: relative; */
     &.icon-table-small{
         display: inline-block;
         padding: 5px;
@@ -505,16 +510,7 @@ main.is-login{
     color: #fdfdfd;
 }
 .time_line-date {
-    &:before {
-        content: '';
-    position: absolute;
-    width: 3px;
-    height: 24px;
-    background-color: #cccccc;
-    top: 100%;
-    left: 49%;
-    z-index: 0;
-    }
+    
 }
 /**/
 .user-nav .nav-link {
@@ -856,7 +852,7 @@ $darkslategray : #2e383e;
             
         }
         & .is-active {
-                background-color: #e4eaf6;
+                background-color: #f6f9ff;
             }
         img {
                     height: auto;
@@ -1161,4 +1157,31 @@ $darkslategray : #2e383e;
             letter-spacing: -0.3px;
         }
     }
+}
+
+/* navbar toggle */
+.navbar-toggler {
+    padding: 0;
+    font-size: 1.1875rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 0px solid transparent;
+    border-radius: 0rem;
+    &> i{
+    width: 40px;
+    height: 40px;
+    color: #2196F3;
+    font-size: 1.5rem;
+    font-weight: normal;
+    }
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0 !important;
+    background-color: #f5f5f5;
+    font-size: 12px;
+    font-weight: 700 !important;
 }

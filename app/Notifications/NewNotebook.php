@@ -62,10 +62,10 @@ class NewNotebook extends Notification
         $to = '';
         $subject = $from->profile->first_name.' '.$from->profile->last_name .' te envio un nuevo reporte diario';
         return (new MailMessage)
-        ->from('no-reply@jardinanatolia.cl','Equipo Anatolia')
+        ->from('no-reply@jardinanatolia.cl','Equipo Jardín Anatolia')
         ->subject($subject)
                 ->line('Hola Papa, hemos agregado un nuevo reporte con las actividades diarias de tu hij@, te invitamos a leer e informarte de toda las novedades de tu hij@ ')
-                ->action('Ver Reporte', route('apoderado.child',$this->notebook->info()->get()->pluck('id')[0]))
+                ->action('Ver Reporte', route('child.feed',$this->notebook->alumno_id))
                 ->success();
     }
 
@@ -82,8 +82,10 @@ class NewNotebook extends Notification
     {
         return [
             'message' => $this->notebook->subject,
-            'action' => $this->notebook->info()->get()->pluck('id')[0],
+            'action' => route('child.feed',$this->notebook->alumno_id),
             'user_id' => $this->user_id,
+            'notify-icon' => 'fas fa-clipboard-list',
+            'notify-bg' => 'is-green',
         ];
     }
 }

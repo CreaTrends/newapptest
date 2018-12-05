@@ -64,7 +64,7 @@ class NewNoteNotification extends Notification implements ShouldBroadcast
         $route = $user->hasRole('parent') ? 'apoderado.notes.show':'notes.index';
         $subject = $this->note->user->profile->first_name.' '.$this->note->user->profile->last_name .' te envio una nueva circular';
         return (new MailMessage)
-        ->from('info@jardinanatolia.cl','Equipo Anatolia')
+        ->from('no-reply@jardinanatolia.cl','Equipo Jardín Anatolia')
         ->subject($subject)
                 ->line('Hola '.$user->name.', hemos generado una nueva circular informativa de nuestro jardín, te invitamos a leer e informarte de toda las novedades de tu hij@ ')
                 ->action('Leer Circular', route($route,$this->note->id))
@@ -83,6 +83,8 @@ class NewNoteNotification extends Notification implements ShouldBroadcast
             'message' => $this->note->subject,
             'action' => route($route,['id'=>$this->note->id]),
             'user_id' => $this->note->user->id,
+            'notify-icon' => 'icofont icofont-notepad',
+            'notify-bg' => 'is-pink'
         ];
     }
 }

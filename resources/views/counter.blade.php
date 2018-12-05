@@ -11,7 +11,14 @@
     window.Echo.private('App.User.'+{{Auth::id()}})
             .notification((notification) => {
                 console.log(notification);
-                $('#abc').html(notification);
+
+                var notificationsCountElem = $('.is-badge-notify').html();
+                var notificationsCount     = parseInt(notificationsCountElem);
+
+                console.log(notificationsCount);
+
+                $(".dropdown-menu").toggle();
+                $('.is-dropdown-container').html(notification);
             });
     });
 

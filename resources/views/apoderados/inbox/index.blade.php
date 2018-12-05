@@ -12,10 +12,15 @@
 </div>
 @endsection
 @section('content')
+
 <div class="row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-        <h5 class="d-flex justify-content-between border-bottom border-gray pb-2 my-3 fw-900">
-            <strong>Tus Circulares</strong>
+
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 ">
+        <a class="btn btn-primary custom-btn is-default my-3" href=" {{route('apoderados.message.create')}} ">Crear Mensaje
+            
+        </a>
+        <h5 class="d-flex justify-content-between border-bottom border-gray pb-2  fw-900">
+            <strong>Mensajes</strong>
             <small>Total : {{$threads->count()}}</small>
         </h5>
         @foreach($threads as $thread)

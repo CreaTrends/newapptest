@@ -50,6 +50,8 @@ class AlumnoController extends Controller
                 $a->whereIn('curso_id',$curso);
             });
         });
+
+        
         // estados
 
         $query->when($request->get('status') != null, function ($q) use($request){ 

@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <div class="col-md-7">
 
-        <a href="{{route('apoderado.messages')}}" class="my-2 btn custom-btn btn-link">Volver </a>
+        
 
         <h5 class="d-flex justify-content-between border-bottom border-gray pb-2 my-3 fw-900">
             <strong>Enviar Mensaje</strong>
@@ -17,10 +17,16 @@
             <form action="{{ route('apoderado.messages.store') }}" method="post" id="message-form">
                 {{ method_field('post') }}
                 {{ csrf_field() }}
-                <input type="hidden" name="teacher_recipients" value="">
+                
                 <!-- Message Form Input -->
-                <div class="alert alert-primary" role="alert">
-                    Se enviara el mensaje al profesore jefe
+                
+                <div class="chat_recipients">
+                    @foreach($recipients as $destinator)
+                    <input type="hidden" name="teacher_recipients[]" value="{{$destinator->id}}">
+                    <div class="badge badge-success text-white fw-300 px-2 py-1">
+                        {{$destinator->profile->first_name}}
+                    </div>
+                    @endforeach
                 </div>
                 <div class="form-group">
                     <label class="control-label">Asunto</label>
@@ -45,9 +51,7 @@
 <script>
 
 $(document).ready(function() {
-    var y = [];
-y.push({{$recipients}});
-$('input[name="teacher_recipients').val({{$recipients}});
+
     var message_area = $('textarea[name="message"]');
 $(document).on('keyup', message_area, function() {
     var message_trim = $('textarea[name="message"]').val();
@@ -81,6 +85,7 @@ $('form').submit(function(e) {
             $('.alert-primary').remove();
             $('input[name="subject"]').remove();
             $('input[name="teacher_recipients"]').remove();
+            $('.chat_recipients').remove();
             $(this).attr('put');
             $url = '{{url('apoderado/message/')}}/'+response.message.thread_id;
             $('#message-form').attr('action', $url);

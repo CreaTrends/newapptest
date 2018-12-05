@@ -4,8 +4,7 @@
 <div class="row justify-content-center">
     <div class="col-md-7">
 
-        <a href="{{route('apoderado.messages')}}" class="my-2 btn custom-btn btn-link">Volver </a>
-
+        
         <h5 class="d-flex justify-content-between border-bottom border-gray pb-2 my-3 fw-900">
             <strong>{{$thread->subject}}</strong>
             ({{ $thread->userUnreadMessagesCount(Auth::id()) }} unread)

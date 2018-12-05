@@ -8,7 +8,7 @@
             <div class="photo-item">
                 <div class="mr-3 w-100">
                     <div class="input-group mb-3">
-                      <input type="file" class="custom-file-input" id="photos" lang="es" multiple name="fileupload[]" accept="image/*" capture="camera">
+                      <input type="file" class="custom-file-input" id="photos" lang="es" multiple name="fileupload[]" accept="image/*"/>
                         <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
                     </div>
                 </div>

@@ -199,27 +199,16 @@ class ApoderadoController extends Controller
         ->get();
 
 
-        /*$notebooks= Notebook::with('attachs')
-        ->with('activities')
-        ->selectRaw('alumno_parent.alumno_id as alumno_id, users.id as padre_id,notebooks.id as feed_id, notebooks.*')
-        ->join('alumno_notebook','alumno_notebook.notebook_id','=','notebooks.id')
-        ->join('alumno_parent','alumno_parent.alumno_id','=','alumno_notebook.alumno_id')
-        ->join('users','users.id','=','alumno_parent.user_id')
-        ->where('alumno_parent.alumno_id',$id)
-        ->where('alumno_parent.user_id',$user_id)
-        ->whereDate('notebooks.created_at', '=', $dt)
-        ->orderBy('notebooks.created_at', 'DESC')
-        ->first();*/
 
-        $notebooks= Notebook::join('alumno_parent','alumno_parent.alumno_id','=','notebooks.alumno_id')
+        $notebooks= Notebook::selectRaw('* , notebooks.created_at as created_at')->join('alumno_parent','alumno_parent.alumno_id','=','notebooks.alumno_id')
         ->where('notebooks.alumno_id',$id)
         ->where('alumno_parent.user_id',$user_id)
         ->whereNotNull('notebooks.data')
-        ->whereDate('notebooks.created_at', '=', $dt)
+        ->whereDate('notebooks.created_at', $dt)
         ->orderBy('notebooks.created_at', 'DESC')
         ->get()
-        ->groupBy(function($item){ 
-            
+        ->groupBy(function($item){
+
             return Carbon::parse($item->created_at)->format('d-M-y');
         });
         
@@ -274,8 +263,8 @@ class ApoderadoController extends Controller
         
         //dd($alumno_profile);
         /*echo "<pre>";
-        return json_encode([$previousnotebook,$nextnotebook],JSON_PRETTY_PRINT);
-       echo "<pre>";
+        return json_encode([$notebooks,$previousnotebook,$nextnotebook],JSON_PRETTY_PRINT);*/
+       /*echo "<pre>";
         return json_encode($previousnotebook,JSON_PRETTY_PRINT);*/
         /*return json_encode($previousnotebook,JSON_PRETTY_PRINT);*/
         return view('apoderados.show',compact('nextnotebook','previousnotebook','albums','notebooks','alumno_profile','notebook_select','notebook_date'));
@@ -517,7 +506,7 @@ class ApoderadoController extends Controller
         ->join('alumno_curso','alumno_curso.curso_id','curso_teacher.curso_id')
         ->whereIn('alumno_curso.alumno_id',$childs)
         ->GroupBy('users.name')
-        ->get()->pluck('id');
+        ->get(['id','name']);
 
         $threads = Thread::getAllLatest()->get();
 

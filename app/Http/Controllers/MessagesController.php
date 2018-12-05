@@ -114,7 +114,7 @@ class MessagesController extends Controller
         if (!empty($input['teacher_recipients'])) {
             // add code logic here to check if a thread has max participants set
             // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
-            $thread->addParticipant(explode(',',$input['teacher_recipients']));
+            $thread->addParticipant($input['teacher_recipients']);
         }
         // check if pusher is allowed
         if(config('chatmessenger.use_pusher')) {

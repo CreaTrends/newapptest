@@ -75,35 +75,7 @@
 </div>
 @endsection
 @section('content')
-<!-- <div class="row justify-content-center">
-    
-    <div class="col-md-8 text-center">
-        <div class="  toolbar-access d-flex justify-content-center my-3">
-            <div class="card card-body w-75 border-0 mr-1">
-                    
-                    <div class="">
-                        <i class="fas fa-comment"></i>
-                        <p class="card-title mb-0">Mensajes</p>
-                    </div>
-                </div>
-                <div class="card card-body w-75 border-0  mr-1 pb-0 pt-2 px-2">
-                    
-                    <div class="">
-                        <i class="fas fa-images ml-auto"></i>
-                        <p class="card-title mb-0">Galerias</p>
-                    </div>
-                </div>
-                <div class="card card-body w-75 border-0 ml-auto">
-                    
-                    <div class="">
-                        <i class="fas fa-user-circle ml-auto"></i>
-                        <p class="card-title mb-0">Perfil</p>
-                    </div>
-                </div>
-        </div>
-    </div>
 
-</div> -->
 <div class="row justify-content-center">
     <div class="col-md-7 col-lg-8 border-bottom border-gray mb-4">
         
@@ -128,7 +100,8 @@
                 @endif
                 <!-- current date -->
                 <li class="page-item">
-                  <a class="page-link is-green" href="{{route('child.feed',['id'=>$alumno_profile->id,'date'=>''])}}" tabindex="-1">
+                  <a class="page-link is-green" href="{{route('child.feed',['id'=>$alumno_profile->id,'date'=>''])}}" tabindex="-1" style="font-size: .85rem;
+    font-weight: 700;">
                    Hoy  {{\Carbon\Carbon::now()->format('l j  , Y ')}}</a>
                 </li>
                 <!-- end current date -->
@@ -158,34 +131,33 @@
         <!-- end feed section -->
         
     </div>
-    
+ @if(!empty($notebooks))  
 
+    <div class="col-12 col-lg-8">
+        
+        @foreach($notebooks as $key => $feeds)
+        <div class="d-flex justify-content-center mb-4">
+                    <span class="badge badge-primary my-0 py-2 px-3 is-lightblue  fw-300 time_line-date " style="    font-size: .75rem;
+    font-weight: 700 !important;" >
 
-    @if(!empty($notebooks))
-        <div class="col-md-7 col-lg-8" id="daily-feed">
-            <!-- title -->
-            
-            @foreach($notebooks as $key => $feeds)
-                <div class="d-flex justify-content-start mb-4">
-                    <span class="badge badge-primary my-0 py-2 px-3 is-lightblue  fw-300 time_line-date" >
                         {{\Carbon\Carbon::parse($key)->toFormattedDateString()}}
+                        
                     </span>
                 </div>
-                @foreach($feeds as $feed)
-                    <!-- data feed {{$loop->iteration}} -->
-                    @if(!empty($feed->data))
-                    
-                        <div class="card card-body mb-0 border-top-0 border-left-0 border-right-0 rounded-0 border-bottom p-2 pt-4 widget-feed"> 
-                            <div class="media widget-feed-right">
-                                <div class="p-3 mr-3 {{$feed->css['bg-color']}} text-center widget-info h-100 d-flex justify-content-center flex-column" style="border-radius: 100%;width: 60px;height: 60px !important;">
-                                    <h2 class="mb-0"><i class="{{$feed->css['icon']}}"></i></h2>
-                                </div>
-                                <div class="media-body ">
-                                    <h6 class="mt-0 d-flex justify-content-between ">
-                                    <strong>{{ __('feed.type.'.$feed->activity_type,['attribute' => $feed->name]) }}</strong>
-                                    <small>{{$feed->date}}</small>
-                                    </h6>
-                                    <p>
+            @foreach($feeds as $feed)
+                <div class="card  card-feed-student mb-0 border-top-0 border-left-0 border-right-0 rounded-0 border-bottom">
+                    <div class="card-body pb-0">
+                        <div class="media">
+                            <i class="icofont {{$feed->css['icon']}} {{$feed->css['bg-color']}} mr-3 activity-icon "></i>
+                            <div class="media-body">
+                                <h6 class="mt-0 d-flex justify-content-between">
+                                <strong>{{ __('feed.type.'.$feed->activity_type,['attribute' => $feed->name]) }}</strong>
+                                <small>
+                                    
+                                    {{\Carbon\Carbon::parse($feed->created_at)->diffForHumans(null, null, false, 1, \Carbon\Carbon::JUST_NOW)}}
+                                </small>
+                                </h6>
+                                <p>
                                     @if(is_array($feed->data))
                                         @foreach($feed->data as $value)
                                             @foreach($value as $a=>$b)
@@ -210,44 +182,37 @@
                                             {{$feed->info}}
                                             @endif
                                     @endif
-                                    </p>
-                                    
-                                </div>
+                                </p>
                             </div>
-
-                            @if(!empty($feed->attached))
-                            <div class="row">
-                             @foreach($feed->attached as $attached)
-                             
-                                 <div class="col-6 col-md-3">
-                                    <a  data-fancybox="images" href="{{url('static/uploads/notebook/'.$attached)}}">
-                                   <img class="img-fluid m-0 my-2" src="{{url('static/uploads/notebook/'.$attached)}}" alt="Card image cap">
-                                   </a>   
-                                 </div>
-                             
-                             @endforeach
-                             </div>
-                                    @endif  
                         </div>
+                        @if(!empty($feed->attached))
+                        <div class="row">
+                            @foreach($feed->attached as $attached)
+                            <div class="col-4 col-md-4 p-0">
+                                <a data-fancybox="images" href="{{url('static/uploads/notebook/'.$attached)}}">
+                                    <img class="card-img-bottom p-1 mt-2 " src="{{url('static/uploads/notebook/'.$attached)}}">
+                                </a>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
                         
-
-                    @endif
-                
-                @endforeach
-            @endforeach
-            
-
-   @else
-        <div class="col-lg-8 text-center mh-100 ">
-            <div class="d-flex justify-content-center align-items-stretch text-center mb-4">
-                <div class="icon-empty gradient-orange empty_state">
-                    <i class="fas fa-inbox"></i>
+                    </div>
                 </div>
+            @endforeach
+        @endforeach
+    </div>
+@else
+    <div class="col-lg-8 text-center mh-100 ">
+        <div class="d-flex justify-content-center align-items-stretch text-center mb-4">
+            <div class="icon-empty gradient-orange empty_state">
+                <i class="fas fa-inbox"></i>
             </div>
-            
-            <h4><strong>No tienes reportes</strong></h4>
-            <p>al parecer no tienes reportes del dia de hoy , puedes revisar dias anteriores de tu hij@ </p>
         </div>
+        
+        <h4><strong>No tienes reportes</strong></h4>
+        <p>al parecer no tienes reportes del dia de hoy , puedes revisar dias anteriores de tu hij@ </p>
+    </div>
 @endif  
 </div>
 @endsection

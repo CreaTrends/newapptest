@@ -62,7 +62,7 @@ class NewAlbumNotification extends Notification
         $to = '';
         $subject = 'Equipo Jardín Anatolia :: Hemos ingresado una nueva galeria';
         return (new MailMessage)
-        ->from('no-reply@jardinanatolia.cl','Equipo Anatolia')
+        ->from('no-reply@jardinanatolia.cl','Equipo Jardín Anatolia')
         ->subject($subject)
                 ->line('Hola Apoderad@, hemos agregado una nueva galeria de imagenes donde fue etiquetado tu hij@ ')
                 ->action('Ver Galeria', route('apoderado.album',['id'=>$this->album->album_id,'token'=>$this->album->album_token]))
@@ -85,6 +85,8 @@ class NewAlbumNotification extends Notification
             'message' => $this->album->album_name,
             'action' => route($route.'.album',['id'=>$this->album->album_id,'token'=>$this->album->album_token]),
             'user_id' => $this->user_id,
+            'notify-icon' => 'fas fa-camera',
+            'notify-bg' => 'is-lightblue'
         ];
     }
 }
