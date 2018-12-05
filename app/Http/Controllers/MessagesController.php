@@ -86,6 +86,20 @@ class MessagesController extends Controller
 
         $input = Input::all();
 
+        
+
+        
+
+        if (Input::has('teacher_recipients') && empty($input['teacher_recipients'])) {
+
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'Debes elegir un destinatario',
+            ],400);
+
+
+        }
+
         $message_to = Input::has('recipients') ? User::whereHas('students',function($q) use($input){
             $q->whereIn('alumno_id',$input['recipients']);
         })->pluck('id')->toArray() : null;
@@ -230,7 +244,7 @@ class MessagesController extends Controller
             $thread = Thread::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             Session::flash('error_message', 'The thread with ID: ' . $id . ' was not found.');
-            return redirect()->route('messages');
+            return redirect()->url('/');
         }
         // show current user in list if not a current participant
         //$users = User::whereNotIn('id', $thread->participantsUserIds())->get();
@@ -250,7 +264,7 @@ class MessagesController extends Controller
 
         
 
-        $html = view('admin.message.showmodal', compact('thread', 'users','participants'))->render();
+        //$html = view('admin.message.showmodal', compact('thread', 'users','participants'))->render();
         if(request()->ajax()) {
             return response()->json([
             'message' => $thread->subject,

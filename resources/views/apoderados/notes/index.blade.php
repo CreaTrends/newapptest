@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="p-3 widget-feed-right w-100 mr-auto">
-                <a style="color: #5770e4; text-decoration: none; color: inherit !important ;" class="text-red" href="{{ route('apoderado.notes.show', $note->id) }}">
+                <a style="color: #5770e4; text-decoration: none; color: inherit !important ;" class="btn-action" href="javascript:void(0);" data-url="{{ route('apoderado.notes.display',$note->id)}}">
                     <h6 class="mt-0 d-flex justify-content-between  fw-600">
                     <strong>
                     {{$note->subject}}

@@ -21,12 +21,15 @@
                 <!-- Message Form Input -->
                 
                 <div class="chat_recipients">
-                    @foreach($recipients as $destinator)
-                    <input type="hidden" name="teacher_recipients[]" value="{{$destinator->id}}">
-                    <div class="badge badge-success text-white fw-300 px-2 py-1">
-                        {{$destinator->profile->first_name}}
-                    </div>
-                    @endforeach
+                    
+                    
+                    <select name="teacher_recipients" id="" class="form-control">
+                        <option value="">Elige un destinatario</option>
+                        @foreach($recipients as $destinator)
+                        <option value="{{$destinator->id}}">{{$destinator->profile->first_name}}</option>
+                        @endforeach
+                    </select>
+                    
                 </div>
                 <div class="form-group">
                     <label class="control-label">Asunto</label>
@@ -55,11 +58,18 @@ $(document).ready(function() {
     var message_area = $('textarea[name="message"]');
 $(document).on('keyup', message_area, function() {
     var message_trim = $('textarea[name="message"]').val();
-    if (message_trim != '') {
+    if (message_trim != '' ) {
         $('#submit-message').prop('disabled', false).removeClass('disabled');
     } else {
         $('#submit-message').prop('disabled', true).addClass('disabled');
     }
+
+
+$('select[name="teacher_recipients"]').on('change', function () {
+    $('#submit-message').prop('disabled', !$(this).val());
+}).trigger('change');
+
+
 });
   
 });

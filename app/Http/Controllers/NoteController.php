@@ -510,12 +510,21 @@ class NoteController extends Controller
 
     public function displaynote(Request $request , $id){
 
+        try{
         $note = Note::where('id',$id)
         ->withCount('note_user')
         ->with('readed')
         ->with('unreaded')
         ->withCount('unreaded')
-        ->first();
+        ->firstOrFail();
+
+        }catch(\Exception $e){
+
+            return response()->json(['error' => 'Mismatch Url.'],404);
+
+        }
+
+        
 
         $html= view('admin.notes.display', compact('note'))->render();
         if(request()->ajax()) {

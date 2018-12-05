@@ -222,6 +222,8 @@ Route::middleware(['password_expired'])->group(function () {
     Route::post('inbox', ['as' => 'apoderado.messages.store', 'uses' => 'MessagesController@store']);
 
     Route::delete('/messages/removeparticipant/{id}', ['as' => 'apoderado.messages.removeparticpant', 'uses' => 'MessagesController@removeparticipant'])->middleware('auth');
+
+    Route::get('messagemodal/{id}', ['as' => 'apoderado.message.showmodal', 'uses' => 'MessagesController@modalshow']);
 });
 
 

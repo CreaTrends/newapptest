@@ -444,41 +444,10 @@ class ApoderadoController extends Controller
     }
     public function noteshow(Request $request, $id){
 
-        $notes = Note::with('user')->where('id',$id)->where('user_id',auth()->user()->id)->get();
-        $notes = Note::SelectRaw('notes.*')
-        ->join('note_user','note_user.note_id','=','notes.id')
-        ->where('note_user.user_id',auth()->user()->id)
-        ->where('notes.id',$id)
-        ->get();
-
-        if($notes->isEmpty()){
-            return response()->json([
-            'message' => 'Invalid Request',
-            'status' => 403
-        ], 403);
-        }
-        /*return response()->json([
-            'message' => 'Wrong email or password',
-            'status' => 422
-        ], 422);*/
-        $parent = User::where('id',auth()->user()->id)->first();
-
-        //auth()->user()->unreadNotifications->markAsRead();
-
-        $notification = auth()->user()->notifications()->where('id',$request->get('nid'))->first();
-        /*dd($notes);*/
-        if($notification){
-            $notification->markAsRead();
-        }
-
-        $update = Note::find($id)->note_user()->wherePivot('user_id', '=', auth()->user()->id)->whereNull('readed_at')
-        ->update([
-            'readed_at' => Carbon::now(),
-            'readed' => '1'
-        ]);
+        
         
 
-        return view('apoderados.notes.show',compact('notes','parent'));
+        return redirect()->route('apoderado.notes');
 
     }
 
