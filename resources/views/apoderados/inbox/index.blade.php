@@ -73,7 +73,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                     <button class="dropdown-item view_message" type="button" data-id="{{$thread->id}}"
                     data-url="{{ route('admin.message.showmodal', $thread->id) }}" id="thread-{{$thread->id}}">Ver</button>
-                    <form action="{{route('admin.messages.removeparticpant',Auth::user()->id)}}" method="POST" id="removeParticipant">
+                    <form action="{{route('apoderado.messages.removeparticpant',Auth::user()->id)}}" method="POST" id="delete-this-message">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
                         <input type="hidden" name="recipientuser[]" value="{{Auth::user()->id}}">
@@ -116,6 +116,8 @@ $(document).on('submit', '#delete-this-message', function(event) {
             console.log(error)
         });
 });
+
+
 
 </script>
 @endsection

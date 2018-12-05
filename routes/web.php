@@ -220,6 +220,8 @@ Route::middleware(['password_expired'])->group(function () {
 
     Route::get('/messages/new', 'ApoderadoController@createmessage')->name('apoderados.message.create');
     Route::post('inbox', ['as' => 'apoderado.messages.store', 'uses' => 'MessagesController@store']);
+
+    Route::delete('/messages/removeparticipant/{id}', ['as' => 'apoderado.messages.removeparticpant', 'uses' => 'MessagesController@removeparticipant'])->middleware('auth');
 });
 
 
