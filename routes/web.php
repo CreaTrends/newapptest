@@ -19,12 +19,14 @@ use App\Events\StatusLiked;
 //use Newsletter;
 use \DrewM\MailChimp\MailChimp;
 
+
+
 Route::get('/', function () {
     return redirect('home');
 })->middleware('auth');
 
 Route::get('testeando', function () {
-
+/*
 $MailChimp = new MailChimp('f18cea50340b78c0ca8e9d4309020aee-us17');
 
 
@@ -63,7 +65,17 @@ $result = $MailChimp->put('campaigns/' . $responseObj->id . '/content', [
 $result = $MailChimp->post('campaigns/' . $responseObj->id . '/actions/send');
 
 
-return response()->json($result,200,[],JSON_PRETTY_PRINT);
+return response()->json($result,200,[],JSON_PRETTY_PRINT);*/
+/*$note = Note::first();
+$user = App\User::findorFail(4);
+            $user->notify(new NewNoteNotification($note, $user->id));*/
+Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
+    {
+        $message->subject('Mailgun and Laravel are awesome!');
+        $message->from('no-reply@mg.jardinanatolia.cl', 'Equipo Jardin Anatolia');
+        $message->replyTo('info@jardinanatolia.cl','Equipo Jardin Anatolia');
+        $message->to('jalbornozdesign@gmail.com');
+    });
     
 });
 
@@ -106,7 +118,7 @@ Route::resource('admin', 'AdminController');
 Route::get('/', 'AdminController@index')->name('index');
 /*Cursos*/
 Route::resource('/cursos', 'CursoController');
-
+Route::get('notebook/report', 'NotebookController@report')->name('notebook.report');
 Route::get('notebook/forms', 'NotebookController@forms')->name('notebook.forms');
 Route::resource('notebook', 'NotebookController');
 

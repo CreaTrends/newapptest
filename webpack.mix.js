@@ -15,5 +15,9 @@ mix.sass('resources/assets/sass/app.scss', 'public/css')
 .js('resources/assets/js/app.js', 'public/js')
    .options({
        processCssUrls: false
-   })
-   .version();
+   });
+
+
+   if (mix.inProduction()) {
+    mix.version();
+}

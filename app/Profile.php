@@ -18,4 +18,8 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class,'id');
     }
+
+    public function getFullNameAttribute() {
+        return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
+    }
 }

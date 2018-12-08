@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use App\Notebook;
 use App\User;
 
-class NewNotebook extends Notification
+class NewNotebook extends Notification implements ShouldQueue
 {
     use Queueable;
     /**
@@ -46,7 +46,7 @@ class NewNotebook extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database','broadcast'];
+        return ['database','broadcast'];
     }
 
     /**
@@ -55,19 +55,19 @@ class NewNotebook extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    /*public function toMail($notifiable)
     {
         
         $from = User::findOrFail($this->user_id);
         $to = '';
         $subject = $from->profile->first_name.' '.$from->profile->last_name .' te envio un nuevo reporte diario';
         return (new MailMessage)
-        ->from('no-reply@jardinanatolia.cl','Equipo Jardín Anatolia')
+        ->from('no-reply@mg.jardinanatolia.cl','Equipo Jardín Anatolia')
         ->subject($subject)
                 ->line('Hola Papa, hemos agregado un nuevo reporte con las actividades diarias de tu hij@, te invitamos a leer e informarte de toda las novedades de tu hij@ ')
                 ->action('Ver Reporte', route('child.feed',$this->notebook->alumno_id))
                 ->success();
-    }
+    }*/
 
     
 

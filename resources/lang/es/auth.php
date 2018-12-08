@@ -14,6 +14,6 @@ return [
     */
 
     'failed' => 'Los Datos Ingresados no coinciden con nuestros registros.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'throttle' => 'Demasiados intentos de inicio de sesión. Por favor, intente de nuevo en :seconds segundos.',
 
 ];

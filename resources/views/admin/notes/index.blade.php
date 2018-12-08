@@ -477,7 +477,7 @@ $(document).on('submit', '#insert_form', function(event) {
                         console.log($("#note-row-" + res.data.id));
                     })
                 } else {
-                    $( ".Table > .sticky-row" ).last().after(res.data.html).fadeIn(function() {
+                    $( ".Table-row" ).first().after(res.data.html).fadeIn(function() {
                         $("#note-row-" + res.data.id).css('background-color', '#f0f8ff');
                         console.log($("#note-row-" + res.data.id));
                     });

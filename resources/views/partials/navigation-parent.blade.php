@@ -4,7 +4,7 @@
     <a class="navbar-toggler navbar-toggler top-mobile-buttons" href="{{ route('apoderado.feed') }}" role="button">
     <i class="icofont icofont-simple-left"></i>
     </a>
-    <a class="navbar-brand" href="#"><img class="img-fluid" src="http://www.jardinanatolia.cl/wp-content/themes/ultrabootstrap/images/logo_footer.jpg" width="100" alt=""></a>
+    <a class="navbar-brand" href="#"><img class="img-fluid" src="{{ asset('/images/logo_footer.jpg') }}" width="100" alt=""></a>
     <button class="navbar-toggler top-mobile-buttons" type="button" data-toggle="collapse" data-target="#parentNavbar" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
     <i class="icofont icofont-navigation-menu"></i>
     </button>

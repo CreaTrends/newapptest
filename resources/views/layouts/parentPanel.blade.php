@@ -9,7 +9,7 @@
        <title>My Website | @yield('title', 'Welcome')</title>
         <!-- Styles -->
         <link href="{{ asset('css/icofont.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/app.css') }}?v=<?php echo md5(time());?>" rel="stylesheet">
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/tokenize2.min.css') }}?v=<?php echo md5(time());?>" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
         
@@ -52,7 +52,8 @@
         </footer>
         <!-- Scripts -->
 
-        <script src="{{ asset('js/app.js') }}?v=<?php echo md5(time());?>"></script>
+        <script src="{{ asset('/js/app.js') }}"></script>
+
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <script src="{{ asset('js/tokenize2.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>

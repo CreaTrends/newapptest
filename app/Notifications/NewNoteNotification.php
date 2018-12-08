@@ -12,7 +12,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Note;
 use App\User;
 
-class NewNoteNotification extends Notification implements ShouldBroadcast
+use App\Mail\WelcomeParent as Mailable;
+
+class NewNoteNotification extends Notification implements ShouldBroadcast,ShouldQueue
 {
     use Queueable;
 
@@ -62,13 +64,20 @@ class NewNoteNotification extends Notification implements ShouldBroadcast
     {
         $user = User::find($this->user_id);
         $route = $user->hasRole('parent') ? 'apoderado.notes.show':'notes.index';
-        $subject = $this->note->user->profile->first_name.' '.$this->note->user->profile->last_name .' te envio una nueva circular';
+        $subject = $this->note->user->profile->first_name.' '.$this->note->user->profile->last_name .'';
+
+
+        //return (new Mailable($user))->to($user->email);
+
+
         return (new MailMessage)
-        ->from('no-reply@jardinanatolia.cl','Equipo Jardín Anatolia')
+        ->from('no-reply@mg.jardinanatolia.cl', 'Equipo Jardin Anatolia')
+        ->replyTo($this->note->user->email,$this->note->user->profile->first_name.' '.$this->note->user->profile->last_name)
         ->subject($subject)
                 ->line('Hola '.$user->name.', hemos generado una nueva circular informativa de nuestro jardín, te invitamos a leer e informarte de toda las novedades de tu hij@ ')
                 ->action('Leer Circular', route($route,$this->note->id))
                 ->success();
+
     }
     /**
      * Get the array representation of the notification.

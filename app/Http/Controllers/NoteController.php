@@ -17,6 +17,9 @@ use App\Profile;
 use App\Curso;
 use App\Alumno;
 
+use Mail;
+
+
 class NoteController extends Controller
 {
     public function __construct()
@@ -174,10 +177,11 @@ class NoteController extends Controller
         
         // verificamos notificaciones 
         $sent_to = User::whereIn('id',$recipientes)->get();
-
+        $when = Carbon::now()->addSeconds(5);
         foreach($sent_to as $users){
             $user = User::findorFail($users->id);
-            $user->notify(new NewNoteNotification($note, $user->id));
+            $user->notify((new NewNoteNotification($note, $user->id))->delay($when));
+            
             //$user->notifications()->delete();
         }
         // notificamos al equipo
@@ -192,10 +196,16 @@ class NoteController extends Controller
             foreach($to_teacher as $users){
                 $user = User::findorFail($users->id);
                 $user->notify(new NewNoteNotification($note, $user->id));
+                
                 //$user->notifications()->delete();
             }
 
         }
+
+
+//$user->notify(new NewNoteNotification($note, $user->id))->delay($when);
+
+
         
 
         $html = view('admin.notes.noteslist', compact('note'))->render();

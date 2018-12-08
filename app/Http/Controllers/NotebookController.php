@@ -17,7 +17,7 @@ use Mail;
 use App\Mail\WelcomeParent;
 
 use App\Mail\DailyReportEmail;
-
+use App\Mail\DailyReport as DailyNotebookReport;
 
 class NotebookController extends Controller
 {
@@ -104,16 +104,17 @@ class NotebookController extends Controller
                 'notebook_date' => Carbon::now(),
             ]);
 
-            $users[] = User::wherehas('students',function($q) use($alumno){
+            $users= User::wherehas('students',function($q) use($alumno){
                 $q->where('alumno_id',$alumno);
-            })->get()->pluck('id');
+            })->get();
+
+            $when = now()->addSeconds(2);
 
             foreach($users as $user){
-                $apoderados = User::findOrfail($user);
+                
 
-                foreach($apoderados as $apoderado ){
-                   $apoderado->notify(new NewNotebook($notebook, auth()->user()->id)); 
-                }
+                /*$user->notify(new NewNotebook($notebook, auth()->user()->id));*/
+                $user->notify((new NewNotebook($notebook, auth()->user()->id))->delay($when));
 
                 
             }
@@ -173,6 +174,7 @@ class NotebookController extends Controller
 
     public function filter(Request $request){
         $id_curso = $request->id ? $request->id : '';
+        $notebook_type  = $request->type ? $request->type : '';
         $query = Alumno::query();
         $query = $query->when($request->get('id') != '', function ($q) use($id_curso){
             $q->whereHas('curso', function ($query) use($id_curso){
@@ -183,6 +185,10 @@ class NotebookController extends Controller
             $q->whereHas('curso', function ($query) use($id_curso){
                 $query->where('curso_id', $id_curso);
             });
+        });
+        $query = $query->whereDoesntHave('notebooks',function($q) use($notebook_type){
+            $q->whereDate('created_at',Carbon::today()->toDateString())
+            ->where('activity_type', $notebook_type);
         });
         $users = $query->get();
 
@@ -233,6 +239,36 @@ class NotebookController extends Controller
 
         return "asdasdas";
 
+
+    }
+
+    public function report(Request $request){
+
+        
+
+        // get notebooks 
+
+        $alumno = Alumno::wherehas('notebooks',function($q) {
+            $q->whereNotNull('data')
+            ->whereDate('created_at',Carbon::today()->toDateString());
+        })
+        ->get()->pluck('id');
+
+        $apoderados = User::whereHas('students',function($q) use($alumno){
+            $q->whereIn('alumno_id',$alumno);
+        })
+        ->with([
+            'students'=>function($q) use($alumno){
+                     $q->whereIn('id',$alumno);
+            }
+        ])
+        ->get();
+
+        /*foreach($apoderados as $apoderado){
+            Mail::to($apoderado->email)->send(new DailyNotebookReport($apoderado));
+        }*/
+
+        return response()->json($apoderados,200,[],JSON_PRETTY_PRINT);
 
     }
 }

@@ -7,11 +7,16 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class WelcomeParent extends Mailable implements ShouldQueue
+use App\Notebook;
+use App\User;
+use App\Alumno;
+class DailyReport extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $user;
+     public $user;
+
+    
 
     /**
      * Create a new message instance.
@@ -31,9 +36,9 @@ class WelcomeParent extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.users.parent.WelcomeEmail',['user' => $this->user])
-        ->subject('Por favor confirma tu correo')
-        ->from('jardinanatolia@sp.listodale.com', 'Equipo Jardin Anatolia')
-       ->replyTo('info@jardinanatolia.cl','Equipo Jardin Anatolia');
+        return $this->markdown('emails.reports.daily')
+        ->subject('Nuevo Reporte Diario ')
+        ->from('no-reply@mg.jardinanatolia.cl', 'Equipo Jardin Anatolia')
+        ->replyTo('info@jardinanatolia.cl','Equipo Jardin Anatolia');
     }
 }

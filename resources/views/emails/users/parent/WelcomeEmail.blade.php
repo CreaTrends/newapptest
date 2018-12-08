@@ -1,3 +1,4 @@
+
 @component('mail::message')
 # Hola {{ $user->name }} 
 # Bienvenido a jardin anatolia
@@ -16,10 +17,11 @@ Tus Datos de acceso <br>
 - Comunicate con cada educadora
 - Ver los avances de tu hij@
 
+
 @component('mail::button', ['url' => route('login')])
 Ingresar a tu cuenta
 @endcomponent
 
-Thanks,<br>
+Gracias,<br>
 {{ config('app.name') }}
 @endcomponent

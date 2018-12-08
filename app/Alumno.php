@@ -13,6 +13,10 @@ class Alumno extends Model
     'firstname','lastname','image'
     ];
 
+
+    public function getFullNameAttribute() {
+        return ucfirst($this->firstname) . ' ' . ucfirst($this->lastname);
+    }
     
     public function curso()
     {

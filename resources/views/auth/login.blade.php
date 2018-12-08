@@ -55,7 +55,7 @@
 </style>
 <form class="form-signin text-center align-items-center shadow-sm p-5 col-lg-5 mx-auto" method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}
-    <img class="mb-4" src="{{asset('images/name-badge.svg')}}" alt="" width="150" >
+    <img class="mb-4" src="{{asset('/images/logo_footer.jpg')}}" alt="" width="150" >
     <h1 class="h3 mb-3 auth-title">Hey , Bienvenido nuevamente</h1>
     <!-- alert -->
 
@@ -78,14 +78,15 @@
     <div class="form-group d-flex justify-content-between">
         <div class="checkbox">
             <label class="custom-label">
-                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ trans('lang.remember') }}
+                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> 
+                <span class="text-muted" style="font-weight: 500">{{ trans('lang.remember') }}</span>
             </label>
         </div>
         <a class="" href="{{ route('password.request') }}">
             Recordar Contraseña
         </a>
     </div>
-    <button type="submit" class="btn btn-primary btn-block custom-btn is-darkpink">
+    <button type="submit" class="btn btn-primary btn-block custom-btn is-lightgreen">
     Ingresar
     </button>
     <p class="mt-5 mb-3 text-muted">© Járdin Anatolia / 2017-2018</p>

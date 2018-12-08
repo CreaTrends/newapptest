@@ -313,19 +313,17 @@ $(document).on('click', '#open-modal', function(e) {
     $modal.modal('show');
 
     
-    $('#filter_users').trigger('change',function(){
-        console.log('se cargo');
-    });
-
-    console.log($(this).data('type'));
+    
     axios.get('{{route('notebook.forms')}}', {
               params: {
                 form: $(this).data('type'),
                 
               }
             }).then(function(response) {
-                console.log('respuest : '+ response.data);
+                
                 $modal.find('#form-template').html(response.data.form);
+                
+                $('#filter_users').trigger('change');
                 $('#loader-modal').addClass('d-none');
 
             }).catch(error => {
@@ -340,17 +338,16 @@ $('#modal-add-data').on('hidden.bs.modal', function (e) {
   $(document).find('input[name="new_recipientsSelected"]').val();
 })
 
-$(document).on('change', '#filter_users', function(activity_type) {
+$(document).on('change', '#filter_users', function() {
 
-    console.log('cambiamos usuarios');
+    
     
     $list = $(this);
     $id = $list.val();
     $select_input = $(document).find('input[name="new_recipientsSelected"]');
     $select_val = $select_input.val();
 
-    $activity_type = activity_type || null;
-
+    $activity_type = $(document).find('input[name="activity_type"]');
 
     $('#user_list').html('');
     
@@ -363,7 +360,8 @@ $(document).on('change', '#filter_users', function(activity_type) {
     axios.get('{{url('api/alumnos')}}', {
               params: {
                 api_token: '{{Auth::user()->api_token}}',
-                id: $id
+                id: $id,
+                type:$activity_type.val()
               }
             }).then(function(response) {
 
@@ -372,10 +370,6 @@ $(document).on('change', '#filter_users', function(activity_type) {
             $('#user_list').html(response.data.html);
             
             $('#loader-userlist').removeClass('d-flex').hide();
-
-            
-            console.log(response.data);
-
 
             check_value(cboxArray);
             
