@@ -118,7 +118,7 @@ Route::resource('admin', 'AdminController');
 Route::get('/', 'AdminController@index')->name('index');
 /*Cursos*/
 Route::resource('/cursos', 'CursoController');
-Route::get('notebook/report', 'NotebookController@report')->name('notebook.report');
+Route::post('notebook/report', 'NotebookController@report')->name('notebook.report');
 Route::get('notebook/forms', 'NotebookController@forms')->name('notebook.forms');
 Route::resource('notebook', 'NotebookController');
 

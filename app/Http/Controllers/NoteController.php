@@ -18,7 +18,7 @@ use App\Curso;
 use App\Alumno;
 
 use Mail;
-
+use App\Mail\NewNoteMail;
 
 class NoteController extends Controller
 {
@@ -180,7 +180,11 @@ class NoteController extends Controller
         $when = Carbon::now()->addSeconds(5);
         foreach($sent_to as $users){
             $user = User::findorFail($users->id);
-            $user->notify((new NewNoteNotification($note, $user->id))->delay($when));
+            $user->notify(new NewNoteNotification($note, $user->id));
+
+        
+            Mail::to($user->email)->send(new NewNoteMail($note, $user));
+        
             
             //$user->notifications()->delete();
         }

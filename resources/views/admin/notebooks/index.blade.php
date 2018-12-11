@@ -1,5 +1,14 @@
 @extends('layouts.adminDashboard')
 @section('content')
+<div class="d-block d-md-flex no-block align-items-center py-0 px-0 mt-3">
+    <div class="ml-auto mr-2">
+        <form action="{{route('notebook.report')}}" method="POST" enctype="multipart/form-data" id="sendReport">
+            {{ csrf_field() }}
+            {{ method_field('POST') }}
+            <button type="submit" class="btn custom-btn is-lightblue" id="sendreport">Enviar Libreta</button>
+        </form>
+    </div>
+</div>
 <div class="row justify-content-center mt-5">
     <div class="col-6 col-lg-3 w-sm-50 mb-3 ">
         <div class="card card-body h-100">
@@ -290,6 +299,21 @@ function check_value(val) {
         });
     }
 }
+function check_value_remove(val) {
+    var array = '';
+    for (i = 0; i < val.length; i++) {
+        //alert(array[i]);
+
+        $('input[name="recipients[]"]').each(function() {
+            if ($(this).val() == val[i]) {
+                $(this).prop('checked', false);
+                $(this).parent().find('.avatar').removeClass('active');
+            }
+        });
+    }
+}
+
+
 $(document).on('change', 'input[name="recipients[]"]', function() {
     select_tickets(this);
     $(this).parent().find('.avatar').toggleClass('active');
@@ -333,10 +357,7 @@ $(document).on('click', '#open-modal', function(e) {
         });
 });
 
-$('#modal-add-data').on('hidden.bs.modal', function (e) {
-  $('#insert_form')[0].reset();
-  $(document).find('input[name="new_recipientsSelected"]').val();
-})
+
 
 $(document).on('change', '#filter_users', function() {
 
@@ -353,7 +374,7 @@ $(document).on('change', '#filter_users', function() {
     
     $('#loader-userlist').addClass('d-flex');
     $('#user_list').slimscroll({
-                height: '0vh',
+                height: 'auto',
                 size: '5px',
             });
 
@@ -387,9 +408,17 @@ $(document).on('change', '#filter_users', function() {
         });
 
 });
-$(document).ready(function(){
+$('#modal-add-data').on('hidden.bs.modal', function (e) {
+  $('#insert_form')[0].reset();
+  var tt = $("input[name='recipients[]']:checked").val();
 
+  /*$("input[name='recipients[]']:checked").each(function() {
+    $(this).prop('checked', false);
+    $(this).parent().find('.avatar').removeClass('active');
+  });*/
 
+  cboxArray = new Array();
+  $('#user_list').html('');
 
 });
 @if (session('status'))

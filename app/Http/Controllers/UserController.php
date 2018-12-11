@@ -123,7 +123,7 @@ class UserController extends Controller
 
         $toUser[]= ["email"=>$user->email,"name"=>$user->name];
         
-        Mail::to($toUser)->send(new WelcomeParent($user));
+        Mail::to($toUser)->send(new WelcomeParent($user,$password));
         //$user->profile()->save($request->name);
         //$user->profile()->save($request->name);
         //Profile::create($request->all());

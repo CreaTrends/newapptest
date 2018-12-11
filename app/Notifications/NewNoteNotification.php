@@ -52,33 +52,9 @@ class NewNoteNotification extends Notification implements ShouldBroadcast,Should
      */
     public function via($notifiable)
     {
-        return ['mail','database','broadcast'];
+        return ['database'];
     }
-/**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $user = User::find($this->user_id);
-        $route = $user->hasRole('parent') ? 'apoderado.notes.show':'notes.index';
-        $subject = $this->note->user->profile->first_name.' '.$this->note->user->profile->last_name .'';
 
-
-        //return (new Mailable($user))->to($user->email);
-
-
-        return (new MailMessage)
-        ->from('no-reply@mg.jardinanatolia.cl', 'Equipo Jardin Anatolia')
-        ->replyTo($this->note->user->email,$this->note->user->profile->first_name.' '.$this->note->user->profile->last_name)
-        ->subject($subject)
-                ->line('Hola '.$user->name.', hemos generado una nueva circular informativa de nuestro jardín, te invitamos a leer e informarte de toda las novedades de tu hij@ ')
-                ->action('Leer Circular', route($route,$this->note->id))
-                ->success();
-
-    }
     /**
      * Get the array representation of the notification.
      *

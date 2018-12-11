@@ -7,7 +7,7 @@
 
 Tus Datos de acceso <br>
 <b>Usuario</b> : {{ $user->email}} <br>
-<b>password </b>: {{$user->password}}<br>
+<b>password </b>: {{$token}}<br>
 
 
 

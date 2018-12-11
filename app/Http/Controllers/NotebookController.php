@@ -254,21 +254,20 @@ class NotebookController extends Controller
         })
         ->get()->pluck('id');
 
-        $apoderados = User::whereHas('students',function($q) use($alumno){
+        $childs = Alumno::whereHas('parent',function($q) use($alumno){
             $q->whereIn('alumno_id',$alumno);
         })
-        ->with([
-            'students'=>function($q) use($alumno){
-                     $q->whereIn('id',$alumno);
-            }
-        ])
+        ->with('parent')
         ->get();
 
-        /*foreach($apoderados as $apoderado){
-            Mail::to($apoderado->email)->send(new DailyNotebookReport($apoderado));
-        }*/
-
-        return response()->json($apoderados,200,[],JSON_PRETTY_PRINT);
+        foreach($childs  as $child){
+            
+            foreach($child->parent as $parent){
+             Mail::to($parent->email)->send(new DailyNotebookReport($child,$parent));
+            }
+        }
+        return back()->with('status', 'Se envio la libreta diaria');
+        return response()->json($childs,200,[],JSON_PRETTY_PRINT);
 
     }
 }

@@ -15,6 +15,7 @@ class DailyReport extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
      public $user;
+     public $child;
 
     
 
@@ -23,10 +24,11 @@ class DailyReport extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($child,$user)
     {
         //
         $this->user = $user;
+        $this->child = $child;
     }
 
     /**
@@ -36,9 +38,10 @@ class DailyReport extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.reports.daily')
-        ->subject('Nuevo Reporte Diario ')
-        ->from('no-reply@mg.jardinanatolia.cl', 'Equipo Jardin Anatolia')
-        ->replyTo('info@jardinanatolia.cl','Equipo Jardin Anatolia');
+        $user = auth()->user();
+        return $this->view('emails.templates.new_notebook')
+        ->subject('Equipo Jardin Anatolia :: Nueva Libreta diaria de '.$this->child->full_name)
+        ->from('no-reply@mg.jardinanatolia.cl', 'Equipo Jardin Anatolia');
+        
     }
 }

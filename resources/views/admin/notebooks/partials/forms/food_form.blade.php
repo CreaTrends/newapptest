@@ -1,6 +1,6 @@
 <div class="card border-0">
     <div class="card-header is-darkgreen">
-        <i class="icofont icofont-fast-food"></i> <strong>Comidasssss</strong>
+        <i class="icofont icofont-fast-food"></i> <strong>Comidas</strong>
     </div>
     <div class="card-body p-0 mt-3">
         <div class="food-container">

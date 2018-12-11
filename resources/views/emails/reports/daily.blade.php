@@ -2,19 +2,13 @@
 
 # Hola {{$user->profile->full_name}}
 
-Hemos generado un nuevo reporte diario.
 
-@component('mail::panel') 
+@component('mail::panel')
+Hemos generado una nueva libreta diaria , donde podras conocer toda las actividades de <strong>{{$child->full_name}}</strong>.
+@endcomponent
 
-#
-
-
-@foreach($user->students as $student)
-
-{{$student->full_name}}
-
-@endforeach
-Puedes encontrar todo los detalles en nuestra aplicacion , haciendo clic en el boton inferior.
+@component('mail::button', ['url' => route('child.feed',$child->id)])
+Ver libreta
 @endcomponent
 
 

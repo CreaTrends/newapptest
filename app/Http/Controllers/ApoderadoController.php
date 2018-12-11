@@ -26,6 +26,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
+use Mail;
+use App\Mail\NewMessageMail;
+
 
 class ApoderadoController extends Controller
 {

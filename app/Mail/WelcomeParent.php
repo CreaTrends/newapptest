@@ -12,16 +12,18 @@ class WelcomeParent extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public $user;
+    public $token;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user,$token)
     {
         //
         $this->user = $user;
+        $this->token = $token;
     }
 
     /**
@@ -31,7 +33,7 @@ class WelcomeParent extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.users.parent.WelcomeEmail',['user' => $this->user])
+        return $this->markdown('emails.users.parent.WelcomeEmail')
         ->subject('Por favor confirma tu correo')
         ->from('jardinanatolia@sp.listodale.com', 'Equipo Jardin Anatolia')
        ->replyTo('info@jardinanatolia.cl','Equipo Jardin Anatolia');

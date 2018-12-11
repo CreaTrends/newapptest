@@ -14,7 +14,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+
+
 use App\Notifications\NewMessageThread;
+use Mail;
+use App\Mail\NewMessageMail;
 
 class MessagesController extends Controller
 {
@@ -86,10 +90,6 @@ class MessagesController extends Controller
 
         $input = Input::all();
 
-        
-
-        
-
         if (Input::has('teacher_recipients') && empty($input['teacher_recipients'])) {
 
             return response()->json([
@@ -124,11 +124,33 @@ class MessagesController extends Controller
             // add code logic here to check if a thread has max participants set
             // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
             $thread->addParticipant($message_to);
+            foreach($message_to as $recipient){
+                $user = User::findOrFail($recipient);
+
+                
+
+                $participants = $thread->creator();
+
+                Mail::to($user->email)->send(new NewMessageMail($user,$thread));
+
+            }
+            
         }
         if (!empty($input['teacher_recipients'])) {
             // add code logic here to check if a thread has max participants set
             // utilize either $thread->getMaxParticipants()  or $thread->hasMaxParticipants()
             $thread->addParticipant($input['teacher_recipients']);
+
+            
+            $user = User::findOrFail($input['teacher_recipients']);
+
+                
+
+                $participants = $thread->creator();
+
+                Mail::to($user->email)->send(new NewMessageMail($user,$thread));
+
+
         }
         // check if pusher is allowed
         if(config('chatmessenger.use_pusher')) {
@@ -264,7 +286,7 @@ class MessagesController extends Controller
 
         
 
-        //$html = view('admin.message.showmodal', compact('thread', 'users','participants'))->render();
+        $html = view('admin.message.showmodal', compact('thread', 'users','participants'))->render();
         if(request()->ajax()) {
             return response()->json([
             'message' => $thread->subject,
