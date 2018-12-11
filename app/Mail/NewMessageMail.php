@@ -42,7 +42,7 @@ class NewMessageMail extends Mailable implements ShouldQueue
         
 
         return $this->view('emails.templates.new_message')
-        ->subject('Nuevo mensaje')
+        ->subject('Equipo Jardín Anatolia :: Tienes un nuevo mensaje ')
         ->from('no-reply@mg.jardinanatolia.cl', 'Equipo Jardin Anatolia')
         ->with(['route'=>$route]);
     }
