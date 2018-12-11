@@ -69,13 +69,18 @@ return response()->json($result,200,[],JSON_PRETTY_PRINT);*/
 /*$note = Note::first();
 $user = App\User::findorFail(4);
             $user->notify(new NewNoteNotification($note, $user->id));*/
-Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
+/*Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
     {
-        $message->subject('Mailgun and Laravel are awesome!');
+        $message->subject('testing queue ');
         $message->from('no-reply@mg.jardinanatolia.cl', 'Equipo Jardin Anatolia');
         $message->replyTo('info@jardinanatolia.cl','Equipo Jardin Anatolia');
         $message->to('jalbornozdesign@gmail.com');
-    });
+    });*/
+
+    $when = now()->addMinutes(1);
+
+    Mail::to('jalbornozdesign@gmail.com')->later($when, new TestMail());
+    return 'Working fine';
     
 });
 

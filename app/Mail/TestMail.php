@@ -7,30 +7,26 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TestMail extends Mailable
+class TestMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    
 
-    public function __construct($data)
+    public function __construct()
     {
-        $this->data = $data;
+        
     }
 
     public function build()
     {
-        $address = 'infojardin@example.com';
-        $subject = 'This is a demo!';
-        $name = 'Jane Doe';
+        $address = 'no-reply@mg.jardinanatolia.cl';
+        $subject = 'This is a demo! for queue';
+        $name = 'jardin test mailing';
         
         return $this->view('email.test')
                     ->from($address, $name)
-                    ->cc($address, $name)
-                    ->bcc($address, $name)
-                    ->replyTo($address, $name)
                     ->subject($subject)
-                    ->with([ 'message' => $this->data['message'] ]);
     }
 
 }
