@@ -79,16 +79,22 @@ class FirstCronTest extends Command
           ->whereDate('notebooks.created_at',Carbon::today()->toDateString())
           ->get();
 
+        $i=0;
         foreach($recipients as $recipient){
             $user = User::findorfail($recipient->parent_id);
             $child = Alumno::findorfail($recipient->alumno_id);
 
             Mail::to($user->email)->send(new DailyNotebookReport($child,$user));
 
-            if( count(Mail::failures()) > 0 ) {
-                $this->info('No Enviado enviado a '.$user->email);
+            if( !empty(Mail::failures()) ) {
+                foreach(Mail::failures() as $faileremail){
+                   $this->info('No Enviado enviado a '.$faileremail);
+                
+                }
+                $i--; 
             }else {
-                $this->info('Exito , Enviado enviado a '.$user->email.' a las : '.Carbon::now());
+                $this->info('Exito , Enviado enviado a '.$user->email.' a las : '.Carbon::now().'');
+                $i++;
             }
 
             
@@ -96,6 +102,8 @@ class FirstCronTest extends Command
         }
         $this->info('--------------------------------------------');
         $this->info('Daily Report ended at : '.Carbon::now());
+        $this->info('total recipients  : '.$recipients->count());
+        $this->info('total sent email  : '.$i);
         $this->info('--------------------------------------------');
 
         \Log::info('scheduler running @' . Carbon::now() );

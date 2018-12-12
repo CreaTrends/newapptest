@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
     {
         
             $schedule->command('cron:test')
-            ->everyMinute()
+            ->dailyAt('15:39')
             ->withoutOverlapping()
             ->appendOutputTo(storage_path('logs/dailyreport-'.\Carbon\Carbon::now()->format('d-m-y').'.log'))
             ->emailWrittenOutputTo('foo@example.com');

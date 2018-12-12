@@ -291,7 +291,7 @@ class NotebookController extends Controller
             
         }*/
 
-        /*// calculate new statistics
+        // calculate new statistics
         $recipients = DB::table('users')
           ->selectRaw('users.id as parent_id,alumnos.id as alumno_id')
           ->join('profiles','profiles.user_id','=','users.id')
@@ -302,19 +302,19 @@ class NotebookController extends Controller
           ->whereDate('notebooks.created_at',Carbon::today()->toDateString())
           ->get();
 
-        foreach($recipients as $recipient){
+        /*foreach($recipients as $recipient){
             $user = User::findorfail($recipient->parent_id);
             $child = Alumno::findorfail($recipient->alumno_id);
 
             Mail::to($user->email)->send(new DailyNotebookReport($child,$user));
         }*/
 
-        //$users = $recipients;
+        $users = $recipients;
 
         $creator = User::find(\Auth::id())->name;
 
         
-        return response()->json([$creator],200,[],JSON_PRETTY_PRINT);
+        return response()->json([$users],200,[],JSON_PRETTY_PRINT);
         return back()->with('status', 'Se envio la libreta diaria');
         return response()->json($childs,200,[],JSON_PRETTY_PRINT);
 
