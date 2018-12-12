@@ -69,38 +69,35 @@ class FirstCronTest extends Command
         $this->info('--------------------------------------------');
 
         // calculate new statistics
-        $users = User::with('students')->whereHas('students',function($q){
-
-            $q->whereHas('notebooks',function($q){
-                $q->whereNotNull('notebooks.data')
-                ->whereDate('notebooks.created_at',Carbon::today()->toDateString());
-            });
-            
-        })->groupBy('id')->limit(10)->get();
+        $users = Alumno::with('parent')->whereHas('notebooks',function($q){
+            $q->whereNotNull('notebooks.data')
+            ->whereDate('notebooks.created_at',Carbon::today()->toDateString());
+        })
+        ->withcount('parent')->get();
 
         
         $i=0;
         foreach($users as $recipient){
 
-            foreach ($recipient->students as $students) {
+            foreach ($recipient->parent as $parent) {
                 
                 try {
 
-                    Mail::to($recipient->email)->send(new DailyNotebookReport($students,$recipient));
+                    Mail::to(trim($parent->email))->send(new DailyNotebookReport($recipient,$parent));
                     $this->info('-------------------------------------------------------------------------------------------------');
-                    $this->info('> Enviado a '.$recipient->email.' a las : '.Carbon::now().' - apoderado de '.$students->full_name );
+                    $this->info('> Enviado a '.trim($parent->email).' a las : '.Carbon::now().' - apoderado de '.$recipient->full_name );
                     $i++;
 
                 } catch (Exception $ex) {
                     $this->info('--------------------------------------------');
-                    $this->info('No Enviado enviado a '.$recipient->email);
+                    $this->info('No Enviado enviado a '.trim($parent->email));
                     $i--; 
                 }
             }
         }
         $this->info('--------------------------------------------');
         $this->info('Daily Report ended at : '.Carbon::now());
-        $this->info('total recipients  : '.$users->count());
+        $this->info('total recipients  : ');
         $this->info('total sent email  : '.$i);
         $this->info('--------------------------------------------');
 
