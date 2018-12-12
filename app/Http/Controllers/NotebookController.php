@@ -272,9 +272,9 @@ class NotebookController extends Controller
                 ->whereDate('notebooks.created_at',Carbon::today()->toDateString());
             });
             
-        })->groupBy('id')->get();
+        })->groupBy('id')->get(['name','id']);
 
-        return response()->json([$users],200,[],JSON_PRETTY_PRINT);
+        return response()->json($users,200,[],JSON_PRETTY_PRINT);
           
 
         }
