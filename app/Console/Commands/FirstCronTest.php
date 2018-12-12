@@ -80,25 +80,25 @@ class FirstCronTest extends Command
           ->get();
 
         $i=0;
+        
         foreach($recipients as $recipient){
             $user = User::findorfail($recipient->parent_id);
-            $child = Alumno::findorfail($recipient->alumno_id);
+                $child = Alumno::findorfail($recipient->alumno_id);
 
-            Mail::to($user->email)->send(new DailyNotebookReport($child,$user));
-
-            if( !empty(Mail::failures()) ) {
-                foreach(Mail::failures() as $faileremail){
-                   $this->info('No Enviado enviado a '.$faileremail);
                 
-                }
-                $i--; 
-            }else {
+            try {
+                
+
+
+                Mail::to($user->email)->send(new DailyNotebookReport($child,$user));
                 $this->info('Exito , Enviado enviado a '.$user->email.' a las : '.Carbon::now().'');
                 $i++;
-            }
 
-            
-            
+            } catch (Exception $ex) {
+
+                $this->info('No Enviado enviado a '.$user->email);
+                $i--; 
+            }
         }
         $this->info('--------------------------------------------');
         $this->info('Daily Report ended at : '.Carbon::now());
