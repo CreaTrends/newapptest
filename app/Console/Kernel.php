@@ -31,7 +31,10 @@ class Kernel extends ConsoleKernel
     {
         
             $schedule->command('cron:test')
-            ->everyMinute();
+            ->everyMinute()
+            ->withoutOverlapping()
+            ->appendOutputTo(storage_path('logs/dailyreport-'.\Carbon\Carbon::now()->format('d-m-y').'.log'))
+            ->emailWrittenOutputTo('foo@example.com');
 
             //$schedule->call(new FirstCronTest)->everyMinute();
     }

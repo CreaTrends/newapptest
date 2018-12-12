@@ -5,11 +5,29 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 
+
+use App\Notebook;
 use App\User;
-Use Mail;
+use App\Alumno;
+use App\Curso;
+
+use Carbon\Carbon;
+use Notification;
+use App\Notifications\NewNotebook;
+use Mail;
+use App\Mail\WelcomeParent;
+
+use App\Mail\DailyReportEmail;
+use App\Mail\DailyReport as DailyNotebookReport;
+
+use Illuminate\Support\Facades\DB;
+
+use Auth;
 
 class FirstCronTest extends Command
 {
+
+    public $user;
     /**
      * The name and signature of the console command.
      *
@@ -32,6 +50,7 @@ class FirstCronTest extends Command
     public function __construct()
     {
         parent::__construct();
+        
     }
 
     /**
@@ -42,13 +61,43 @@ class FirstCronTest extends Command
     public function handle()
     {
         //
-        $users = User::findOrFail(4);
-        Mail::raw("This is automatically generated Hourly Update", function($message) use ($users){
-                $message->from('saquib.gt@gmail.com');
-                $message->to($users->email)->subject('Hourly Update at : ');
-            });
- 
-        $this->info('Hourly Update has been send successfully');
-        \Log::info('scheduler running @' . \Carbon\Carbon::now() );
+        $user = Auth::user();
+        $this->info('--------------------------------------------');
+        $this->info('Daily Report started at : '.Carbon::now());
+        $this->info('--------------------------------------------');
+        $this->info('sent by :'.$user);
+        $this->info('--------------------------------------------');
+
+        // calculate new statistics
+        $recipients = DB::table('users')
+          ->selectRaw('users.id as parent_id,alumnos.id as alumno_id')
+          ->join('profiles','profiles.user_id','=','users.id')
+          ->join('alumno_parent','alumno_parent.user_id','=','users.id')
+          ->join('alumnos','alumnos.id','=','alumno_parent.alumno_id')
+          ->join('notebooks','notebooks.alumno_id','=','alumnos.id')
+          ->whereNotNull('notebooks.data')
+          ->whereDate('notebooks.created_at',Carbon::today()->toDateString())
+          ->get();
+
+        foreach($recipients as $recipient){
+            $user = User::findorfail($recipient->parent_id);
+            $child = Alumno::findorfail($recipient->alumno_id);
+
+            Mail::to($user->email)->send(new DailyNotebookReport($child,$user));
+
+            if( count(Mail::failures()) > 0 ) {
+                $this->info('No Enviado enviado a '.$user->email);
+            }else {
+                $this->info('Exito , Enviado enviado a '.$user->email.' a las : '.Carbon::now());
+            }
+
+            
+            
+        }
+        $this->info('--------------------------------------------');
+        $this->info('Daily Report ended at : '.Carbon::now());
+        $this->info('--------------------------------------------');
+
+        \Log::info('scheduler running @' . Carbon::now() );
     }
 }

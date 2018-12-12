@@ -280,12 +280,32 @@ a[x-apple-data-detectors=true] {
               <!--[if (!mso)&(!IE)]><!--><div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:0px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"><!--<![endif]-->
 
                   
-                    <div class="">
-    <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 40px; padding-bottom: 40px;"><![endif]-->
-    <div style="color:#0D0D0D;font-family:'Open Sans', Helvetica, Arial, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 40px; padding-bottom: 40px;">   
-        <div style="font-size:12px;line-height:14px;color:#0D0D0D;font-family:'Open Sans', Helvetica, Arial, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="font-size: 28px; line-height: 33px;"><strong><span style="line-height: 33px; font-size: 28px;"><span style="font-size: 22px; line-height: 26px;">Hola {{$user->profile->full_name}} </span>,</span></strong></span><br><span style="font-size: 16px; line-height: 19px;">Tenemos Novedades&#160;<span style="font-size: 16px; line-height: 19px;" id="autocomplete"><span style="font-size: 16px; line-height: 19px;" id="autocomplete-delimiter">!</span><span style="font-size: 16px; line-height: 19px;" id="autocomplete-searchtext"><span class="dummy" style="font-size: 16px; line-height: 19px;"></span></span></span></span></p></div>    
-    </div>
-    <!--[if mso]></td></tr></table><![endif]-->
+<div class="">
+  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 40px; padding-bottom: 40px;"><![endif]-->
+  <div style="color:#0D0D0D;font-family:'Open Sans', Helvetica, Arial, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 40px; padding-bottom: 40px;">
+    <div style="font-size:12px;line-height:14px;color:#0D0D0D;font-family:'Open Sans', Helvetica, Arial, sans-serif;text-align:left;">
+      <p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="font-size: 28px; line-height: 33px;">
+        <strong>
+        <span style="line-height: 33px; font-size: 28px;"><span style="font-size: 22px; line-height: 26px;">
+          Hola {{$user->profile->full_name}}
+        </span>
+      </span>
+      </strong>
+    </span><br>
+    <span style="font-size: 16px; line-height: 19px;">Tenemos Novedades&#160;
+      <span style="font-size: 16px; line-height: 19px;" id="autocomplete">
+        <span style="font-size: 16px; line-height: 19px;" id="autocomplete-delimiter">!</span>
+        <span style="font-size: 16px; line-height: 19px;" id="autocomplete-searchtext">
+          <span class="dummy" style="font-size: 16px; line-height: 19px;">
+            
+          </span>
+        </span>
+      </span>
+    </span>
+  </p>
+</div>
+</div>
+<!--[if mso]></td></tr></table><![endif]-->
 </div>
                   
                   

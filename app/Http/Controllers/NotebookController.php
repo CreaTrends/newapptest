@@ -19,6 +19,8 @@ use App\Mail\WelcomeParent;
 use App\Mail\DailyReportEmail;
 use App\Mail\DailyReport as DailyNotebookReport;
 
+use Illuminate\Support\Facades\DB;
+
 class NotebookController extends Controller
 {
 
@@ -259,13 +261,60 @@ class NotebookController extends Controller
         })
         ->with('parent')
         ->get();
+        
+        /*foreach($childs  as $child){
 
-        foreach($childs  as $child){
+
             
             foreach($child->parent as $parent){
-             Mail::to($parent->email)->send(new DailyNotebookReport($child,$parent));
+                
+
+               
+             //Mail::to($parent->email)->send(new DailyNotebookReport($child,$parent));
+
+             if( count(Mail::failures()) > 0 ) {
+
+               echo "There was one or more failures. They were: <br />";
+
+               foreach(Mail::failures as $parent->email) {
+                   echo " - $email_address <br />";
+                }
+
+            } else {
+                echo '<br />';
+                echo "No errors, all sent successfully!<br />";
+                echo " - $parent->email <br />";
             }
-        }
+                
+            }
+             
+            
+        }*/
+
+        /*// calculate new statistics
+        $recipients = DB::table('users')
+          ->selectRaw('users.id as parent_id,alumnos.id as alumno_id')
+          ->join('profiles','profiles.user_id','=','users.id')
+          ->join('alumno_parent','alumno_parent.user_id','=','users.id')
+          ->join('alumnos','alumnos.id','=','alumno_parent.alumno_id')
+          ->join('notebooks','notebooks.alumno_id','=','alumnos.id')
+          ->whereNotNull('notebooks.data')
+          ->whereDate('notebooks.created_at',Carbon::today()->toDateString())
+          ->get();
+
+        foreach($recipients as $recipient){
+            $user = User::findorfail($recipient->parent_id);
+            $child = Alumno::findorfail($recipient->alumno_id);
+
+            Mail::to($user->email)->send(new DailyNotebookReport($child,$user));
+        }*/
+
+        //$users = $recipients;
+
+        $creator = User::find(\Auth::id())->name;
+
+        
+        return response()->json([$creator],200,[],JSON_PRETTY_PRINT);
         return back()->with('status', 'Se envio la libreta diaria');
         return response()->json($childs,200,[],JSON_PRETTY_PRINT);
 

@@ -89,17 +89,9 @@
                         @foreach($data['birthdays'] as $childs)
                         <li class="list-group-item">
                             <strong>{{$childs->firstname}} {{$childs->lastname}} 
-                                <small>{{ Carbon\Carbon::createFromFormat('Y-m-d', $childs->birthday)->format('d/m/Y') }}</small>
-                                <?php
-                                $birthday = Carbon\Carbon::createFromFormat('Y-m-d',$childs->birthday);
-                                $dd = Carbon\Carbon::now()->diffInDays($birthday->year(date('Y')), false);
-                                $born = Carbon\Carbon::createFromDate(1987, 10, 19);
-                                $yesCake =Carbon\Carbon::createFromDate(1987, 10, 19)->age;
-                                
-                                ?><!-- 
-                                
-                                {{$dd}}
-                                dias --></strong>
+                                <small>{{ Carbon\Carbon::parse($childs->birthday)->format('d-m') }}</small>
+
+                            </strong>
                         </li>
                         @endforeach
                     </ul>

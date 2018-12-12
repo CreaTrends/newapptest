@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Notebook;
 use App\User;
 use App\Alumno;
-class DailyReport extends Mailable implements ShouldQueue
+class DailyReport extends Mailable 
 {
     use Queueable, SerializesModels;
 
