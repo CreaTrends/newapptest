@@ -256,9 +256,26 @@ class NotebookController extends Controller
               ->join('notebooks','notebooks.alumno_id','=','alumnos.id')
               ->whereNotNull('notebooks.data')
               ->whereDate('notebooks.created_at',Carbon::today()->toDateString())
+              ->groupBy('users.id')
               ->get();
 
-          return response()->json($recipients,200,[],JSON_PRETTY_PRINT);
+        $users = Alumno::with('parent')->whereHas('notebooks',function($q){
+            $q->whereNotNull('notebooks.data')
+            ->whereDate('notebooks.created_at',Carbon::today()->toDateString());
+        })
+        ->withcount('parent')->get();
+
+        $users = User::with('students')->whereHas('students',function($q){
+
+            $q->whereHas('notebooks',function($q){
+                $q->whereNotNull('notebooks.data')
+                ->whereDate('notebooks.created_at',Carbon::today()->toDateString());
+            });
+            
+        })->groupBy('id')->get();
+
+        return response()->json([$users],200,[],JSON_PRETTY_PRINT);
+          
 
         }
         

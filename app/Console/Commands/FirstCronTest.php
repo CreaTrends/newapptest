@@ -69,40 +69,38 @@ class FirstCronTest extends Command
         $this->info('--------------------------------------------');
 
         // calculate new statistics
-        $recipients = DB::table('users')
-          ->selectRaw('users.id as parent_id,alumnos.id as alumno_id')
-          ->join('profiles','profiles.user_id','=','users.id')
-          ->join('alumno_parent','alumno_parent.user_id','=','users.id')
-          ->join('alumnos','alumnos.id','=','alumno_parent.alumno_id')
-          ->join('notebooks','notebooks.alumno_id','=','alumnos.id')
-          ->whereNotNull('notebooks.data')
-          ->whereDate('notebooks.created_at',Carbon::today()->toDateString())
-          ->get();
+        $users = User::with('students')->whereHas('students',function($q){
 
-        $i=0;
+            $q->whereHas('notebooks',function($q){
+                $q->whereNotNull('notebooks.data')
+                ->whereDate('notebooks.created_at',Carbon::today()->toDateString());
+            });
+            
+        })->groupBy('id')->limit(10)->get();
+
         
-        foreach($recipients as $recipient){
-            $user = User::findorfail($recipient->parent_id);
-                $child = Alumno::findorfail($recipient->alumno_id);
+        $i=0;
+        foreach($users as $recipient){
 
+            foreach ($recipient->students as $students) {
                 
-            try {
-                
+                try {
 
+                    Mail::to($recipient->email)->send(new DailyNotebookReport($students,$recipient));
+                    $this->info('-------------------------------------------------------------------------------------------------');
+                    $this->info('> Enviado a '.$recipient->email.' a las : '.Carbon::now().' - apoderado de '.$students->full_name );
+                    $i++;
 
-                Mail::to($user->email)->send(new DailyNotebookReport($child,$user));
-                $this->info('Exito , Enviado enviado a '.$user->email.' a las : '.Carbon::now().'');
-                $i++;
-
-            } catch (Exception $ex) {
-
-                $this->info('No Enviado enviado a '.$user->email);
-                $i--; 
+                } catch (Exception $ex) {
+                    $this->info('--------------------------------------------');
+                    $this->info('No Enviado enviado a '.$recipient->email);
+                    $i--; 
+                }
             }
         }
         $this->info('--------------------------------------------');
         $this->info('Daily Report ended at : '.Carbon::now());
-        $this->info('total recipients  : '.$recipients->count());
+        $this->info('total recipients  : '.$users->count());
         $this->info('total sent email  : '.$i);
         $this->info('--------------------------------------------');
 
