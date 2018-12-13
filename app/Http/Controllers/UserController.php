@@ -293,10 +293,10 @@ class UserController extends Controller
         }
 
         
-        $new_password = $this->make_password();
+        //$new_password = $this->make_password();
 
         //Mail::to(trim($user->email))->send(new SendActivationToParent($user,$new_password));
         
-        return response()->json(\Cookie::get('tz'),200,[],JSON_PRETTY_PRINT);
+        return response()->json($user,200,[],JSON_PRETTY_PRINT);
     }
 }
