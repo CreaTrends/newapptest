@@ -78,7 +78,7 @@
 						
 						<a class="dropdown-item" href="{{route('usuarios.edit',$user->id)}}">Editar</a>
 						<a class="dropdown-item" href="#">Ver Usuario</a>
-						<a class="dropdown-item" href="#">Enviar Notificación</a>
+						<a class="dropdown-item" href="{{route('usuarios.sendactivation',$user->id)}}">Enviar Notificación</a>
 						<div class="dropdown-divider"></div>
 						<form action="{{route('usuarios.destroy',$user->id)}}" method="POST">
                             {{ csrf_field() }}

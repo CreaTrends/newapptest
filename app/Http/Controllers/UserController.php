@@ -15,6 +15,8 @@ use App\Notifications\NewNotebook;
 use Mail;
 use App\Mail\WelcomeParent;
 
+use App\Mail\SendActivation as SendActivationToParent;
+
 use Image;
 use Illuminate\Support\Str;
 
@@ -272,5 +274,29 @@ class UserController extends Controller
     {
         // This will load all messages with sender
         return "hola";
+    }
+
+    public function SendActivation(Request $request,$id)
+    {
+        // This will load all messages with sender
+        try{
+            $user = User::whereRoleis('parent')
+            ->where('first_login','=','0')
+            ->whereHas('profile',function($q){
+                $q->where('status','=','0');
+            })->get();
+
+        }catch(\Exception $e){
+
+            return $e->getMessage();
+
+        }
+
+        
+        $new_password = $this->make_password();
+
+        //Mail::to(trim($user->email))->send(new SendActivationToParent($user,$new_password));
+        
+        return response()->json(\Cookie::get('tz'),200,[],JSON_PRETTY_PRINT);
     }
 }

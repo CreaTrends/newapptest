@@ -4,8 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-
-
 use App\Notebook;
 use App\User;
 use App\Alumno;

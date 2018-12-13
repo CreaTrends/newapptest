@@ -6,7 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use App\Console\Commands\FirstCronTest;
-
+use App\Console\Commands\SendActivation;
 
 
 class Kernel extends ConsoleKernel
@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //
         Commands\FirstCronTest::class,
+        Commands\SendActivation::class,
     ];
 
     /**
@@ -31,12 +32,18 @@ class Kernel extends ConsoleKernel
     {
         
             $schedule->command('cron:test')
-            ->dailyAt('19:54')
+            ->dailyAt(env('MAIL_DAILYREPORT_HOUR', '8:00'))
             ->withoutOverlapping()
             ->appendOutputTo(storage_path('logs/dailyreport-'.\Carbon\Carbon::now()->format('d-m-y').'.log'))
             ->emailWrittenOutputTo('jalbornozdesign@gmail.com');
 
-            //$schedule->call(new FirstCronTest)->everyMinute();
+            //$schedule->call(new SendActivation)->everyMinute();
+
+            $schedule->command('cron:sendactivation')
+            ->weeklyOn(env('MAIL_ACTIVATION_DAY', '1'), env('MAIL_ACTIVATION_HOUR', '8:00'))
+            ->timezone('America/Santiago')
+            ->appendOutputTo(storage_path('logs/activeUsers-'.\Carbon\Carbon::now()->format('d-m-y').'.log'))
+            ->emailWrittenOutputTo('jalbornozdesign@gmail.com');
     }
 
     /**

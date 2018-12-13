@@ -156,6 +156,9 @@ Route::get('notes/display/{id}','NoteController@displaynote')->name('notes.displ
 
 Route::get('notify', 'CursoController@notify')->name('cursos.notify');
 Route::resource('/alumnos', 'AlumnoController');
+
+Route::get('/usuarios/sendactivation/{id}', 'UserController@SendActivation')->name('usuarios.sendactivation');
+
 Route::resource('/usuarios', 'UserController');
 Route::resource('/settings', 'SettingController');
 Route::put('/alumnos/updateinfo/{alumno}', 'AlumnoController@updateinfo')->name('alumnos.updateinfo');

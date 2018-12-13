@@ -1,14 +1,6 @@
 @extends('layouts.adminDashboard')
 @section('content')
-<div class="d-block d-md-flex no-block align-items-center py-0 px-0 mt-3">
-    <div class="ml-auto mr-2">
-        <form action="{{route('notebook.report')}}" method="POST" enctype="multipart/form-data" id="sendReport">
-            {{ csrf_field() }}
-            {{ method_field('POST') }}
-            <button type="submit" class="btn custom-btn is-lightblue" id="sendreport">Enviar Libreta</button>
-        </form>
-    </div>
-</div>
+
 <div class="row justify-content-center mt-5">
     <div class="col-6 col-lg-3 w-sm-50 mb-3 ">
         <div class="card card-body h-100">
