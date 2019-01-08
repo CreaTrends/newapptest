@@ -311,9 +311,10 @@ class UserController extends Controller
         
         //$url =storage_path('logs/dailyreport-'.$date.'.log');
 
-        $url = Storage::disk('logs')->get('dailyreport-'.$today.'.log');
+        //$url = Storage::disk('logs')->get('dailyreport-'.$today.'.log');
 
-        $contents = Storage::disk('logs')->exists('dailyreport-'.$today.'.log');
+        $contents = Storage::disk('logs')->exists('dailyreport-'.$today.'.log') ? true : false;
+        
 
         if($contents){
             Storage::disk('logs')->delete('dailyreport-'.$yesterday.'.log');
