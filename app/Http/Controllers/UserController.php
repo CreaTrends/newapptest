@@ -185,7 +185,7 @@ class UserController extends Controller
             return redirect()->route('usuarios.edit',Auth::id());
         }   
 
-        $userprofile = User::with('profile','alumno_parent')->findOrFail(Auth::id());
+        $userprofile = User::with('profile','alumno_parent')->findOrFail($id);
         /*echo "<pre>";
         return json_encode($userprofile,JSON_PRETTY_PRINT);*/
         return view('admin.users.edit',compact('userprofile'));
