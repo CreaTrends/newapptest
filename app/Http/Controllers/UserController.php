@@ -9,6 +9,10 @@ use App\Profile;
 use App\Role;
 use App\Alumno;
 
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Storage;
+
 
 use Notification;
 use App\Notifications\NewNotebook;
@@ -172,7 +176,16 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        $userprofile = User::with('profile','alumno_parent')->findOrFail($id);
+        if (!Auth::user()->hasRole(['superadministrator', 'administrator']) && $id != Auth::id()) { //This will check for 'idUser' inside the $post
+            /*return response()->json([
+                'status' => 'error',
+                'message'=>'Invalid Url'
+            ],403);*/
+
+            return redirect()->route('usuarios.edit',Auth::id());
+        }   
+
+        $userprofile = User::with('profile','alumno_parent')->findOrFail(Auth::id());
         /*echo "<pre>";
         return json_encode($userprofile,JSON_PRETTY_PRINT);*/
         return view('admin.users.edit',compact('userprofile'));
@@ -292,11 +305,50 @@ class UserController extends Controller
 
         }
 
+        $yesterday = Carbon::now()->subdays(1)->format('d-m-y');
+        $today = Carbon::now()->format('d-m-y');
+
         
+        //$url =storage_path('logs/dailyreport-'.$date.'.log');
+
+        $url = Storage::disk('logs')->get('dailyreport-'.$today.'.log');
+
+        $contents = Storage::disk('logs')->exists('dailyreport-'.$today.'.log');
+
+        if($contents){
+            Storage::disk('logs')->delete('dailyreport-'.$yesterday.'.log');
+        }
+
+        /*for ($x = 1; $x < 10; $x++) {
+            $fecha = Carbon::now()->subdays($x)->format('d-m-y');
+            Storage::disk('logs')->put('dailyreport-'.$fecha.'.log', 'log de prueba'); 
+
+        }*/
+        
+        
+
+        
+
+        //$path = Storage::download($url);
+
+        //$myFile = public_path('/static/uploads/notes/'.$request->file);
+
+        //return response()->download($url);
         //$new_password = $this->make_password();
 
         //Mail::to(trim($user->email))->send(new SendActivationToParent($user,$new_password));
         
-        return response()->json($user,200,[],JSON_PRETTY_PRINT);
+        return response()->json($contents);
+    }
+
+
+    public function updatepassword(Request $request){
+
+        $user = Auth::id();
+
+
+
+        return view('admin.users.update_password',compact('user'));
+
     }
 }

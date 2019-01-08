@@ -49,7 +49,7 @@ class UserResetPassword extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                ->greeting('Hola '.$notifiable)
+                ->greeting('Hola '.$notifiable->profile->full_name)
                 ->subject('Reinicio de Contraseña')
                 ->line('Está recibiendo este correo electrónico porque recibimos una solicitud de restablecimiento de contraseña para su cuenta.')
                 ->action('Cambiar contraseña', url(config('app.url').route('password.reset', $this->token, false)))

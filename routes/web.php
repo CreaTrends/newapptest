@@ -158,7 +158,7 @@ Route::get('notify', 'CursoController@notify')->name('cursos.notify');
 Route::resource('/alumnos', 'AlumnoController');
 
 Route::get('/usuarios/sendactivation/{id}', 'UserController@SendActivation')->name('usuarios.sendactivation');
-
+Route::get('/usuarios/updatepassword', 'UserController@updatepassword')->name('usuarios.updatepassword');
 Route::resource('/usuarios', 'UserController');
 Route::resource('/settings', 'SettingController');
 Route::put('/alumnos/updateinfo/{alumno}', 'AlumnoController@updateinfo')->name('alumnos.updateinfo');

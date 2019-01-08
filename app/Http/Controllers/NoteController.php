@@ -183,7 +183,7 @@ class NoteController extends Controller
             $user->notify(new NewNoteNotification($note, $user->id));
 
         
-            Mail::to($user->email)->send(new NewNoteMail($note, $user));
+            Mail::to(trim($user->email))->send(new NewNoteMail($note, $user));
         
             
             //$user->notifications()->delete();

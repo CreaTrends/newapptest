@@ -188,10 +188,10 @@ class NotebookController extends Controller
                 $query->where('curso_id', $id_curso);
             });
         });
-        $query = $query->whereDoesntHave('notebooks',function($q) use($notebook_type){
+        /*$query = $query->whereDoesntHave('notebooks',function($q) use($notebook_type){
             $q->whereDate('created_at',Carbon::today()->toDateString())
             ->where('activity_type', $notebook_type);
-        });
+        });*/
         $users = $query->get();
 
         $get_form = 'food';
@@ -274,7 +274,9 @@ class NotebookController extends Controller
             
         })->groupBy('id')->get(['name','id']);*/
 
-        return response()->json($users,200,[],JSON_PRETTY_PRINT);
+        $date = Carbon::now()->subdays(1)->format('d-m-y');
+
+        return response()->json($date,200,[],JSON_PRETTY_PRINT);
           
 
         }

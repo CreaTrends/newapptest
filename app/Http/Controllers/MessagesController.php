@@ -131,7 +131,7 @@ class MessagesController extends Controller
 
                 $participants = $thread->creator();
 
-                Mail::to($user->email)->send(new NewMessageMail($user,$thread));
+                Mail::to(trim($user->email))->send(new NewMessageMail($user,$thread));
 
             }
             
@@ -148,7 +148,7 @@ class MessagesController extends Controller
 
                 $participants = $thread->creator();
 
-                Mail::to($user->email)->send(new NewMessageMail($user,$thread));
+                Mail::to(trim($user->email))->send(new NewMessageMail($user,$thread));
 
 
         }
