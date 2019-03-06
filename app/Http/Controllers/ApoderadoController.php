@@ -44,8 +44,6 @@ class ApoderadoController extends Controller
         $user_id = auth()->user()->id;
         $apoderado = User::with('students','profile')->where('id',$user_id)->first();
         
-       /*echo "<pre>";
-       return json_encode($apoderado,JSON_PRETTY_PRINT);*/
        return view('apoderados.index',compact('apoderado'));
        
     }

@@ -63,6 +63,7 @@
                             @endforeach()
                             </select>
             </div>
+            <h5><strong>Contraseña</strong></h5>
             <input type="submit" class="btn custom-btn is-lightgreen" value="Guardar">
             <a href="{{route('usuarios.index')}}" class="btn custom-btn is-red">Volver</a>
         </form>
