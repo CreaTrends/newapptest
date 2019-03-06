@@ -33,13 +33,9 @@
             @else
             <div class="d-flex justify-content-start bd-highlight message-box mb-4" id="thread_list_{{ $message->id }}">
                 <div class="chat-avatar mr-2">
-                    
-                    @if(empty($message->user->profile->image))
-                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="https://ui-avatars.com/api/?background=5A55A3&color=fff&name={{$message->user->profile->first_name}}+{{$message->user->profile->last_name}}" width="48">
-                    @else
-                    
-                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/'.$message->user->profile->image) !!}" width="48">
-                    @endif
+                    {{$message->user->id}}
+
+                    <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/defaul.jpg') !!}" width="48">
                 </div>
                 <div class="chat-body w-auto">
                     <div class="chat-content to-left p-3">
