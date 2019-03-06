@@ -31,7 +31,7 @@ $route = 'notes.index';
     
     <div class="pl-3 pr-2">
       <p class="font-weight-medium mb-1">
-        <strong>{{\App\User::find($notification->data['user_id'])->name}}</strong>
+        <strong>{{ $notification->data['user_id'] }}</strong>
         @if(snake_case(class_basename($notification->type)) == 'new_notebook')
         Te envió un reporte diario ! <strong>{{ $notification->data['message'] }}</strong>
         @elseif(snake_case(class_basename($notification->type)) == 'new_album_notification')
