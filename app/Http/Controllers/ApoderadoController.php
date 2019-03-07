@@ -125,8 +125,8 @@ class ApoderadoController extends Controller
         $users = User::whereIn('id', $thread->participantsUserIds($userId))->get();
         $thread->markAsRead($userId);
 
-        /*echo "<pre>";
-        return json_encode($users,JSON_PRETTY_PRINT);*/
+        echo "<pre>";
+        return json_encode($users,JSON_PRETTY_PRINT);
         
         return view('apoderados.inbox.show', compact('thread', 'users'));
     }
