@@ -23,7 +23,7 @@
                             </div>
                         </div>
             
-                <h5><strong>Datos Personales</strong></h5>
+                <h5><strong>Datos Personales </strong></h5>
             <div class="form-group">
                 <label for="">Nombre completo</label>
                 <input type="text" name="firstname" class="form-control" value="{{$userprofile->profile->first_name}}">
