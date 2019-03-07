@@ -84,6 +84,7 @@ $('form').submit(function(e) {
         method: method,
         data: data,
         url: url,
+        
         success: function(response) {
 
             $url = '{{url('apoderado/message/')}}/'+response.message.thread_id;

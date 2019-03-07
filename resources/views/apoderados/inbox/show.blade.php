@@ -109,7 +109,12 @@ $('form').submit(function(e) {
         method: method,
         data: data,
         url: url,
+        beforeSend: function() {
+            $('#submit-message').prop('disabled', true).addClass('disabled').html('Enviando ...');
+            console.log('aun no envia');
+        },
         success: function(response) {
+            $('#submit-message').prop('disabled', true).addClass('disabled').html('Enviar Mensaje');
             var thread = $('#message-' + response.message.thread_id);
 
             $('body').find(thread).append(response.html);

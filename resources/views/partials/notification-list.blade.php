@@ -31,13 +31,13 @@ $route = 'notes.index';
     
     <div class="pl-3 pr-2">
       <p class="font-weight-medium mb-1">
-        <strong>{{$notification->data['user_id']}} </strong>
+        
         @if(snake_case(class_basename($notification->type)) == 'new_notebook')
-        Te envió un reporte diario ! <strong>{{ $notification->data['message'] }}</strong>
+        {{ $notification->data['message'] }}
         @elseif(snake_case(class_basename($notification->type)) == 'new_album_notification')
-        Ingreso una nueva galeria ! <strong>{{ $notification->data['message'] }}</strong>
+        {{ $notification->data['message'] }}
         @else
-        Te envió una nueva circular! <strong>{{ $notification->data['message'] }}
+        {{ $notification->data['message'] }}
         </strong>
         @endif
       </p>

@@ -12,27 +12,19 @@
 </div>
 @endsection
 @section('content')
-<div class="row">
-    <div class="col-md-12 my-3">
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link " href="{{route('apoderado.feed')}}">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('apoderado.albums')}}">galerias</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link " href="{{route('apoderado.messages')}}">Mensajes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{route('apoderado.profile',auth()->user()->id)}}">Perfil</a>
-            </li>
-        </ul>
-    </div>
-</div>
 
-<div class="row justify-content-center mb-5">
+
+<div class="row justify-content-center mb-5 mt-5">
     <div class="col-md-7">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="{{route('apoderado.profile.update',$userprofile->id)}}"  enctype="multipart/form-data" class="form" method="POST" >
             {{method_field('PUT')}}
             {{csrf_field()}}
@@ -64,6 +56,24 @@
                 <label for="">Teléfono</label>
                 <input type="text" name="phone" class="form-control" value="{{$userprofile->profile->telephone}}">
             </div>
+
+            <h5><strong>Contraseña</strong></h5>
+            <div class="alert alert-warning" role="alert">
+              Si quieres cambiar tu contraseña debes ingresar todo los campos solicitados a continuación.
+            </div>
+            <div class="form-group">
+                <label for="">Contraseña actual</label>
+                <input type="password" name="oldpassword" class="form-control" value="">
+            </div>
+            <div class="form-group">
+                <label for="">Nueva Contraseña</label>
+                <input type="password" name="password" class="form-control" value="">
+            </div>
+            <div class="form-group">
+                <label for="">Confirmar nueva Contraseña</label>
+                <input type="password" class="form-control" name="password_confirmation" >
+            </div>
+
             <input type="submit" class="btn custom-btn is-lightgreen" value="Guardar">
             <a href="{{route('apoderado.feed')}}" class="btn custom-btn is-red">Cancelar</a>
         </form>

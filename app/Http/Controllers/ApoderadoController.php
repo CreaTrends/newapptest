@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
+use Illuminate\Support\Facades\Hash;
+
 use Mail;
 use App\Mail\NewMessageMail;
 
@@ -125,8 +127,8 @@ class ApoderadoController extends Controller
         $users = User::whereIn('id', $thread->participantsUserIds($userId))->get();
         $thread->markAsRead($userId);
 
-        echo "<pre>";
-        return json_encode($thread->participantsUserIds(),JSON_PRETTY_PRINT);
+        /*echo "<pre>";
+        return json_encode($thread->participantsUserIds(),JSON_PRETTY_PRINT);*/
         
         return view('apoderados.inbox.show', compact('thread', 'users'));
     }
@@ -337,6 +339,27 @@ class ApoderadoController extends Controller
 
     }
     public function updateProfile(Request $request,$id){
+
+        if(!empty($request->input('oldpassword')) ) {
+            if (Hash::check($request->input('oldpassword'), Auth::user()->password)) {
+
+
+                $validatedData = $request->validate([
+                        'password' => 'required|string|min:8|confirmed|different:oldpassword',
+                    ]);
+
+                $user_id = Auth::user()->id;                       
+                $obj_user = User::find($user_id);
+                $obj_user->password = Hash::make($request->input('password'));
+                $obj_user->save(); 
+
+                
+            }
+
+            
+            
+        }
+
         $this->validate($request, array(
             'firstname' => 'required|max:255',
             'address' => 'required|max:255',
@@ -344,7 +367,7 @@ class ApoderadoController extends Controller
             'birthday' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
         ));
-        $user = User::findOrFail($id);
+        $user = User::findOrFail(Auth::user()->id);
         $user->name = $request->firstname;
         $user->email = $request->email;
 
