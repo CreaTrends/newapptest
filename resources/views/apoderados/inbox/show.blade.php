@@ -33,7 +33,7 @@
             @else
             <div class="d-flex justify-content-start bd-highlight message-box mb-4" id="thread_list_{{ $message->id }}">
                 <div class="chat-avatar mr-2">
-                    {{ $message->user->name }}
+                    
                     {{ $message->user }}
                     <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/'.$message->user->profile->image) !!}" width="48">
                 </div>
