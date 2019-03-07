@@ -10,7 +10,7 @@
             ({{ $thread->userUnreadMessagesCount(Auth::id()) }} unread)
         </h5>
         <div class="messages d-none" id="message-{{$thread->id}}">
-
+            {{$thread->messages}}
             @foreach($thread->messages as $message)
 
             @if($message->user_id == Auth::id())
@@ -33,7 +33,7 @@
             @else
             <div class="d-flex justify-content-start bd-highlight message-box mb-4" id="thread_list_{{ $message->id }}">
                 <div class="chat-avatar mr-2">
-                    
+                    {{ optional($message->user)->name }}
                     {{ $message->user }}
                     <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/') !!}" width="48">
                 </div>
