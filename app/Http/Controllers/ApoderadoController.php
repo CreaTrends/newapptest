@@ -122,11 +122,11 @@ class ApoderadoController extends Controller
         // $users = User::whereNotIn('id', $thread->participantsUserIds())->get();
         // don't show the current user in list
         $userId = Auth::id();
-        $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
+        $users = User::whereIn('id', $thread->participantsUserIds($userId))->get();
         $thread->markAsRead($userId);
 
         echo "<pre>";
-        return json_encode($thread->participantsUserIds(),JSON_PRETTY_PRINT);
+        return json_encode($users,JSON_PRETTY_PRINT);
         
         return view('apoderados.inbox.show', compact('thread', 'users'));
     }
