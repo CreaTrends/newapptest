@@ -33,7 +33,7 @@
             @else
             <div class="d-flex justify-content-start bd-highlight message-box mb-4" id="thread_list_{{ $message->id }}">
                 <div class="chat-avatar mr-2">
-                    <h1>{{ App\User::find($message->user_id)->name}}</h1>
+                    <h1>{{ $message->user_id}}</h1>
                     <img class="align-self-center mr-0 rounded-circle mw-25"  src="{!! url('/static/image/profile/') !!}" width="48">
                 </div>
                 <div class="chat-body w-auto">
