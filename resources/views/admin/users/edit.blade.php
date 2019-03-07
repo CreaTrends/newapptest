@@ -22,7 +22,15 @@
                                 </div>
                             </div>
                         </div>
-            
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
                 <h5><strong>Datos Personales </strong></h5>
             <div class="form-group">
                 <label for="">Nombre completo</label>
@@ -63,7 +71,24 @@
                             @endforeach()
                             </select>
             </div>
-            <h5><strong>Contraseña</strong></h5>
+            @if($userprofile->id == Auth::user()->id)
+                <h5><strong>Contraseña</strong></h5>
+                <div class="alert alert-warning" role="alert">
+                  Si quieres cambiar tu contraseña debes ingresar todo los campos solicitados a continuación.
+                </div>
+                <div class="form-group">
+                    <label for="">Contraseña actual</label>
+                    <input type="password" name="oldpassword" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <label for="">Nueva Contraseña</label>
+                    <input type="password" name="password" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <label for="">Confirmar nueva Contraseña</label>
+                    <input type="password" class="form-control" name="password_confirmation" >
+                </div>
+            @endif
             <input type="submit" class="btn custom-btn is-lightgreen" value="Guardar">
             <a href="{{route('usuarios.index')}}" class="btn custom-btn is-red">Volver</a>
         </form>
