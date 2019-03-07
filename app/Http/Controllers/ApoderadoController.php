@@ -126,7 +126,7 @@ class ApoderadoController extends Controller
         $thread->markAsRead($userId);
 
         echo "<pre>";
-        return json_encode($users,JSON_PRETTY_PRINT);
+        return json_encode($thread->participantsUserIds(),JSON_PRETTY_PRINT);
         
         return view('apoderados.inbox.show', compact('thread', 'users'));
     }
