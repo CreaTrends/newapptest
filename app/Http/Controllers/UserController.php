@@ -23,7 +23,7 @@ use App\Mail\SendActivation as SendActivationToParent;
 
 use Image;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -201,6 +201,25 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        if(!empty($request->input('oldpassword')) ) {
+            if (Hash::check($request->input('oldpassword'), Auth::user()->password)) {
+
+
+                $validatedData = $request->validate([
+                        'password' => 'required|string|min:8|confirmed|different:oldpassword',
+                    ]);
+
+                $user_id = Auth::user()->id;                       
+                $obj_user = User::find($user_id);
+                $obj_user->password = Hash::make($request->input('password'));
+                $obj_user->save(); 
+
+                
+            }
+
+            
+            
+        }
         $this->validate($request, array(
             'firstname' => 'required|max:255',
             'lastname' => 'required|max:255',

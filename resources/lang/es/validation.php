@@ -6,9 +6,9 @@ return [
 'confirmed'            => 'La confirmacion del :attribute no coincide.',
 'different'            => 'El :attribute y :other No pueden ser iguales.',
 'min'                  => [
-        'numeric' => 'The :attribute must be at least :min.',
+        'numeric' => 'El :attribute debe tener al menos :min.',
         'file'    => 'The :attribute must be at least :min kilobytes.',
-        'string'  => 'The :attribute must be at least :min characters.',
+        'string'  => 'El :attribute debe tener al menos :min characters.',
         'array'   => 'The :attribute must have at least :min items.',
     ],
 
