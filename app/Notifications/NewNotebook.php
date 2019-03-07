@@ -57,7 +57,7 @@ class NewNotebook extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->notebook->subject,
+            'message' => User::find($this->user_id)->profile->first_name.' ingreso un nuevo reporte diario',
             'action' => route('child.feed',$this->notebook->alumno_id),
             'user_id' => $this->user_id,
             'notify-icon' => 'fas fa-clipboard-list',

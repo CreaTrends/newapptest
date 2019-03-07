@@ -65,7 +65,7 @@ class NewNoteNotification extends Notification implements ShouldBroadcast,Should
     {
         $route = $notifiable->hasRole('parent') ? 'apoderado.notes.show':'notes.index';
         return [
-            'message' => $this->note->subject,
+            'message' => User::find($this->note->user->id)->name. ' envió una nueva circular : '.$this->note->subject,
             'action' => route($route,['id'=>$this->note->id]),
             'user_id' => $this->note->user->id,
             'notify-icon' => 'icofont icofont-notepad',
