@@ -114,7 +114,7 @@ $('form').submit(function(e) {
             console.log('aun no envia');
         },
         success: function(response) {
-            $('#submit-message').prop('disabled', true).addClass('disabled').html('Enviar Mensaje');
+            $('#submit-message').prop('disabled', true).addClass('disabled').html('Enviar Mensaje ...');
             var thread = $('#message-' + response.message.thread_id);
 
             $('body').find(thread).append(response.html);
