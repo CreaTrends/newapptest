@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
     {
         
             $schedule->command('cron:test')
-            ->weekdays(env('MAIL_DAILYREPORT_HOUR', '17:00'))
+            ->weekdays()->at(env('MAIL_DAILYREPORT_HOUR', '17:00'))
             ->withoutOverlapping()
             ->appendOutputTo(storage_path('logs/dailyreport-'.\Carbon\Carbon::now()->format('d-m-y').'.log'))
             ->emailWrittenOutputTo('jalbornozdesign@gmail.com');
