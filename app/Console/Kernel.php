@@ -32,18 +32,14 @@ class Kernel extends ConsoleKernel
     {
         
             $schedule->command('cron:test')
-            ->dailyAt(env('MAIL_DAILYREPORT_HOUR', '17:00'))
+            ->weekdays(env('MAIL_DAILYREPORT_HOUR', '17:00'))
             ->withoutOverlapping()
             ->appendOutputTo(storage_path('logs/dailyreport-'.\Carbon\Carbon::now()->format('d-m-y').'.log'))
             ->emailWrittenOutputTo('jalbornozdesign@gmail.com');
 
             //$schedule->call(new SendActivation)->everyMinute();
 
-            $schedule->command('cron:sendactivation')
-            ->weeklyOn(env('MAIL_ACTIVATION_DAY', '1'), env('MAIL_ACTIVATION_HOUR', '8:00'))
-            ->timezone('America/Santiago')
-            ->appendOutputTo(storage_path('logs/activeUsers-'.\Carbon\Carbon::now()->format('d-m-y').'.log'))
-            ->emailWrittenOutputTo('jalbornozdesign@gmail.com');
+            
     }
 
     /**
